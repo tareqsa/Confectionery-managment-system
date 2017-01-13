@@ -1,43 +1,30 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Image;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.JTableHeader;
-
-import java.awt.Color;
-import java.awt.ComponentOrientation;
-
 import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.Font;
-import javax.swing.JEditorPane;
-import java.awt.SystemColor;
-import java.sql.Connection;
 
-import javax.swing.UIManager;
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
-import java.awt.Component;
-
-
-
-
-public class ProductsWindow extends JFrame {
+public class WorkScheduleWindow extends JFrame {
 
 	private JPanel contentPane;
+	
+	private JEditorPane editorPane;
+
+	
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
-	private JEditorPane editorPane;
-	private JTable table;
-	Connection conn1;
+	private JLabel lblNewLabel_3;
 
 	/**
 	 * Launch the application.
@@ -46,7 +33,7 @@ public class ProductsWindow extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ProductsWindow frame = new ProductsWindow();
+					WorkScheduleWindow frame = new WorkScheduleWindow();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,7 +45,7 @@ public class ProductsWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ProductsWindow() {
+	public WorkScheduleWindow() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1100, 600);
@@ -67,26 +54,17 @@ public class ProductsWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(44, 100, 1025, 449);
-		contentPane.add(scrollPane);
-		
-		table = new JTable();
-		table.setFont(new Font("Tahoma", Font.BOLD, 12));
-		table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-		JTableHeader Theader = table.getTableHeader();
-        Theader.setBackground(Color.pink);
-		
-
-		scrollPane.setViewportView(table);
+		lblNewLabel_3 = new JLabel("");
+		lblNewLabel_3.setBounds(73, 97, 962, 463);
+		contentPane.add(lblNewLabel_3);
 		
 		editorPane = new JEditorPane();
 		editorPane.setEditable(false);
 		editorPane.setBackground(Color.WHITE);
 		editorPane.setForeground(Color.BLACK);
 		editorPane.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 45));
-		editorPane.setText("\u05DE\u05D5\u05E6\u05E8\u05D9\u05DD ");
-		editorPane.setBounds(467, 0, 177, 59);
+		editorPane.setText("\u05E1\u05D9\u05D3\u05D5\u05E8 \u05E2\u05D1\u05D5\u05D3\u05D4");
+		editorPane.setBounds(416, 0, 297, 59);
 		contentPane.add(editorPane);
 		
 		lblNewLabel_2 = new JLabel("");
@@ -101,23 +79,26 @@ public class ProductsWindow extends JFrame {
 		lblNewLabel_1.setBounds(954, 11, 150, 16);
 		contentPane.add(lblNewLabel_1);
 		
-		lblNewLabel = new JLabel("");
-		lblNewLabel.setBackground(Color.WHITE);
-		lblNewLabel.setBounds(20, 0, 1094, 571);
+		lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(0, 0, 1094, 571);
 		contentPane.add(lblNewLabel);
 		
-		ImageIcon pic = new ImageIcon(ProductsWindow.class.getResource("conimgs/background.jpg"));
+		
+		ImageIcon pic = new ImageIcon(WorkScheduleWindow.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
 		ImageIcon image= new ImageIcon(Imagetemp);
 		lblNewLabel.setIcon(image);
 		
-		
+		ImageIcon pic1 = new ImageIcon(WorkScheduleWindow.class.getResource("conimgs/workschedule.jpg"));
+		Image tempImage1 = pic1.getImage();
+		Image Imagetemp1 = tempImage1.getScaledInstance(lblNewLabel_3.getWidth(),lblNewLabel_3.getHeight(),Image.SCALE_DEFAULT);
+		ImageIcon image1= new ImageIcon(Imagetemp1);
+		lblNewLabel_3.setIcon(image1);
 		
 		
 		setclk();
-		conn1 = Driver.getConnection();
-		Driver.viewTable("products", table, conn1);
+
 	}
 	public void setclk()
 	{

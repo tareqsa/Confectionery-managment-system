@@ -19,25 +19,33 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JEditorPane;
 import java.awt.SystemColor;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.sql.Connection;
 
 import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.Component;
+import javax.swing.JButton;
 
 
 
 
-public class ProductsWindow extends JFrame {
+
+public class ClientsWindow extends JFrame {
 
 	private JPanel contentPane;
+	
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
+
+	
+	
 	private JEditorPane editorPane;
-	private JTable table;
-	Connection conn1;
+	private JLabel lblNewLabel_3;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -46,7 +54,7 @@ public class ProductsWindow extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ProductsWindow frame = new ProductsWindow();
+					ClientsWindow frame = new ClientsWindow();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,7 +66,7 @@ public class ProductsWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ProductsWindow() {
+	public ClientsWindow() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1100, 600);
@@ -67,27 +75,22 @@ public class ProductsWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(44, 100, 1025, 449);
-		contentPane.add(scrollPane);
-		
-		table = new JTable();
-		table.setFont(new Font("Tahoma", Font.BOLD, 12));
-		table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-		JTableHeader Theader = table.getTableHeader();
-        Theader.setBackground(Color.pink);
-		
+		textField = new JTextField("\u05D4\u05DB\u05E0\u05E1 \u05DE\u05D9\u05DC\u05EA \u05DE\u05E4\u05EA\u05D7 \u05DB\u05D3\u05D9 \u05DC\u05DE\u05E6\u05D5\u05D0 \u05DC\u05E7\u05D5\u05D7 \u05DB\u05DC\u05E9\u05D4\u05D5...");
+		textField.setForeground(Color.LIGHT_GRAY);
+		textField.addFocusListener(new FocusListener() {
+		    public void focusGained(FocusEvent e) {
+		    	textField.setText("");
+		    }
 
-		scrollPane.setViewportView(table);
+		    public void focusLost(FocusEvent e) {
+		        // nothing
+		    }
+		});
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textField.setBounds(166, 140, 917, 25);
+		contentPane.add(textField);
+		textField.setColumns(10); 
 		
-		editorPane = new JEditorPane();
-		editorPane.setEditable(false);
-		editorPane.setBackground(Color.WHITE);
-		editorPane.setForeground(Color.BLACK);
-		editorPane.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 45));
-		editorPane.setText("\u05DE\u05D5\u05E6\u05E8\u05D9\u05DD ");
-		editorPane.setBounds(467, 0, 177, 59);
-		contentPane.add(editorPane);
 		
 		lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -101,12 +104,26 @@ public class ProductsWindow extends JFrame {
 		lblNewLabel_1.setBounds(954, 11, 150, 16);
 		contentPane.add(lblNewLabel_1);
 		
+		lblNewLabel_3 = new JLabel("\u05D7\u05E4\u05E9 \u05DC\u05E7\u05D5\u05D7:");
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel_3.setForeground(Color.WHITE);
+		lblNewLabel_3.setBounds(997, 112, 130, 25);
+		contentPane.add(lblNewLabel_3);
+		
+		editorPane = new JEditorPane();
+		editorPane.setEditable(false);
+		editorPane.setBackground(Color.WHITE);
+		editorPane.setForeground(Color.BLACK);
+		editorPane.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 45));
+		editorPane.setText("\u05DC\u05E7\u05D5\u05D7\u05D5\u05EA");
+		editorPane.setBounds(467, 0, 177, 59);
+		contentPane.add(editorPane);
+		
 		lblNewLabel = new JLabel("");
-		lblNewLabel.setBackground(Color.WHITE);
-		lblNewLabel.setBounds(20, 0, 1094, 571);
+		lblNewLabel.setBounds(0, 0, 1094, 571);
 		contentPane.add(lblNewLabel);
 		
-		ImageIcon pic = new ImageIcon(ProductsWindow.class.getResource("conimgs/background.jpg"));
+		ImageIcon pic = new ImageIcon(ClientsWindow.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
 		ImageIcon image= new ImageIcon(Imagetemp);
@@ -115,9 +132,9 @@ public class ProductsWindow extends JFrame {
 		
 		
 		
+		
 		setclk();
-		conn1 = Driver.getConnection();
-		Driver.viewTable("products", table, conn1);
+
 	}
 	public void setclk()
 	{

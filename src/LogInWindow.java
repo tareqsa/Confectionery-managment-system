@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JPasswordField;
+import javax.swing.JButton;
 
 public class LogInWindow extends JFrame {
 
@@ -26,6 +27,8 @@ public class LogInWindow extends JFrame {
 	private JLabel lblNewLabel_4;
 	private JLabel lblNewLabel_5;
 	private JPasswordField passwordField;
+	
+	private JButton btnNewButton;
 
 	/**
 	 * Launch the application.
@@ -56,13 +59,18 @@ public class LogInWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		lblNewLabel_5 = new JLabel("New label");
+		btnNewButton = new JButton("\u05D0\u05D9\u05E9\u05D5\u05E8");
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnNewButton.setBounds(139, 188, 89, 30);
+		contentPane.add(btnNewButton);
+		
+		lblNewLabel_5 = new JLabel("");
 		lblNewLabel_5.setForeground(Color.WHITE);
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblNewLabel_5.setBounds(341, 28, 103, 14);
 		contentPane.add(lblNewLabel_5);
 		
-		lblNewLabel_4 = new JLabel("New label");
+		lblNewLabel_4 = new JLabel("");
 		lblNewLabel_4.setForeground(Color.WHITE);
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblNewLabel_4.setBounds(312, 11, 132, 14);
@@ -73,7 +81,7 @@ public class LogInWindow extends JFrame {
 	    contentPane.add(lblNewLabel_3);
 	    
 		passwordField = new JPasswordField();
-		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		passwordField.setBounds(118, 136, 137, 30);
 		contentPane.add(passwordField);
 		
@@ -90,15 +98,16 @@ public class LogInWindow extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textField.setBackground(Color.WHITE);
 		textField.setBounds(118, 95, 137, 30);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setBounds(0, 0, 444, 271);
+		lblNewLabel_1.setBounds(0, 0, 444, 241);
 		contentPane.add(lblNewLabel_1);
+		
 		ImageIcon pic = new ImageIcon(LogInWindow.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel_1.getWidth(),lblNewLabel_1.getHeight(),Image.SCALE_DEFAULT);
@@ -106,11 +115,11 @@ public class LogInWindow extends JFrame {
 		lblNewLabel_1.setIcon(image);
 		
 
-		ImageIcon pict = new ImageIcon(LogInWindow.class.getResource("conimgs/loginimg.jpg"));
-		Image tempoImage = pict.getImage();
-		Image Imagetempo = tempoImage.getScaledInstance(lblNewLabel_3.getWidth(),lblNewLabel_3.getHeight(),Image.SCALE_DEFAULT);
-		ImageIcon img= new ImageIcon(Imagetempo);
-		lblNewLabel_3.setIcon(img);
+		ImageIcon pic1 = new ImageIcon(LogInWindow.class.getResource("conimgs/loginimg.jpg"));
+		Image tempImage1 = pic1.getImage();
+		Image Imagetemp1 = tempImage1.getScaledInstance(lblNewLabel_3.getWidth(),lblNewLabel_3.getHeight(),Image.SCALE_DEFAULT);
+		ImageIcon image1= new ImageIcon(Imagetemp1);
+		lblNewLabel_3.setIcon(image1);
 		
 		
 		
@@ -148,15 +157,4 @@ public class LogInWindow extends JFrame {
 
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

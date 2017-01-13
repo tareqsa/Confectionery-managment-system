@@ -16,6 +16,8 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 public class ConMainActivity extends JFrame {
@@ -56,7 +58,7 @@ public class ConMainActivity extends JFrame {
 	 */
 	public ConMainActivity() {
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1100, 600);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -65,27 +67,70 @@ public class ConMainActivity extends JFrame {
 		contentPane.setLayout(null);
 
 	    btnNewButton_1 = new JButton("\u05DE\u05D5\u05E6\u05E8\u05D9\u05DD");
+	    btnNewButton_1.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent arg0) {
+	    		
+	    		ProductsWindow newFrame = new ProductsWindow();
+	            newFrame.setVisible(true);
+	    	}
+	    });
 		btnNewButton_1.setSize(210, 61);
 		btnNewButton_1.setLocation(874, 122);
 
 	    btnNewButton_2 = new JButton("\u05D4\u05D6\u05DE\u05E0\u05D5\u05EA");
+	    btnNewButton_2.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		
+	    		OrdersWindow newFrame = new OrdersWindow();
+	            newFrame.setVisible(true);  
+	    		
+	    	}
+	    });
 		btnNewButton_2.setSize(210, 61);
 		btnNewButton_2.setLocation(874, 194);
 
 
 		btnNewButton_3 = new JButton("\u05DC\u05E7\u05D5\u05D7\u05D5\u05EA");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ClientsWindow newFrame = new ClientsWindow();
+	            newFrame.setVisible(true);
+			}
+		});
 		btnNewButton_3.setSize(210, 61);
 		btnNewButton_3.setLocation(874, 266);
 
 		btnNewButton_4 = new JButton("\u05DE\u05DC\u05D0\u05D9");
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				InventoryWindow newFrame = new InventoryWindow();
+	            newFrame.setVisible(true);
+			}
+		});
 		btnNewButton_4.setSize(210, 61);
 		btnNewButton_4.setLocation(874, 338);
 
 		btnNewButton_5 = new JButton("\u05DB\u05E1\u05E4\u05D9\u05DD");
+		btnNewButton_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				FinancialWindow newFrame = new FinancialWindow();
+	            newFrame.setVisible(true);
+			}
+		});
 		btnNewButton_5.setSize(210, 61);
 		btnNewButton_5.setLocation(874, 410);
 
 		btnNewButton_6 = new JButton("\u05E1\u05D9\u05D3\u05D5\u05E8");
+		btnNewButton_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				WorkScheduleWindow newFrame = new WorkScheduleWindow();
+	            newFrame.setVisible(true);
+			}
+		});
 		btnNewButton_6.setSize(210, 62);
 		btnNewButton_6.setLocation(874, 482);
 
