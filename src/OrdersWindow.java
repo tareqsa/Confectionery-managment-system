@@ -26,6 +26,8 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.Component;
 import javax.swing.JButton;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 
@@ -45,7 +47,7 @@ public class OrdersWindow extends JFrame {
     private JLabel lblNewLabel_8;
     
     private JButton btnNewButton;
-
+    private JButton btnNewButton_1;
 	
 	private JEditorPane editorPane;
 	
@@ -91,13 +93,18 @@ public class OrdersWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		btnNewButton_1 = new JButton("\u05D0\u05D9\u05E9\u05D5\u05E8");
+		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnNewButton_1.setBounds(149, 179, 107, 23);
+		contentPane.add(btnNewButton_1);
+		
 		btnNewButton = new JButton("\u05E9\u05DC\u05D7 \u05D4\u05D5\u05D3\u05E2\u05D4");
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton.setBounds(157, 145, 107, 23);
+		btnNewButton.setBounds(32, 179, 107, 23);
 		contentPane.add(btnNewButton);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 179, 1074, 381);
+		scrollPane.setBounds(10, 213, 1074, 347);
 		contentPane.add(scrollPane);
 		
 		table1 = new JTable();
@@ -110,7 +117,14 @@ public class OrdersWindow extends JFrame {
 		
 		
 		textField_5 = new JTextField();
-		textField_5.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textField_5.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+					btnNewButton_1.doClick();
+			}
+		});
+		textField_5.setFont(new Font("Tahoma", Font.BOLD, 13));
 		textField_5.setForeground(Color.BLACK);
 		textField_5.setBounds(274, 146, 213, 22);
 		contentPane.add(textField_5);
@@ -123,7 +137,14 @@ public class OrdersWindow extends JFrame {
 		contentPane.add(lblNewLabel_8);
 		
 		textField_4 = new JTextField();
-		textField_4.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textField_4.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+					btnNewButton_1.doClick();
+			}
+		});
+		textField_4.setFont(new Font("Tahoma", Font.BOLD, 13));
 		textField_4.setBounds(635, 138, 109, 22);
 		contentPane.add(textField_4);
 		textField_4.setColumns(10);
@@ -135,7 +156,14 @@ public class OrdersWindow extends JFrame {
 		contentPane.add(lblNewLabel_7);
 		
 		textField_3 = new JTextField();
-		textField_3.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textField_3.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+					btnNewButton_1.doClick();
+			}
+		});
+		textField_3.setFont(new Font("Tahoma", Font.BOLD, 13));
 		textField_3.setBounds(885, 138, 109, 22);
 		contentPane.add(textField_3);
 		textField_3.setColumns(10);
@@ -147,7 +175,14 @@ public class OrdersWindow extends JFrame {
 		contentPane.add(lblNewLabel_6);
 		
 		textField_2 = new JTextField();
-		textField_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textField_2.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+					btnNewButton_1.doClick();
+			}
+		});
+		textField_2.setFont(new Font("Tahoma", Font.BOLD, 13));
 		textField_2.setBounds(378, 105, 109, 22);
 		contentPane.add(textField_2);
 		textField_2.setColumns(10);
@@ -160,7 +195,14 @@ public class OrdersWindow extends JFrame {
 		contentPane.add(lblNewLabel_5);
 		
 		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textField_1.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+					btnNewButton_1.doClick();
+			}
+		});
+		textField_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		textField_1.setBackground(Color.WHITE);
 		textField_1.setForeground(Color.BLACK);
 		textField_1.setBounds(635, 105, 109, 22);
@@ -175,7 +217,14 @@ public class OrdersWindow extends JFrame {
 		contentPane.add(lblNewLabel_4);
 		
 		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+					btnNewButton_1.doClick();
+			}
+		});
+		textField.setFont(new Font("Tahoma", Font.BOLD, 13));
 		textField.setBackground(Color.WHITE);
 		textField.setBounds(885, 105, 109, 22);
 		contentPane.add(textField);

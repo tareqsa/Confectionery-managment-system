@@ -33,9 +33,7 @@ import javax.swing.JButton;
 public class InventoryWindow extends JFrame {
 
 	private JPanel contentPane;
-	
 	private JEditorPane editorPane;
-	
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;

@@ -11,12 +11,25 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.mysql.jdbc.Statement;
+
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
 
 public class LogInWindow extends JFrame {
 
@@ -27,8 +40,8 @@ public class LogInWindow extends JFrame {
 	private JLabel lblNewLabel_4;
 	private JLabel lblNewLabel_5;
 	private JPasswordField passwordField;
-	
 	private JButton btnNewButton;
+	Connection conn0;
 
 	/**
 	 * Launch the application.
@@ -51,7 +64,7 @@ public class LogInWindow extends JFrame {
 	 */
 	public LogInWindow() {
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 270);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.GRAY);
@@ -60,6 +73,48 @@ public class LogInWindow extends JFrame {
 		contentPane.setLayout(null);
 		
 		btnNewButton = new JButton("\u05D0\u05D9\u05E9\u05D5\u05E8");
+		
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String user = textField.getText();
+				String pass = passwordField.getText();
+				boolean ok=false;
+			
+				
+				try{
+					conn0 = Driver.getConnection(); 
+					Statement stat = (Statement) conn0.createStatement();
+				    String loginQuery="Select * FROM login ";
+				    ResultSet rs = stat.executeQuery(loginQuery);
+				    while(rs.next())
+				    {
+				    	if(user.equals(rs.getString("userName"))&& (pass.equals(rs.getString("Password"))))
+				    	{
+				    			ok=true;
+				    			break;  
+				    	}
+				    		
+				    }
+				    if(ok)
+			    	{
+		    			new ConMainActivity();
+		    			dispose();
+			    	}
+				    else
+				    {
+					    JOptionPane.showMessageDialog(null,"Incorrect username or password" ); 
+				    }
+				    stat.close();
+				    conn0.close();
+				    	
+				    }		  
+				catch(SQLException ex){
+				   System.err.println(ex);
+				  }
+				}
+			
+		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnNewButton.setBounds(139, 188, 89, 30);
 		contentPane.add(btnNewButton);
@@ -81,6 +136,13 @@ public class LogInWindow extends JFrame {
 	    contentPane.add(lblNewLabel_3);
 	    
 		passwordField = new JPasswordField();
+		passwordField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+					btnNewButton.doClick();
+			}
+		});
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		passwordField.setBounds(118, 136, 137, 30);
 		contentPane.add(passwordField);
@@ -98,11 +160,19 @@ public class LogInWindow extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		textField = new JTextField();
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+					btnNewButton.doClick();
+			}
+		});
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textField.setBackground(Color.WHITE);
 		textField.setBounds(118, 95, 137, 30);
 		contentPane.add(textField);
 		textField.setColumns(10);
+	
 		
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setBounds(0, 0, 444, 241);
@@ -126,6 +196,7 @@ public class LogInWindow extends JFrame {
 		
 		
 		setclk();
+		
 	}
 	public void setclk()
 	{

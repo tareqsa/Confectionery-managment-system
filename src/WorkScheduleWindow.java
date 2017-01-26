@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
@@ -13,18 +14,25 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import com.toedter.calendar.JCalendar;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import com.toedter.calendar.JDayChooser;
+import com.toedter.calendar.JDateChooser;
+import javax.swing.JTextField;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 public class WorkScheduleWindow extends JFrame {
 
 	private JPanel contentPane;
-	
 	private JEditorPane editorPane;
-
-	
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
-	private JLabel lblNewLabel_3;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -54,9 +62,16 @@ public class WorkScheduleWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		lblNewLabel_3 = new JLabel("");
-		lblNewLabel_3.setBounds(73, 97, 962, 463);
-		contentPane.add(lblNewLabel_3);
+		textField = new JTextField();
+		textField.setBounds(135, 404, 786, 134);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		JCalendar calendar = new JCalendar();
+		calendar.setBounds(125, 70, 799, 323);
+		contentPane.add(calendar);
+		
+		
 		
 		editorPane = new JEditorPane();
 		editorPane.setEditable(false);
@@ -80,7 +95,7 @@ public class WorkScheduleWindow extends JFrame {
 		contentPane.add(lblNewLabel_1);
 		
 		lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(0, 0, 1094, 571);
+		lblNewLabel.setBounds(0, -11, 1094, 571);
 		contentPane.add(lblNewLabel);
 		
 		
@@ -89,12 +104,6 @@ public class WorkScheduleWindow extends JFrame {
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
 		ImageIcon image= new ImageIcon(Imagetemp);
 		lblNewLabel.setIcon(image);
-		
-		ImageIcon pic1 = new ImageIcon(WorkScheduleWindow.class.getResource("conimgs/workschedule.jpg"));
-		Image tempImage1 = pic1.getImage();
-		Image Imagetemp1 = tempImage1.getScaledInstance(lblNewLabel_3.getWidth(),lblNewLabel_3.getHeight(),Image.SCALE_DEFAULT);
-		ImageIcon image1= new ImageIcon(Imagetemp1);
-		lblNewLabel_3.setIcon(image1);
 		
 		
 		setclk();

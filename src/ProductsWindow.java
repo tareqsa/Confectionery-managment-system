@@ -32,6 +32,7 @@ import java.awt.Component;
 public class ProductsWindow extends JFrame {
 
 	private JPanel contentPane;
+	
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;

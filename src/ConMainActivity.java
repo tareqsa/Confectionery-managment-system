@@ -65,6 +65,7 @@ public class ConMainActivity extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setVisible(true);
 
 	    btnNewButton_1 = new JButton("\u05DE\u05D5\u05E6\u05E8\u05D9\u05DD");
 	    btnNewButton_1.addActionListener(new ActionListener() {
