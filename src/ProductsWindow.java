@@ -25,6 +25,7 @@ import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.Component;
+import javax.swing.JButton;
 
 
 
@@ -39,6 +40,10 @@ public class ProductsWindow extends JFrame {
 	private JEditorPane editorPane;
 	private JTable table;
 	Connection conn1;
+	private JLabel lblNewLabel_3;
+	private JLabel lblNewLabel_4;
+	private JButton btnNewButton_2;
+	private JButton btnNewButton_3;
 
 	/**
 	 * Launch the application.
@@ -62,14 +67,46 @@ public class ProductsWindow extends JFrame {
 	public ProductsWindow() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1100, 600);
+		setBounds(100, 50, 1100, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		btnNewButton_3 = new JButton("\u05D4\u05D5\u05E8\u05D3 \u05DB\u05DE\u05D5\u05EA");
+		btnNewButton_3.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnNewButton_3.setBounds(44, 95, 100, 28);
+		contentPane.add(btnNewButton_3);
+		
+		btnNewButton_2 = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05DB\u05DE\u05D5\u05EA");
+		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnNewButton_2.setBounds(165, 95, 100, 28);
+		contentPane.add(btnNewButton_2);
+		
+		JButton btnNewButton_1 = new JButton("\u05DE\u05D7\u05E7 \u05DE\u05D5\u05E6\u05E8");
+		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnNewButton_1.setBounds(850, 95, 100, 28);
+		contentPane.add(btnNewButton_1);
+		
+		JButton btnNewButton = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05DE\u05D5\u05E6\u05E8");
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnNewButton.setBounds(969, 95, 100, 28);
+		contentPane.add(btnNewButton);
+		
+		lblNewLabel_4 = new JLabel("");
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblNewLabel_4.setForeground(Color.WHITE);
+		lblNewLabel_4.setBounds(22, 0, 78, 21);
+		contentPane.add(lblNewLabel_4);
+		
+		lblNewLabel_3 = new JLabel("\u05DE\u05D7\u05D5\u05D1\u05E8: ");
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblNewLabel_3.setForeground(Color.WHITE);
+		lblNewLabel_3.setBounds(108, 0, 63, 21);
+		contentPane.add(lblNewLabel_3);
+		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(44, 100, 1025, 449);
+		scrollPane.setBounds(44, 129, 1025, 420);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -104,7 +141,7 @@ public class ProductsWindow extends JFrame {
 		
 		lblNewLabel = new JLabel("");
 		lblNewLabel.setBackground(Color.WHITE);
-		lblNewLabel.setBounds(20, 0, 1094, 571);
+		lblNewLabel.setBounds(0, 0, 1094, 571);
 		contentPane.add(lblNewLabel);
 		
 		ImageIcon pic = new ImageIcon(ProductsWindow.class.getResource("conimgs/background.jpg"));
@@ -114,7 +151,8 @@ public class ProductsWindow extends JFrame {
 		lblNewLabel.setIcon(image);
 		
 		
-		
+		lblNewLabel_4.setText(ConMainActivity.username);
+
 		
 		setclk();
 		conn1 = Driver.getConnection();

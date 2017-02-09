@@ -36,7 +36,9 @@ public class LogInWindow extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
+	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
 	private JLabel lblNewLabel_5;
 	private JPasswordField passwordField;
@@ -65,12 +67,13 @@ public class LogInWindow extends JFrame {
 	public LogInWindow() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 270);
+		setBounds(450, 200, 450, 270);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
 		
 		btnNewButton = new JButton("\u05D0\u05D9\u05E9\u05D5\u05E8");
 		
@@ -92,7 +95,8 @@ public class LogInWindow extends JFrame {
 				    	if(user.equals(rs.getString("userName"))&& (pass.equals(rs.getString("Password"))))
 				    	{
 				    			ok=true;
-				    			break;  
+				    			ConMainActivity.username = rs.getString("userName");
+				    			break;    
 				    	}
 				    		
 				    }
@@ -103,7 +107,7 @@ public class LogInWindow extends JFrame {
 			    	}
 				    else
 				    {
-					    JOptionPane.showMessageDialog(null,"Incorrect username or password" ); 
+					    JOptionPane.showMessageDialog(null,"שם משתמש או סיסמה שגויים!" ); 
 				    }
 				    stat.close();
 				    conn0.close();
@@ -131,7 +135,7 @@ public class LogInWindow extends JFrame {
 		lblNewLabel_4.setBounds(312, 11, 132, 14);
 		contentPane.add(lblNewLabel_4);
 		
-		JLabel lblNewLabel_3 = new JLabel("");
+		lblNewLabel_3 = new JLabel("");
 	    lblNewLabel_3.setBounds(0, 0, 86, 74);
 	    contentPane.add(lblNewLabel_3);
 	    
@@ -174,7 +178,7 @@ public class LogInWindow extends JFrame {
 		textField.setColumns(10);
 	
 		
-		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setBounds(0, 0, 444, 241);
 		contentPane.add(lblNewLabel_1);
 		

@@ -3,6 +3,8 @@ import java.awt.EventQueue;
 import java.awt.Image;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
@@ -11,15 +13,19 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.JTableHeader;
 
+import com.mysql.jdbc.Statement;
+
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JEditorPane;
 import java.awt.SystemColor;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.swing.UIManager;
 import javax.swing.JTable;
@@ -28,6 +34,8 @@ import java.awt.Component;
 import javax.swing.JButton;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 
@@ -45,6 +53,9 @@ public class OrdersWindow extends JFrame {
     private JLabel lblNewLabel_6;
     private JLabel lblNewLabel_7;
     private JLabel lblNewLabel_8;
+    private JLabel lblNewLabel_9;
+    private JLabel lblNewLabel_10;
+    private JLabel lblNewLabel_11;
     
     private JButton btnNewButton;
     private JButton btnNewButton_1;
@@ -59,9 +70,13 @@ public class OrdersWindow extends JFrame {
 	private JTextField textField_3;
 	private JTextField textField_4;
 	private JTextField textField_5;
+	private JTextField textField_6;
 	
 	private JTable table1;
 	Connection conn2;
+	Connection conn3;
+
+	
 	
 
 
@@ -87,13 +102,79 @@ public class OrdersWindow extends JFrame {
 	public OrdersWindow() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1100, 600);
+		setBounds(100, 50, 1100, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		lblNewLabel_11 = new JLabel("\u05D8\u05DC\u05E4\u05D5\u05DF: ");
+		lblNewLabel_11.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel_11.setForeground(Color.WHITE);
+		lblNewLabel_11.setBounds(504, 137, 109, 22);
+		contentPane.add(lblNewLabel_11);
+		
+		textField_6 = new JTextField();
+		textField_6.addKeyListener(new KeyAdapter() 
+		{
+			@Override
+			public void keyPressed(KeyEvent arg0) 
+			{
+				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+					btnNewButton_1.doClick();
+			
+			}
+		});
+		textField_6.setFont(new Font("Tahoma", Font.BOLD, 13));
+		textField_6.setBounds(378, 139, 109, 22);
+		contentPane.add(textField_6);
+		textField_6.setColumns(10);
+		
+		lblNewLabel_10 = new JLabel("");
+		lblNewLabel_10.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblNewLabel_10.setForeground(Color.WHITE);
+		lblNewLabel_10.setBounds(22, 0, 78, 21);
+		contentPane.add(lblNewLabel_10);
+		
+		lblNewLabel_9 = new JLabel("\u05DE\u05D7\u05D5\u05D1\u05E8: ");
+		lblNewLabel_9.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblNewLabel_9.setForeground(Color.WHITE);
+		lblNewLabel_9.setBounds(108, 0, 63, 21);
+		contentPane.add(lblNewLabel_9);
+		
 		btnNewButton_1 = new JButton("\u05D0\u05D9\u05E9\u05D5\u05E8");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				if(textField.getText().equals("") || textField_1.getText().equals("") || textField_2.getText().equals("") || textField_3.getText().equals("") || textField_4.getText().equals("") || textField_6.getText().equals(""))
+				{
+				    JOptionPane.showMessageDialog(null,"עליך למלא את השדות: שם פרטי, שם משפחה, סוג אירוע, מה הוזמן, עלות וטלפון!" ); 
+
+				}
+				else
+				{
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+					LocalDateTime now = LocalDateTime.now();
+					conn3 = Driver.getConnection();
+					String query = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `תיאור הזמנה`, `עלות`, `טלפון`, `מבצע ההזמנה`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "') ";
+					try {
+						Statement stt = (Statement) conn3.createStatement();
+						stt.executeUpdate(query);
+						Driver.viewTable("orders", table1, conn3);
+
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						textField.setText("");
+						textField_1.setText("");
+						textField_2.setText("");
+						textField_3.setText("");
+						textField_4.setText("");
+						textField_6.setText("");
+				}
+			}
+		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButton_1.setBounds(149, 179, 107, 23);
 		contentPane.add(btnNewButton_1);
@@ -117,29 +198,33 @@ public class OrdersWindow extends JFrame {
 		
 		
 		textField_5 = new JTextField();
-		textField_5.addKeyListener(new KeyAdapter() {
+		textField_5.addKeyListener(new KeyAdapter()
+		{
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void keyPressed(KeyEvent arg0)
+			{
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton_1.doClick();
 			}
 		});
 		textField_5.setFont(new Font("Tahoma", Font.BOLD, 13));
 		textField_5.setForeground(Color.BLACK);
-		textField_5.setBounds(274, 146, 213, 22);
+		textField_5.setBounds(32, 138, 214, 22);
 		contentPane.add(textField_5);
 		textField_5.setColumns(10);
 		
 		lblNewLabel_8 = new JLabel("\u05D3\u05D5\u05D0\"\u05DC:");
 		lblNewLabel_8.setForeground(Color.WHITE);
 		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNewLabel_8.setBounds(508, 143, 94, 22);
+		lblNewLabel_8.setBounds(266, 137, 94, 22);
 		contentPane.add(lblNewLabel_8);
 		
 		textField_4 = new JTextField();
-		textField_4.addKeyListener(new KeyAdapter() {
+		textField_4.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void keyPressed(KeyEvent arg0) 
+			{
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton_1.doClick();
 			}
@@ -152,13 +237,15 @@ public class OrdersWindow extends JFrame {
 		lblNewLabel_7 = new JLabel("\u05E2\u05DC\u05D5\u05EA:");
 		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblNewLabel_7.setForeground(Color.WHITE);
-		lblNewLabel_7.setBounds(754, 143, 109, 22);
+		lblNewLabel_7.setBounds(754, 137, 109, 22);
 		contentPane.add(lblNewLabel_7);
 		
 		textField_3 = new JTextField();
-		textField_3.addKeyListener(new KeyAdapter() {
+		textField_3.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void keyPressed(KeyEvent arg0) 
+			{
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton_1.doClick();
 			}
@@ -175,9 +262,11 @@ public class OrdersWindow extends JFrame {
 		contentPane.add(lblNewLabel_6);
 		
 		textField_2 = new JTextField();
-		textField_2.addKeyListener(new KeyAdapter() {
+		textField_2.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void keyPressed(KeyEvent arg0) 
+			{
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton_1.doClick();
 			}
@@ -195,9 +284,11 @@ public class OrdersWindow extends JFrame {
 		contentPane.add(lblNewLabel_5);
 		
 		textField_1 = new JTextField();
-		textField_1.addKeyListener(new KeyAdapter() {
+		textField_1.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void keyPressed(KeyEvent arg0) 
+			{
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton_1.doClick();
 			}
@@ -217,9 +308,11 @@ public class OrdersWindow extends JFrame {
 		contentPane.add(lblNewLabel_4);
 		
 		textField = new JTextField();
-		textField.addKeyListener(new KeyAdapter() {
+		textField.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void keyPressed(KeyEvent arg0) 
+			{
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton_1.doClick();
 			}
@@ -274,7 +367,8 @@ public class OrdersWindow extends JFrame {
 		
 		
 		
-		
+		lblNewLabel_10.setText(ConMainActivity.username);
+
 		
 		
 		setclk();

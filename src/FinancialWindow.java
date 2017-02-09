@@ -40,6 +40,8 @@ public class FinancialWindow extends JFrame {
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
+	private JLabel lblNewLabel_3;
+	private JLabel lblNewLabel_4;
 
 	/**
 	 * Launch the application.
@@ -63,11 +65,23 @@ public class FinancialWindow extends JFrame {
 	public FinancialWindow() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1100, 600);
+		setBounds(100, 50, 1100, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		lblNewLabel_4 = new JLabel("");
+		lblNewLabel_4.setForeground(Color.WHITE);
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblNewLabel_4.setBounds(22, 0, 78, 21);
+		contentPane.add(lblNewLabel_4);
+		
+		lblNewLabel_3 = new JLabel("\u05DE\u05D7\u05D5\u05D1\u05E8: ");
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblNewLabel_3.setForeground(Color.WHITE);
+		lblNewLabel_3.setBounds(108, 0, 63, 21);
+		contentPane.add(lblNewLabel_3);
 		
 		editorPane = new JEditorPane();
 		editorPane.setEditable(false);
@@ -101,7 +115,8 @@ public class FinancialWindow extends JFrame {
 		lblNewLabel.setIcon(image);
 		
 		
-		
+		lblNewLabel_4.setText(ConMainActivity.username);
+
 		setclk();
 
 	}
