@@ -179,7 +179,7 @@ public class LogInWindow extends JFrame {
 	
 		
 		lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setBounds(0, 0, 444, 241);
+		lblNewLabel_1.setBounds(0, 0, 444, 240);
 		contentPane.add(lblNewLabel_1);
 		
 		ImageIcon pic = new ImageIcon(LogInWindow.class.getResource("conimgs/background.jpg"));

@@ -75,6 +75,7 @@ public class OrdersWindow extends JFrame {
 	private JTable table1;
 	Connection conn2;
 	Connection conn3;
+	private JTextField textField_7;
 
 	
 	
@@ -108,10 +109,42 @@ public class OrdersWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JLabel lblNewLabel_12 = new JLabel("\u05DB\u05DE\u05D5\u05EA \u05D1\u05E7\u05D9\u05DC\u05D5\u05D2\u05E8\u05DD:");
+		lblNewLabel_12.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel_12.setForeground(Color.WHITE);
+		lblNewLabel_12.setBounds(785, 137, 128, 22);
+		contentPane.add(lblNewLabel_12);
+		
+		textField_7 = new JTextField();
+		textField_7.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent arg0)
+			{
+				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+					btnNewButton_1.doClick();
+			}
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{
+				char c = e.getKeyChar();
+				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || (c== KeyEvent.VK_DELETE) ))
+				{
+					e.consume();
+					getToolkit().beep();
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" );
+				}
+			}
+		});
+		textField_7.setFont(new Font("Tahoma", Font.BOLD, 13));
+		textField_7.setBounds(690, 138, 90, 22);
+		contentPane.add(textField_7);
+		textField_7.setColumns(10);
+		
 		lblNewLabel_11 = new JLabel("\u05D8\u05DC\u05E4\u05D5\u05DF: ");
 		lblNewLabel_11.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblNewLabel_11.setForeground(Color.WHITE);
-		lblNewLabel_11.setBounds(504, 137, 109, 22);
+		lblNewLabel_11.setBounds(430, 137, 109, 22);
 		contentPane.add(lblNewLabel_11);
 		
 		textField_6 = new JTextField();
@@ -124,9 +157,21 @@ public class OrdersWindow extends JFrame {
 					btnNewButton_1.doClick();
 			
 			}
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				char c = arg0.getKeyChar();
+				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || (c== KeyEvent.VK_DELETE) ))
+				{
+					arg0.consume();
+					getToolkit().beep();
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" ); 
+
+					
+				}
+			}
 		});
 		textField_6.setFont(new Font("Tahoma", Font.BOLD, 13));
-		textField_6.setBounds(378, 139, 109, 22);
+		textField_6.setBounds(340, 139, 90, 22);
 		contentPane.add(textField_6);
 		textField_6.setColumns(10);
 		
@@ -146,17 +191,17 @@ public class OrdersWindow extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 			{
-				if(textField.getText().equals("") || textField_1.getText().equals("") || textField_2.getText().equals("") || textField_3.getText().equals("") || textField_4.getText().equals("") || textField_6.getText().equals(""))
+				if(textField.getText().equals("") || textField_1.getText().equals("") || textField_2.getText().equals("") || textField_3.getText().equals("") || textField_4.getText().equals("") || textField_6.getText().equals("") || textField_7.getText().equals(""))
 				{
-				    JOptionPane.showMessageDialog(null,"עליך למלא את השדות: שם פרטי, שם משפחה, סוג אירוע, מה הוזמן, עלות וטלפון!" ); 
-
+				    JOptionPane.showMessageDialog(null,"עליך למלא את השדות: שם פרטי, שם משפחה, סוג אירוע, מה הוזמן, כמות, עלות וטלפון!" ); 
+				    
 				}
 				else
 				{
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
 					conn3 = Driver.getConnection();
-					String query = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `תיאור הזמנה`, `עלות`, `טלפון`, `מבצע ההזמנה`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "') ";
+					String query = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `מה הוזמן`, `כמות בקילוגרם`,`עלות`, `טלפון`, `מבצע ההזמנה`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_7.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "') ";
 					try {
 						Statement stt = (Statement) conn3.createStatement();
 						stt.executeUpdate(query);
@@ -172,6 +217,8 @@ public class OrdersWindow extends JFrame {
 						textField_3.setText("");
 						textField_4.setText("");
 						textField_6.setText("");
+						textField_7.setText("");
+
 				}
 			}
 		});
@@ -189,10 +236,11 @@ public class OrdersWindow extends JFrame {
 		contentPane.add(scrollPane);
 		
 		table1 = new JTable();
-		table1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		table1.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		table1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		JTableHeader Theader = table1.getTableHeader();
         Theader.setBackground(Color.pink);
+        Theader.setFont(new Font("Tahoma", Font.BOLD, 12));
         
         scrollPane.setViewportView(table1);
 		
@@ -228,16 +276,27 @@ public class OrdersWindow extends JFrame {
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton_1.doClick();
 			}
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				char c = e.getKeyChar();
+				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || (c== KeyEvent.VK_DELETE) ))
+				{
+					e.consume();
+					getToolkit().beep();
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" );
+				}
+			}
 		});
 		textField_4.setFont(new Font("Tahoma", Font.BOLD, 13));
-		textField_4.setBounds(635, 138, 109, 22);
+		textField_4.setBounds(500, 138, 90, 22);
 		contentPane.add(textField_4);
 		textField_4.setColumns(10);
 		
 		lblNewLabel_7 = new JLabel("\u05E2\u05DC\u05D5\u05EA:");
 		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblNewLabel_7.setForeground(Color.WHITE);
-		lblNewLabel_7.setBounds(754, 137, 109, 22);
+		lblNewLabel_7.setBounds(595, 137, 109, 22);
 		contentPane.add(lblNewLabel_7);
 		
 		textField_3 = new JTextField();
@@ -249,16 +308,27 @@ public class OrdersWindow extends JFrame {
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton_1.doClick();
 			}
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				char c = e.getKeyChar();
+				if(Character.isDigit(c))
+				{
+					e.consume();
+					getToolkit().beep();
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
+				}
+			}
 		});
 		textField_3.setFont(new Font("Tahoma", Font.BOLD, 13));
-		textField_3.setBounds(885, 138, 109, 22);
+		textField_3.setBounds(920, 138, 90, 22);
 		contentPane.add(textField_3);
 		textField_3.setColumns(10);
 		
 		lblNewLabel_6 = new JLabel("\u05DE\u05D4 \u05D4\u05D5\u05D6\u05DE\u05DF:");
 		lblNewLabel_6.setForeground(Color.WHITE);
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNewLabel_6.setBounds(1004, 137, 80, 22);
+		lblNewLabel_6.setBounds(1015, 137, 80, 22);
 		contentPane.add(lblNewLabel_6);
 		
 		textField_2 = new JTextField();
@@ -270,9 +340,20 @@ public class OrdersWindow extends JFrame {
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton_1.doClick();
 			}
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				char c = e.getKeyChar();
+				if(Character.isDigit(c))
+				{
+					e.consume();
+					getToolkit().beep();
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
+				}
+			}
 		});
 		textField_2.setFont(new Font("Tahoma", Font.BOLD, 13));
-		textField_2.setBounds(378, 105, 109, 22);
+		textField_2.setBounds(500, 105, 90, 22);
 		contentPane.add(textField_2);
 		textField_2.setColumns(10);
 		
@@ -280,7 +361,7 @@ public class OrdersWindow extends JFrame {
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblNewLabel_5.setForeground(Color.WHITE);
 		lblNewLabel_5.setBackground(Color.WHITE);
-		lblNewLabel_5.setBounds(508, 104, 94, 22);
+		lblNewLabel_5.setBounds(595, 104, 94, 22);
 		contentPane.add(lblNewLabel_5);
 		
 		textField_1 = new JTextField();
@@ -292,11 +373,22 @@ public class OrdersWindow extends JFrame {
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton_1.doClick();
 			}
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				char c = e.getKeyChar();
+				if(Character.isDigit(c))
+				{
+					e.consume();
+					getToolkit().beep();
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
+				}
+			}
 		});
 		textField_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		textField_1.setBackground(Color.WHITE);
 		textField_1.setForeground(Color.BLACK);
-		textField_1.setBounds(635, 105, 109, 22);
+		textField_1.setBounds(690, 105, 90, 22);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
 		
@@ -304,7 +396,7 @@ public class OrdersWindow extends JFrame {
 		lblNewLabel_4.setForeground(Color.WHITE);
 		lblNewLabel_4.setBackground(Color.WHITE);
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNewLabel_4.setBounds(754, 104, 109, 22);
+		lblNewLabel_4.setBounds(785, 104, 109, 22);
 		contentPane.add(lblNewLabel_4);
 		
 		textField = new JTextField();
@@ -316,17 +408,28 @@ public class OrdersWindow extends JFrame {
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton_1.doClick();
 			}
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				char c = e.getKeyChar();
+				if(Character.isDigit(c))
+				{
+					e.consume();
+					getToolkit().beep();
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
+				}
+			}
 		});
 		textField.setFont(new Font("Tahoma", Font.BOLD, 13));
 		textField.setBackground(Color.WHITE);
-		textField.setBounds(885, 105, 109, 22);
+		textField.setBounds(920, 105, 90, 22);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
 		lblNewLabel_3 = new JLabel("\u05E9\u05DD \u05E4\u05E8\u05D8\u05D9:");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblNewLabel_3.setForeground(Color.WHITE);
-		lblNewLabel_3.setBounds(1004, 104, 80, 22);
+		lblNewLabel_3.setBounds(1015, 104, 80, 22);
 		contentPane.add(lblNewLabel_3);
 		
 		

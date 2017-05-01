@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
 import java.awt.Color;
@@ -92,11 +93,14 @@ public class InventoryWindow extends JFrame {
 		scrollPane.setBounds(10, 125, 1074, 435);
 		contentPane.add(scrollPane);
 		
+
 		table = new JTable();
 		table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		scrollPane.setViewportView(table);
 		JTableHeader Theader = table.getTableHeader();
         Theader.setBackground(Color.pink);
+        Theader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 13));

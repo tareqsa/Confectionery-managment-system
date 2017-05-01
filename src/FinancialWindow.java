@@ -105,6 +105,7 @@ public class FinancialWindow extends JFrame {
 		contentPane.add(lblNewLabel_1);
 		
 		lblNewLabel = new JLabel("");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lblNewLabel.setBounds(0, 0, 1094, 571);
 		contentPane.add(lblNewLabel);
 		
