@@ -36,6 +36,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
 
 
@@ -77,13 +78,11 @@ public class OrdersWindow extends JFrame {
 	Connection conn3;
 	private JTextField textField_7;
 
-	
-	
-
 
 	/**
 	 * Launch the application.
 	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -101,6 +100,8 @@ public class OrdersWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public OrdersWindow() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(OrdersWindow.class.getResource("/conimgs/title_icon.png")));
+		setTitle("\u05D4\u05D6\u05DE\u05E0\u05D5\u05EA");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 50, 1100, 600);
@@ -128,7 +129,7 @@ public class OrdersWindow extends JFrame {
 			public void keyTyped(KeyEvent e) 
 			{
 				char c = e.getKeyChar();
-				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || (c== KeyEvent.VK_DELETE) ))
+				if(!(Character.isDigit(c) || c==KeyEvent.VK_BACK_SPACE || c== KeyEvent.VK_DELETE || c==KeyEvent.VK_ENTER ))
 				{
 					e.consume();
 					getToolkit().beep();
@@ -160,7 +161,7 @@ public class OrdersWindow extends JFrame {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
 				char c = arg0.getKeyChar();
-				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || (c== KeyEvent.VK_DELETE) ))
+				if(!(Character.isDigit(c) || c==KeyEvent.VK_BACK_SPACE || c==KeyEvent.VK_DELETE || c==KeyEvent.VK_ENTER  ))
 				{
 					arg0.consume();
 					getToolkit().beep();
@@ -198,6 +199,7 @@ public class OrdersWindow extends JFrame {
 				}
 				else
 				{
+					FinancialWindow.incomingPass = textField_4.getText();
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
 					conn3 = Driver.getConnection();
@@ -208,7 +210,6 @@ public class OrdersWindow extends JFrame {
 						Driver.viewTable("orders", table1, conn3);
 
 						} catch (SQLException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						textField.setText("");
@@ -280,7 +281,7 @@ public class OrdersWindow extends JFrame {
 			public void keyTyped(KeyEvent e)
 			{
 				char c = e.getKeyChar();
-				if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACK_SPACE) || (c== KeyEvent.VK_DELETE) ))
+				if(!(Character.isDigit(c) || c==KeyEvent.VK_BACK_SPACE || c== KeyEvent.VK_DELETE || c==KeyEvent.VK_ENTER ))
 				{
 					e.consume();
 					getToolkit().beep();

@@ -38,6 +38,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
 
 
@@ -85,6 +86,8 @@ public class ClientsWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public ClientsWindow() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ClientsWindow.class.getResource("/conimgs/title_icon.png")));
+		setTitle("\u05DC\u05E7\u05D5\u05D7\u05D5\u05EA");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 50, 1100, 600);

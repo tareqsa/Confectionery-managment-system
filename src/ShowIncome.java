@@ -1,50 +1,51 @@
+
+
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.Image;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 import javax.swing.ImageIcon;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.JTableHeader;
+
+import com.mysql.jdbc.Connection;
+
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import com.toedter.calendar.JCalendar;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import com.toedter.calendar.JDayChooser;
-import com.toedter.calendar.JDateChooser;
-import javax.swing.JTextField;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import java.awt.Toolkit;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Font;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
-public class WorkScheduleWindow extends JFrame {
+public class ShowIncome extends JFrame {
 
+	
 	private JPanel contentPane;
-	private JEditorPane editorPane;
+
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
-	private JTextField textField;
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
-
-	/**
-	 * Launch the application.
-	 */
+	
+	private JTable table;
+	Connection conn6;
+	
+	
+	
+	
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					WorkScheduleWindow frame = new WorkScheduleWindow();
+					ShowIncome frame = new ShowIncome();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -56,21 +57,34 @@ public class WorkScheduleWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public WorkScheduleWindow() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(WorkScheduleWindow.class.getResource("/conimgs/title_icon.png")));
-		setTitle("\u05E1\u05D9\u05D3\u05D5\u05E8 \u05E2\u05D1\u05D5\u05D3\u05D4");
-		setResizable(false);
+	public ShowIncome() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ShowIncome.class.getResource("/conimgs/title_icon.png")));
+		setTitle("\u05D4\u05DB\u05E0\u05E1\u05D5\u05EA");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 50, 1100, 600);
+		setBounds(300, 30, 800, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(21, 119, 742, 431);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		scrollPane.setViewportView(table);
+		JTableHeader Theader = table.getTableHeader();
+		Theader.setBackground(Color.pink);
+        Theader.setFont(new Font("Tahoma", Font.BOLD, 12));
+		//scrollPane.setColumnHeaderView(table);
+		
+		
 		lblNewLabel_4 = new JLabel("");
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblNewLabel_4.setForeground(Color.WHITE);
-		lblNewLabel_4.setBounds(22, 0, 78, 21);
+		lblNewLabel_4.setBounds(10, 0, 90, 21);
 		contentPane.add(lblNewLabel_4);
 		
 		lblNewLabel_3 = new JLabel("\u05DE\u05D7\u05D5\u05D1\u05E8: ");
@@ -79,53 +93,38 @@ public class WorkScheduleWindow extends JFrame {
 		lblNewLabel_3.setBounds(108, 0, 63, 21);
 		contentPane.add(lblNewLabel_3);
 		
-		textField = new JTextField();
-		textField.setBounds(135, 404, 786, 134);
-		contentPane.add(textField);
-		textField.setColumns(10);
-		
-		JCalendar calendar = new JCalendar();
-		calendar.setBounds(125, 70, 799, 323);
-		contentPane.add(calendar);
-		
-		
-		
-		editorPane = new JEditorPane();
-		editorPane.setEditable(false);
-		editorPane.setBackground(Color.WHITE);
-		editorPane.setForeground(Color.BLACK);
-		editorPane.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 45));
-		editorPane.setText("\u05E1\u05D9\u05D3\u05D5\u05E8 \u05E2\u05D1\u05D5\u05D3\u05D4");
-		editorPane.setBounds(416, 0, 297, 59);
-		contentPane.add(editorPane);
-		
 		lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblNewLabel_2.setForeground(Color.WHITE);
-		lblNewLabel_2.setBounds(984, 28, 120, 16);
+		lblNewLabel_2.setBounds(678, 32, 140, 25);
 		contentPane.add(lblNewLabel_2);
 		
 		lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblNewLabel_1.setForeground(Color.WHITE);
-		lblNewLabel_1.setBounds(954, 11, 150, 16);
+		lblNewLabel_1.setBounds(648, 11, 146, 25);
 		contentPane.add(lblNewLabel_1);
 		
-		lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(0, 0, 1094, 571);
+		lblNewLabel = new JLabel("");
+		lblNewLabel.setBounds(0, 0, 784, 561);
 		contentPane.add(lblNewLabel);
 		
-		
-		ImageIcon pic = new ImageIcon(WorkScheduleWindow.class.getResource("conimgs/background.jpg"));
+		ImageIcon pic = new ImageIcon(ShowIncome.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
 		ImageIcon image= new ImageIcon(Imagetemp);
 		lblNewLabel.setIcon(image);
 		
+		
 		lblNewLabel_4.setText(ConMainActivity.username);
-
+		
+		conn6 = (Connection) Driver.getConnection();
+		Driver.viewTable("income", table, conn6);
+		
+		
 		setclk();
-
+		
+		
 	}
 	public void setclk()
 	{
@@ -157,4 +156,7 @@ public class WorkScheduleWindow extends JFrame {
 
 
 	}
+	
+	
+	
 }

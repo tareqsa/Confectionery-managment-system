@@ -26,6 +26,7 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.Component;
 import javax.swing.JButton;
+import java.awt.Toolkit;
 
 
 
@@ -65,6 +66,8 @@ public class ProductsWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public ProductsWindow() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ProductsWindow.class.getResource("/conimgs/title_icon.png")));
+		setTitle("\u05DE\u05D5\u05E6\u05E8\u05D9\u05DD");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 50, 1100, 600);

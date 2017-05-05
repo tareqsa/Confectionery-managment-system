@@ -28,24 +28,49 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.Component;
 import javax.swing.JButton;
+import com.toedter.calendar.JMonthChooser;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
 
 
 
 
 public class FinancialWindow extends JFrame {
+	
+	public static String incomingPass ="";
+	//int tempIncoming;
+	//int allIncoming = 0;
+	//String incomingSum;
 
 	private JPanel contentPane;
+	
 	private JEditorPane editorPane;
+	
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
-
-	/**
-	 * Launch the application.
-	 */
+	private JLabel lblNewLabel_6;
+	private JLabel lblNewLabel_7;
+	private JLabel lblNewLabel_8;
+	private JLabel lblNewLabel_9;
+	
+	private JButton btnNewButton;
+	private JButton btnNewButton_1;
+	private JButton btnNewButton_2;
+	private JButton btnNewButton_3;
+	private JButton btnNewButton_4;
+	private JButton btnNewButton_5;
+	
+	
+	
+	
+	
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -63,6 +88,8 @@ public class FinancialWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public FinancialWindow() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(FinancialWindow.class.getResource("/conimgs/title_icon.png")));
+		setTitle("\u05DB\u05E1\u05E4\u05D9\u05DD");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 50, 1100, 600);
@@ -70,6 +97,83 @@ public class FinancialWindow extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		btnNewButton = new JButton("\u05DC\u05E6\u05E4\u05D9\u05D9\u05D4 \u05D1\u05D4\u05DB\u05E0\u05E1\u05D5\u05EA");
+		btnNewButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				ShowIncome Fnew = new ShowIncome();
+			    Fnew.setVisible(true);
+			}
+		});
+		
+		btnNewButton_5 = new JButton("\u05D0\u05D9\u05E4\u05D5\u05E1 \u05D4\u05DB\u05E0\u05E1\u05D5\u05EA");
+		btnNewButton_5.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnNewButton_5.setBounds(503, 363, 150, 20);
+		contentPane.add(btnNewButton_5);
+		
+		btnNewButton_4 = new JButton("\u05D4\u05D6\u05E0\u05D4 \u05D9\u05D3\u05E0\u05D9\u05EA");
+		btnNewButton_4.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnNewButton_4.setBounds(503, 331, 150, 20);
+		contentPane.add(btnNewButton_4);
+		
+		btnNewButton_3 = new JButton("\u05DC\u05E6\u05E4\u05D9\u05D9\u05D4 \u05D1\u05D4\u05D5\u05E6\u05D0\u05D5\u05EA");
+		btnNewButton_3.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				ShowExpenses Fnew = new ShowExpenses();
+			    Fnew.setVisible(true);
+			}
+		});
+		btnNewButton_3.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnNewButton_3.setBounds(503, 300, 150, 20);
+		contentPane.add(btnNewButton_3);
+		
+		lblNewLabel_9 = new JLabel("New label");
+		lblNewLabel_9.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblNewLabel_9.setForeground(Color.WHITE);
+		lblNewLabel_9.setBounds(732, 378, 208, 35);
+		contentPane.add(lblNewLabel_9);
+		
+		lblNewLabel_8 = new JLabel("New label");
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblNewLabel_8.setForeground(Color.WHITE);
+		lblNewLabel_8.setBounds(732, 228, 208, 35);
+		contentPane.add(lblNewLabel_8);
+		
+		btnNewButton_2 = new JButton("\u05D0\u05D9\u05E4\u05D5\u05E1 \u05D4\u05DB\u05E0\u05E1\u05D5\u05EA");
+		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnNewButton_2.setBounds(503, 213, 150, 20);
+		contentPane.add(btnNewButton_2);
+		
+		btnNewButton_1 = new JButton("\u05D4\u05D6\u05E0\u05D4 \u05D9\u05D3\u05E0\u05D9\u05EA");
+		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnNewButton_1.setBounds(503, 182, 150, 20);
+		contentPane.add(btnNewButton_1);
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnNewButton.setBounds(503, 151, 150, 20);
+		contentPane.add(btnNewButton);
+		
+		lblNewLabel_7 = new JLabel("");
+		lblNewLabel_7.setForeground(Color.WHITE);
+		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblNewLabel_7.setBounds(676, 166, 174, 27);
+		contentPane.add(lblNewLabel_7);
+		
+		lblNewLabel_6 = new JLabel("\u05D4\u05D5\u05E6\u05D0\u05D5\u05EA \u05D7\u05D5\u05D3\u05E9\u05D9\u05D5\u05EA: ");
+		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 24));
+		lblNewLabel_6.setForeground(Color.WHITE);
+		lblNewLabel_6.setBounds(860, 300, 256, 59);
+		contentPane.add(lblNewLabel_6);
+		
+		
+		JLabel lblNewLabel_5 = new JLabel("\u05D4\u05DB\u05E0\u05E1\u05D5\u05EA \u05D7\u05D5\u05D3\u05E9\u05D9\u05D5\u05EA: ");
+		lblNewLabel_5.setForeground(Color.WHITE);
+		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 24));
+		lblNewLabel_5.setBounds(860, 151, 256, 59);
+		contentPane.add(lblNewLabel_5);
 		
 		lblNewLabel_4 = new JLabel("");
 		lblNewLabel_4.setForeground(Color.WHITE);
@@ -117,6 +221,11 @@ public class FinancialWindow extends JFrame {
 		
 		
 		lblNewLabel_4.setText(ConMainActivity.username);
+		
+		//tempIncoming = Integer.parseInt(incomingPass);
+		//allIncoming =+ tempIncoming;
+		//incomingSum = Integer.toString(allIncoming);
+		lblNewLabel_7.setText(incomingPass);
 
 		setclk();
 

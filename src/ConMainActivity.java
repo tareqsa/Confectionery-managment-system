@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
 
 public class ConMainActivity extends JFrame {
@@ -61,6 +62,8 @@ public class ConMainActivity extends JFrame {
 	 * Create the frame.
 	 */
 	public ConMainActivity() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ConMainActivity.class.getResource("/conimgs/title_icon.png")));
+		setTitle("\u05E8\u05D0\u05E9\u05D9");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 50, 578, 374);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);

@@ -29,6 +29,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.Toolkit;
 
 
 public class LogInWindow extends JFrame {
@@ -62,9 +63,11 @@ public class LogInWindow extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the frame
 	 */
 	public LogInWindow() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(LogInWindow.class.getResource("/conimgs/title_icon.png")));
+		setTitle("\u05DB\u05E0\u05D9\u05E1\u05D4 \u05DC\u05DE\u05E2\u05E8\u05DB\u05EA");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(450, 200, 450, 270);
@@ -136,7 +139,7 @@ public class LogInWindow extends JFrame {
 		contentPane.add(lblNewLabel_4);
 		
 		lblNewLabel_3 = new JLabel("");
-	    lblNewLabel_3.setBounds(0, 0, 86, 74);
+	    lblNewLabel_3.setBounds(0, 11, 86, 74);
 	    contentPane.add(lblNewLabel_3);
 	    
 		passwordField = new JPasswordField();
