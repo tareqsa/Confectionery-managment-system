@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
 import java.awt.Color;
@@ -16,6 +17,8 @@ import java.awt.ComponentOrientation;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import java.awt.Font;
 import javax.swing.JEditorPane;
 import java.awt.SystemColor;
@@ -40,11 +43,12 @@ public class ProductsWindow extends JFrame {
 	private JLabel lblNewLabel_2;
 	private JEditorPane editorPane;
 	private JTable table;
-	Connection conn1;
+
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
-	private JButton btnNewButton_2;
-	private JButton btnNewButton_3;
+	
+	Connection conn1;
+
 
 	/**
 	 * Launch the application.
@@ -75,16 +79,6 @@ public class ProductsWindow extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		btnNewButton_3 = new JButton("\u05D4\u05D5\u05E8\u05D3 \u05DB\u05DE\u05D5\u05EA");
-		btnNewButton_3.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton_3.setBounds(44, 95, 100, 28);
-		contentPane.add(btnNewButton_3);
-		
-		btnNewButton_2 = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05DB\u05DE\u05D5\u05EA");
-		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton_2.setBounds(165, 95, 100, 28);
-		contentPane.add(btnNewButton_2);
 		
 		JButton btnNewButton_1 = new JButton("\u05DE\u05D7\u05E7 \u05DE\u05D5\u05E6\u05E8");
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -117,8 +111,7 @@ public class ProductsWindow extends JFrame {
 		table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		JTableHeader Theader = table.getTableHeader();
         Theader.setBackground(Color.pink);
-		
-
+          
 		scrollPane.setViewportView(table);
 		
 		editorPane = new JEditorPane();

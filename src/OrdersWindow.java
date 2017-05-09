@@ -189,7 +189,8 @@ public class OrdersWindow extends JFrame {
 		contentPane.add(lblNewLabel_9);
 		
 		btnNewButton_1 = new JButton("\u05D0\u05D9\u05E9\u05D5\u05E8");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		btnNewButton_1.addActionListener(new ActionListener() 
+		{
 			public void actionPerformed(ActionEvent arg0)
 			{
 				if(textField.getText().equals("") || textField_1.getText().equals("") || textField_2.getText().equals("") || textField_3.getText().equals("") || textField_4.getText().equals("") || textField_6.getText().equals("") || textField_7.getText().equals(""))
@@ -199,7 +200,7 @@ public class OrdersWindow extends JFrame {
 				}
 				else
 				{
-					FinancialWindow.incomingPass = textField_4.getText();
+					//FinancialWindow.incomingPass = Double.parseDouble(textField_4.getText());
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
 					conn3 = Driver.getConnection();
@@ -212,6 +213,7 @@ public class OrdersWindow extends JFrame {
 						} catch (SQLException e) {
 							e.printStackTrace();
 						}
+				
 						textField.setText("");
 						textField_1.setText("");
 						textField_2.setText("");

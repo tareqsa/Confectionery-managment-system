@@ -11,9 +11,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.JTableHeader;
 
 import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
+
+import net.proteanit.sql.DbUtils;
 
 import javax.swing.JLabel;
 import java.awt.Toolkit;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -58,6 +63,7 @@ public class ShowIncome extends JFrame {
 	 * Create the frame.
 	 */
 	public ShowIncome() {
+		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ShowIncome.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05D4\u05DB\u05E0\u05E1\u05D5\u05EA");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -118,8 +124,19 @@ public class ShowIncome extends JFrame {
 		
 		lblNewLabel_4.setText(ConMainActivity.username);
 		
-		conn6 = (Connection) Driver.getConnection();
-		Driver.viewTable("income", table, conn6);
+		try 
+		{
+			conn6 = (Connection) Driver.getConnection();
+			Statement stt1 = (Statement) conn6.createStatement();
+			String query = "SELECT `מספר הזמנה`, `תאריך ושעה`, `עלות`  FROM orders";
+			ResultSet rset = stt1.executeQuery(query);
+			table.setModel(DbUtils.resultSetToTableModel(rset));
+			
+		} catch (SQLException e) {
+			
+			   e.printStackTrace();
+	    }
+		
 		
 		
 		setclk();

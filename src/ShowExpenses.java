@@ -60,6 +60,7 @@ public class ShowExpenses extends JFrame {
 	 * Create the frame.
 	 */
 	public ShowExpenses() {
+		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ShowExpenses.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05D4\u05D5\u05E6\u05D0\u05D5\u05EA");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

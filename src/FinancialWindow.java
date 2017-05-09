@@ -3,6 +3,8 @@ import java.awt.EventQueue;
 import java.awt.Image;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
@@ -21,14 +23,21 @@ import javax.swing.JEditorPane;
 import java.awt.SystemColor;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.Component;
 import javax.swing.JButton;
+
+import com.mysql.jdbc.Statement;
 import com.toedter.calendar.JMonthChooser;
+
+import net.proteanit.sql.DbUtils;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -40,11 +49,8 @@ import java.awt.Toolkit;
 
 public class FinancialWindow extends JFrame {
 	
-	public static String incomingPass ="";
-	//int tempIncoming;
-	//int allIncoming = 0;
-	//String incomingSum;
-
+	//public static double incomingPass;
+	
 	private JPanel contentPane;
 	
 	private JEditorPane editorPane;
@@ -66,8 +72,7 @@ public class FinancialWindow extends JFrame {
 	private JButton btnNewButton_4;
 	private JButton btnNewButton_5;
 	
-	
-	
+	Connection conn9;
 	
 	
 	
@@ -103,12 +108,12 @@ public class FinancialWindow extends JFrame {
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				ShowIncome Fnew = new ShowIncome();
-			    Fnew.setVisible(true);
+					ShowIncome Fnew = new ShowIncome();
+					Fnew.setVisible(true);
 			}
 		});
 		
-		btnNewButton_5 = new JButton("\u05D0\u05D9\u05E4\u05D5\u05E1 \u05D4\u05DB\u05E0\u05E1\u05D5\u05EA");
+		btnNewButton_5 = new JButton("\u05D0\u05D9\u05E4\u05D5\u05E1 \u05D4\u05D5\u05E6\u05D0\u05D5\u05EA");
 		btnNewButton_5.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnNewButton_5.setBounds(503, 363, 150, 20);
 		contentPane.add(btnNewButton_5);
@@ -143,12 +148,37 @@ public class FinancialWindow extends JFrame {
 		lblNewLabel_8.setBounds(732, 228, 208, 35);
 		contentPane.add(lblNewLabel_8);
 		
+		try 
+		{
+			conn9 = (Connection) Driver.getConnection();
+			Statement st = (Statement) conn9.createStatement();
+			String query = "SELECT SUM(`עלות`) FROM orders";
+			ResultSet rset = st.executeQuery(query);
+			
+			rset.next();
+		    String sum = rset.getString(1);
+            
+            lblNewLabel_8.setText(sum);
+			
+		} catch (SQLException e) {
+			
+			   e.printStackTrace();
+	    }
+		
 		btnNewButton_2 = new JButton("\u05D0\u05D9\u05E4\u05D5\u05E1 \u05D4\u05DB\u05E0\u05E1\u05D5\u05EA");
 		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnNewButton_2.setBounds(503, 213, 150, 20);
 		contentPane.add(btnNewButton_2);
 		
-		btnNewButton_1 = new JButton("\u05D4\u05D6\u05E0\u05D4 \u05D9\u05D3\u05E0\u05D9\u05EA");
+		btnNewButton_1 = new JButton("\u05D1\u05D7\u05D9\u05E8\u05EA \u05EA\u05E7\u05D5\u05E4\u05D4");
+		btnNewButton_1.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				ShowPeriod Fnew = new ShowPeriod();
+			    Fnew.setVisible(true);	
+			}
+		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnNewButton_1.setBounds(503, 182, 150, 20);
 		contentPane.add(btnNewButton_1);
@@ -225,7 +255,7 @@ public class FinancialWindow extends JFrame {
 		//tempIncoming = Integer.parseInt(incomingPass);
 		//allIncoming =+ tempIncoming;
 		//incomingSum = Integer.toString(allIncoming);
-		lblNewLabel_7.setText(incomingPass);
+		//lblNewLabel_8.setText(Double.toString(incomingPass));
 
 		setclk();
 
