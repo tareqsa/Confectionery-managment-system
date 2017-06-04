@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.Point;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
 import com.mysql.jdbc.Statement;
@@ -39,6 +41,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 
@@ -53,6 +57,7 @@ public class ClientsWindow extends JFrame {
 	private JLabel lblNewLabel_2;
 	
 	private JButton btnNewButton;
+	private JButton btnNewButton_1;
 
 	
 	
@@ -64,7 +69,12 @@ public class ClientsWindow extends JFrame {
 	private JTable table;
 	private JScrollPane scrollPane;
 	
-	Connection conn4 ;
+	Connection conn1 ;
+	
+	public static String firstName;
+	public static String lastName;
+	public static String eventTyp;
+	public static String phoneNum;
 
 	/**
 	 * Launch the application.
@@ -89,6 +99,7 @@ public class ClientsWindow extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ClientsWindow.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05DC\u05E7\u05D5\u05D7\u05D5\u05EA");
 		setResizable(false);
+		//setVisible(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 50, 1100, 600);
 		contentPane = new JPanel();
@@ -117,15 +128,68 @@ public class ClientsWindow extends JFrame {
 		    }
 		});
 		
+		btnNewButton_1 = new JButton("\u05D4\u05D6\u05DE\u05E0\u05D4 \u05D7\u05D3\u05E9\u05D4");
+		btnNewButton_1.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				new OrdersWindow();
+				dispose();
+			}
+		});
+		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnNewButton_1.setBounds(33, 115, 114, 23);
+		contentPane.add(btnNewButton_1);
+		
 		scrollPane = new JScrollPane();
+		
 		scrollPane.setBounds(33, 193, 1050, 367);
 		contentPane.add(scrollPane);
 		
-		table = new JTable();
+		table = new JTable()
+		{
+			@Override
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;
+			};
+			
+		};
+				
+		table.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{
+				JTable table1 =(JTable) e.getSource();
+		        Point p = e.getPoint();
+		        int row = table1.rowAtPoint(p);
+		        if (e.getClickCount() == 2) 
+		        {
+		        	firstName = table1.getModel().getValueAt(row, 2).toString();
+		        	lastName = table1.getModel().getValueAt(row, 3).toString();
+		        	eventTyp = table1.getModel().getValueAt(row, 4).toString();
+		        	phoneNum = table1.getModel().getValueAt(row, 8).toString();
+		        	
+		        	new OrdersWindow();
+		        	
+		        	OrdersWindow.textField.setText(firstName);
+		        	OrdersWindow.textField_1.setText(lastName);
+		        	OrdersWindow.textField_2.setText(eventTyp);
+		        	OrdersWindow.textField_6.setText(phoneNum);
+		        	
+		        	dispose();
+		        	
+		        	
+		        }
+			}
+		});
+		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		scrollPane.setViewportView(table);
 		JTableHeader Theader = table.getTableHeader();
         Theader.setBackground(Color.pink);
+        Theader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		btnNewButton = new JButton("\u05D7\u05E4\u05E9");
 		btnNewButton.addActionListener(new ActionListener() 
@@ -136,12 +200,26 @@ public class ClientsWindow extends JFrame {
 				String search = textField.getText();
 				try
 				{
-					conn4 = Driver.getConnection();
-					Statement st = (Statement) conn4.createStatement();
+					conn1 = Driver.getConnection();
+					Statement st = (Statement) conn1.createStatement();
 				    String searchQuery="SELECT * FROM `orders` WHERE `שם פרטי` = '"+search+"' OR `שם משפחה` = '"+search+"' OR `מבצע ההזמנה` = '"+search+"' OR `טלפון` = '"+search+"'  ";
 
 				    ResultSet res = st.executeQuery(searchQuery);
 				    table.setModel(DbUtils.resultSetToTableModel(res));
+					
+					DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+					centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+					table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+					table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+					table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+					table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+					table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+					table.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
+					table.getColumnModel().getColumn(6).setCellRenderer(centerRenderr);
+					table.getColumnModel().getColumn(7).setCellRenderer(centerRenderr);
+					table.getColumnModel().getColumn(8).setCellRenderer(centerRenderr);
+					table.getColumnModel().getColumn(9).setCellRenderer(centerRenderr);
+
 				   
 				
 			   } catch (SQLException e) {
@@ -153,7 +231,7 @@ public class ClientsWindow extends JFrame {
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton.setBounds(33, 143, 99, 23);
+		btnNewButton.setBounds(33, 143, 114, 23);
 		contentPane.add(btnNewButton);
 		
 		lblNewLabel_5 = new JLabel("");

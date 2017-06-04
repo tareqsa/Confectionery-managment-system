@@ -44,11 +44,12 @@ public class LogInWindow extends JFrame {
 	private JLabel lblNewLabel_5;
 	private JPasswordField passwordField;
 	private JButton btnNewButton;
-	Connection conn0;
+	Connection conn1;
 
 	/**
 	 * Launch the application.
-	 */
+	*/
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -89,8 +90,8 @@ public class LogInWindow extends JFrame {
 			
 				
 				try{
-					conn0 = Driver.getConnection(); 
-					Statement stat = (Statement) conn0.createStatement();
+					conn1 = Driver.getConnection(); 
+					Statement stat = (Statement) conn1.createStatement();
 				    String loginQuery="Select * FROM login ";
 				    ResultSet rs = stat.executeQuery(loginQuery);
 				    while(rs.next())
@@ -113,7 +114,7 @@ public class LogInWindow extends JFrame {
 					    JOptionPane.showMessageDialog(null,"שם משתמש או סיסמה שגויים!" ); 
 				    }
 				    stat.close();
-				    conn0.close();
+				    conn1.close();
 				    	
 				    }		  
 				catch(SQLException ex){

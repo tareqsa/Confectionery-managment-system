@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
 import com.mysql.jdbc.Connection;
@@ -40,7 +41,7 @@ public class ShowIncome extends JFrame {
 	private JLabel lblNewLabel_4;
 	
 	private JTable table;
-	Connection conn6;
+	Connection conn1;
 	
 	
 	
@@ -67,14 +68,14 @@ public class ShowIncome extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ShowIncome.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05D4\u05DB\u05E0\u05E1\u05D5\u05EA");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(300, 30, 800, 600);
+		setBounds(200, 30, 1000, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(21, 119, 742, 431);
+		scrollPane.setBounds(10, 119, 971, 431);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -102,35 +103,50 @@ public class ShowIncome extends JFrame {
 		lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblNewLabel_2.setForeground(Color.WHITE);
-		lblNewLabel_2.setBounds(678, 32, 140, 25);
+		lblNewLabel_2.setBounds(894, 31, 140, 25);
 		contentPane.add(lblNewLabel_2);
 		
 		lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblNewLabel_1.setForeground(Color.WHITE);
-		lblNewLabel_1.setBounds(648, 11, 146, 25);
+		lblNewLabel_1.setBounds(863, 11, 146, 25);
 		contentPane.add(lblNewLabel_1);
-		
-		lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(0, 0, 784, 561);
-		contentPane.add(lblNewLabel);
 		
 		ImageIcon pic = new ImageIcon(ShowIncome.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
-		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
-		ImageIcon image= new ImageIcon(Imagetemp);
-		lblNewLabel.setIcon(image);
+		ImageIcon image= new ImageIcon(tempImage);
 		
 		
 		lblNewLabel_4.setText(ConMainActivity.username);
 		
+		conn1 = (Connection) Driver.getConnection();
+		String query = "SELECT *  FROM orders GROUP BY `תאריך ושעה` ";
 		try 
 		{
-			conn6 = (Connection) Driver.getConnection();
-			Statement stt1 = (Statement) conn6.createStatement();
-			String query = "SELECT `מספר הזמנה`, `תאריך ושעה`, `עלות`  FROM orders";
+			Statement stt1 = (Statement) conn1.createStatement();
 			ResultSet rset = stt1.executeQuery(query);
 			table.setModel(DbUtils.resultSetToTableModel(rset));
+			
+			lblNewLabel = new JLabel("");
+			lblNewLabel.setBounds(0, 0, 994, 571);
+			contentPane.add(lblNewLabel);
+			Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
+			lblNewLabel.setIcon(image);
+			
+			DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+			centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+			table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+			table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+			table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+			table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+			table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+			table.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
+			table.getColumnModel().getColumn(6).setCellRenderer(centerRenderr);
+			table.getColumnModel().getColumn(7).setCellRenderer(centerRenderr);
+			table.getColumnModel().getColumn(8).setCellRenderer(centerRenderr);
+			table.getColumnModel().getColumn(9).setCellRenderer(centerRenderr);
+
+			
 			
 		} catch (SQLException e) {
 			

@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
 import com.mysql.jdbc.Statement;
@@ -37,6 +38,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
+import javax.swing.JComboBox;
 
 
 
@@ -65,18 +67,21 @@ public class OrdersWindow extends JFrame {
 	
 	
 	
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	public static JTextField textField;
+	public static JTextField textField_1;
+	public static JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
 	private JTextField textField_5;
-	private JTextField textField_6;
+	public static JTextField textField_6;
+	private JTextField textField_7;
 	
 	private JTable table1;
-	Connection conn2;
-	Connection conn3;
-	private JTextField textField_7;
+	Connection conn1;
+	//Connection conn2;
+	
+	private JButton btnNewButton_2;
+	
 
 
 	/**
@@ -100,6 +105,7 @@ public class OrdersWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public OrdersWindow() {
+		setVisible(true);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(OrdersWindow.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05D4\u05D6\u05DE\u05E0\u05D5\u05EA");
 		setResizable(false);
@@ -109,6 +115,96 @@ public class OrdersWindow extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		btnNewButton_2 = new JButton("\u05DE\u05D7\u05E7 \u05D4\u05D6\u05DE\u05E0\u05D4");
+		btnNewButton_2.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				int row = table1.getSelectedRow();
+
+				
+				int response = 0;
+				try{
+					if(row<0)
+					{
+						JOptionPane.showMessageDialog(null, "בחר הזמנה", "row selection", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					else
+					{
+						 response = JOptionPane.showConfirmDialog(null, "האם אתה בטוח שאתה רוצה להמשיך?", "Confirm",
+							        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					}
+				    if (response == JOptionPane.NO_OPTION) 
+				    {
+				    	return;
+				    }
+				    else if (response == JOptionPane.YES_OPTION) 
+				    {
+				    	String orderID=(table1.getModel().getValueAt(row, 0)).toString();
+						String orrderId="מספר הזמנה";
+						String query = "DELETE FROM `orders` WHERE  `"+orrderId+"`= '"+orderID+"'";
+						Statement myStmt = (Statement) conn1.createStatement();
+						myStmt.executeUpdate(query);
+						
+						Driver.viewTable("orders", table1, conn1);
+
+						DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+						centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+						table1.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+						table1.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+						table1.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+						table1.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+						table1.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+						table1.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
+						table1.getColumnModel().getColumn(6).setCellRenderer(centerRenderr);
+						table1.getColumnModel().getColumn(7).setCellRenderer(centerRenderr);
+						table1.getColumnModel().getColumn(8).setCellRenderer(centerRenderr);
+						table1.getColumnModel().getColumn(9).setCellRenderer(centerRenderr);
+					    conn1.close();
+				    }
+				    
+				    }
+				
+				catch(Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+		});
+		
+		textField_1 = new JTextField();
+		textField_1.setFont(new Font("Tahoma", Font.BOLD, 13));
+		textField_1.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if(e.getKeyCode() == KeyEvent.VK_ENTER)
+					btnNewButton_1.doClick();
+			}
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{
+				char c = e.getKeyChar();
+				if(Character.isDigit(c))
+				{
+					e.consume();
+					getToolkit().beep();
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
+				}
+			}
+		});
+		textField_1.setBounds(690, 105, 90, 22);
+		contentPane.add(textField_1);
+		textField_1.setColumns(10);
+		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnNewButton_2.setBounds(149, 179, 107, 23);
+		contentPane.add(btnNewButton_2);
+		
+		
+		
 		
 		JLabel lblNewLabel_12 = new JLabel("\u05DB\u05DE\u05D5\u05EA \u05D1\u05E7\u05D9\u05DC\u05D5\u05D2\u05E8\u05DD:");
 		lblNewLabel_12.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -200,15 +296,25 @@ public class OrdersWindow extends JFrame {
 				}
 				else
 				{
-					//FinancialWindow.incomingPass = Double.parseDouble(textField_4.getText());
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
-					conn3 = Driver.getConnection();
 					String query = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `מה הוזמן`, `כמות בקילוגרם`,`עלות`, `טלפון`, `מבצע ההזמנה`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_7.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "') ";
 					try {
-						Statement stt = (Statement) conn3.createStatement();
-						stt.executeUpdate(query);
-						Driver.viewTable("orders", table1, conn3);
+							Statement stt = (Statement) conn1.createStatement();
+							stt.executeUpdate(query);
+							Driver.viewTable("orders", table1, conn1);
+							DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+							centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+							table1.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+							table1.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+							table1.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+							table1.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+							table1.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+							table1.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
+							table1.getColumnModel().getColumn(6).setCellRenderer(centerRenderr);
+							table1.getColumnModel().getColumn(7).setCellRenderer(centerRenderr);
+							table1.getColumnModel().getColumn(8).setCellRenderer(centerRenderr);
+							table1.getColumnModel().getColumn(9).setCellRenderer(centerRenderr);
 
 						} catch (SQLException e) {
 							e.printStackTrace();
@@ -226,7 +332,7 @@ public class OrdersWindow extends JFrame {
 			}
 		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton_1.setBounds(149, 179, 107, 23);
+		btnNewButton_1.setBounds(263, 179, 107, 23);
 		contentPane.add(btnNewButton_1);
 		
 		btnNewButton = new JButton("\u05E9\u05DC\u05D7 \u05D4\u05D5\u05D3\u05E2\u05D4");
@@ -367,34 +473,6 @@ public class OrdersWindow extends JFrame {
 		lblNewLabel_5.setBounds(595, 104, 94, 22);
 		contentPane.add(lblNewLabel_5);
 		
-		textField_1 = new JTextField();
-		textField_1.addKeyListener(new KeyAdapter() 
-		{
-			@Override
-			public void keyPressed(KeyEvent arg0) 
-			{
-				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
-					btnNewButton_1.doClick();
-			}
-			@Override
-			public void keyTyped(KeyEvent e)
-			{
-				char c = e.getKeyChar();
-				if(Character.isDigit(c))
-				{
-					e.consume();
-					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
-				}
-			}
-		});
-		textField_1.setFont(new Font("Tahoma", Font.BOLD, 13));
-		textField_1.setBackground(Color.WHITE);
-		textField_1.setForeground(Color.BLACK);
-		textField_1.setBounds(690, 105, 90, 22);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
-		
 		lblNewLabel_4 = new JLabel("\u05E9\u05DD \u05DE\u05E9\u05E4\u05D7\u05D4:");
 		lblNewLabel_4.setForeground(Color.WHITE);
 		lblNewLabel_4.setBackground(Color.WHITE);
@@ -478,8 +556,21 @@ public class OrdersWindow extends JFrame {
 		
 		
 		setclk();
-		conn2 = Driver.getConnection();
-		Driver.viewTable("orders", table1, conn2);
+		conn1 = Driver.getConnection();
+		Driver.viewTable("orders", table1, conn1);
+		
+		DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+		centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+		table1.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+		table1.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+		table1.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+		table1.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+		table1.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+		table1.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
+		table1.getColumnModel().getColumn(6).setCellRenderer(centerRenderr);
+		table1.getColumnModel().getColumn(7).setCellRenderer(centerRenderr);
+		table1.getColumnModel().getColumn(8).setCellRenderer(centerRenderr);
+		table1.getColumnModel().getColumn(9).setCellRenderer(centerRenderr);
 	}
 	public void setclk()
 	{

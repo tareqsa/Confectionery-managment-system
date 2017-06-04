@@ -90,8 +90,8 @@ public class ConMainActivity extends JFrame {
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				OrdersWindow newFrame = new OrdersWindow();
-				newFrame.setVisible(true);  
+				new OrdersWindow();
+				  
 
 			}
 		});

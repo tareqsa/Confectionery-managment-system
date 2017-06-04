@@ -6,6 +6,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.JTableHeader;
+
 import java.awt.Toolkit;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,6 +15,7 @@ import java.util.Date;
 
 import javax.swing.JLabel;
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Font;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
@@ -23,7 +26,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ShowPeriod extends JFrame {
+public class ShowIncomePeriod extends JFrame {
 
 	private JPanel contentPane;
 	
@@ -45,7 +48,7 @@ public class ShowPeriod extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ShowPeriod frame = new ShowPeriod();
+					ShowIncomePeriod frame = new ShowIncomePeriod();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,16 +60,28 @@ public class ShowPeriod extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ShowPeriod() {
+	public ShowIncomePeriod() {
 		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ShowPeriod.class.getResource("/conimgs/title_icon.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ShowIncomePeriod.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05D4\u05E6\u05D2 \u05EA\u05E7\u05D5\u05E4\u05D4");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(300, 30, 800, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		JLabel lblNewLabel_8 = new JLabel("232525245");
+		lblNewLabel_8.setForeground(Color.WHITE);
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel_8.setBounds(38, 522, 152, 38);
+		contentPane.add(lblNewLabel_8);
+		
+		JLabel lblNewLabel_7 = new JLabel("\u05E1\u05D4\"\u05DB \u05DC\u05EA\u05E7\u05D5\u05E4\u05D4: ");
+		lblNewLabel_7.setForeground(Color.WHITE);
+		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel_7.setBounds(200, 522, 126, 38);
+		contentPane.add(lblNewLabel_7);
 		
 		btnNewButton = new JButton("\u05D4\u05E6\u05D2");
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -78,7 +93,12 @@ public class ShowPeriod extends JFrame {
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
-		scrollPane.setColumnHeaderView(table);
+		table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		scrollPane.setViewportView(table);
+		JTableHeader Theader = table.getTableHeader();
+        Theader.setBackground(Color.pink);
+        Theader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		JLabel lblNewLabel_6 = new JLabel("\u05E2\u05D3 \u05EA\u05D0\u05E8\u05D9\u05DA: ");
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -116,23 +136,23 @@ public class ShowPeriod extends JFrame {
 		lblNewLabel_3.setBounds(108, 0, 63, 21);
 		contentPane.add(lblNewLabel_3);
 		
-		lblNewLabel_2 = new JLabel("New label");
+		lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblNewLabel_2.setForeground(Color.WHITE);
 		lblNewLabel_2.setBounds(648, 11, 146, 25);
 		contentPane.add(lblNewLabel_2);
 		
-		lblNewLabel_1 = new JLabel("New label");
+		lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblNewLabel_1.setForeground(Color.WHITE);
-		lblNewLabel_1.setBounds(678, 32, 140, 25);
+		lblNewLabel_1.setBounds(678, 30, 140, 25);
 		contentPane.add(lblNewLabel_1);
 		
 		lblNewLabel = new JLabel("New label");
 		lblNewLabel.setBounds(0, 0, 794, 571);
 		contentPane.add(lblNewLabel);
 		
-		ImageIcon pic = new ImageIcon(ShowPeriod.class.getResource("conimgs/background.jpg"));
+		ImageIcon pic = new ImageIcon(ShowIncomePeriod.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
 		ImageIcon image= new ImageIcon(Imagetemp);

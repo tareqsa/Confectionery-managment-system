@@ -12,10 +12,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
+import com.mysql.jdbc.Statement;
+
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -30,6 +33,8 @@ import javax.swing.JScrollPane;
 import java.awt.Component;
 import javax.swing.JButton;
 import java.awt.Toolkit;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 
@@ -81,6 +86,56 @@ public class ProductsWindow extends JFrame {
 		contentPane.setLayout(null);
 		
 		JButton btnNewButton_1 = new JButton("\u05DE\u05D7\u05E7 \u05DE\u05D5\u05E6\u05E8");
+		btnNewButton_1.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				int row = table.getSelectedRow();
+
+				
+				int response = 0;
+				try{
+					if(row<0)
+					{
+						JOptionPane.showMessageDialog(null, "בחר מוצר", "row selection", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					else
+					{
+						 response = JOptionPane.showConfirmDialog(null, "האם אתה בטוח שאתה רוצה להמשיך?", "Confirm",
+							        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					}
+				    if (response == JOptionPane.NO_OPTION) 
+				    {
+				    	return;
+				    }
+				    else if (response == JOptionPane.YES_OPTION) 
+				    {
+				    	String proID=(table.getModel().getValueAt(row, 0)).toString();
+						String productId="מספר מוצר";
+						String query = "DELETE FROM `products` WHERE  `"+productId+"`= '"+proID+"'";
+						Statement myStmt = (Statement) conn1.createStatement();
+						myStmt.executeUpdate(query);
+						
+						Driver.viewTable("products", table, conn1);
+
+						DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+						centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+						table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+						table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+						table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+						
+					    conn1.close();
+				    }
+				    
+				    }
+				
+				catch(Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButton_1.setBounds(850, 95, 100, 28);
 		contentPane.add(btnNewButton_1);
@@ -107,10 +162,11 @@ public class ProductsWindow extends JFrame {
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
-		table.setFont(new Font("Tahoma", Font.BOLD, 12));
+		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		JTableHeader Theader = table.getTableHeader();
         Theader.setBackground(Color.pink);
+        Theader.setFont(new Font("Tahoma", Font.BOLD, 12));
           
 		scrollPane.setViewportView(table);
 		
@@ -153,6 +209,14 @@ public class ProductsWindow extends JFrame {
 		setclk();
 		conn1 = Driver.getConnection();
 		Driver.viewTable("products", table, conn1);
+		
+		DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+		centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+		
+		
 	}
 	public void setclk()
 	{

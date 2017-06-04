@@ -61,18 +61,16 @@ public class FinancialWindow extends JFrame {
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
 	private JLabel lblNewLabel_6;
-	private JLabel lblNewLabel_7;
 	private JLabel lblNewLabel_8;
 	private JLabel lblNewLabel_9;
 	
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
-	private JButton btnNewButton_2;
 	private JButton btnNewButton_3;
-	private JButton btnNewButton_4;
 	private JButton btnNewButton_5;
 	
-	Connection conn9;
+	Connection conn1;
+	private JLabel lblNewLabel_7;
 	
 	
 	
@@ -113,27 +111,26 @@ public class FinancialWindow extends JFrame {
 			}
 		});
 		
-		btnNewButton_5 = new JButton("\u05D0\u05D9\u05E4\u05D5\u05E1 \u05D4\u05D5\u05E6\u05D0\u05D5\u05EA");
+		lblNewLabel_7 = new JLabel("New label");
+		lblNewLabel_7.setBounds(34, 151, 409, 333);
+		contentPane.add(lblNewLabel_7);
+		
+		btnNewButton_5 = new JButton("\u05D1\u05D7\u05D9\u05E8\u05EA \u05EA\u05E7\u05D5\u05E4\u05D4");
 		btnNewButton_5.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnNewButton_5.setBounds(503, 363, 150, 20);
+		btnNewButton_5.setBounds(491, 331, 168, 20);
 		contentPane.add(btnNewButton_5);
 		
-		btnNewButton_4 = new JButton("\u05D4\u05D6\u05E0\u05D4 \u05D9\u05D3\u05E0\u05D9\u05EA");
-		btnNewButton_4.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnNewButton_4.setBounds(503, 331, 150, 20);
-		contentPane.add(btnNewButton_4);
-		
-		btnNewButton_3 = new JButton("\u05DC\u05E6\u05E4\u05D9\u05D9\u05D4 \u05D1\u05D4\u05D5\u05E6\u05D0\u05D5\u05EA");
+		btnNewButton_3 = new JButton("\u05E6\u05E4\u05D9\u05D9\u05D4 \u05D5\u05D4\u05D6\u05E0\u05EA \u05D4\u05D5\u05E6\u05D0\u05D5\u05EA");
 		btnNewButton_3.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				ShowExpenses Fnew = new ShowExpenses();
+				ShowInsertExpenses Fnew = new ShowInsertExpenses();
 			    Fnew.setVisible(true);
 			}
 		});
 		btnNewButton_3.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnNewButton_3.setBounds(503, 300, 150, 20);
+		btnNewButton_3.setBounds(491, 300, 168, 20);
 		contentPane.add(btnNewButton_3);
 		
 		lblNewLabel_9 = new JLabel("New label");
@@ -150,8 +147,8 @@ public class FinancialWindow extends JFrame {
 		
 		try 
 		{
-			conn9 = (Connection) Driver.getConnection();
-			Statement st = (Statement) conn9.createStatement();
+			conn1 = (Connection) Driver.getConnection();
+			Statement st = (Statement) conn1.createStatement();
 			String query = "SELECT SUM(`עלות`) FROM orders";
 			ResultSet rset = st.executeQuery(query);
 			
@@ -165,41 +162,30 @@ public class FinancialWindow extends JFrame {
 			   e.printStackTrace();
 	    }
 		
-		btnNewButton_2 = new JButton("\u05D0\u05D9\u05E4\u05D5\u05E1 \u05D4\u05DB\u05E0\u05E1\u05D5\u05EA");
-		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnNewButton_2.setBounds(503, 213, 150, 20);
-		contentPane.add(btnNewButton_2);
-		
 		btnNewButton_1 = new JButton("\u05D1\u05D7\u05D9\u05E8\u05EA \u05EA\u05E7\u05D5\u05E4\u05D4");
 		btnNewButton_1.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				ShowPeriod Fnew = new ShowPeriod();
+				ShowIncomePeriod Fnew = new ShowIncomePeriod();
 			    Fnew.setVisible(true);	
 			}
 		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnNewButton_1.setBounds(503, 182, 150, 20);
+		btnNewButton_1.setBounds(491, 182, 168, 20);
 		contentPane.add(btnNewButton_1);
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnNewButton.setBounds(503, 151, 150, 20);
+		btnNewButton.setBounds(491, 151, 168, 20);
 		contentPane.add(btnNewButton);
 		
-		lblNewLabel_7 = new JLabel("");
-		lblNewLabel_7.setForeground(Color.WHITE);
-		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_7.setBounds(676, 166, 174, 27);
-		contentPane.add(lblNewLabel_7);
-		
-		lblNewLabel_6 = new JLabel("\u05D4\u05D5\u05E6\u05D0\u05D5\u05EA \u05D7\u05D5\u05D3\u05E9\u05D9\u05D5\u05EA: ");
+		lblNewLabel_6 = new JLabel("\u05D4\u05D5\u05E6\u05D0\u05D5\u05EA \u05DB\u05DC\u05DC\u05D9\u05D5\u05EA: ");
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 24));
 		lblNewLabel_6.setForeground(Color.WHITE);
 		lblNewLabel_6.setBounds(860, 300, 256, 59);
 		contentPane.add(lblNewLabel_6);
 		
 		
-		JLabel lblNewLabel_5 = new JLabel("\u05D4\u05DB\u05E0\u05E1\u05D5\u05EA \u05D7\u05D5\u05D3\u05E9\u05D9\u05D5\u05EA: ");
+		JLabel lblNewLabel_5 = new JLabel("\u05D4\u05DB\u05E0\u05E1\u05D5\u05EA \u05DB\u05DC\u05DC\u05D9\u05D5\u05EA: ");
 		lblNewLabel_5.setForeground(Color.WHITE);
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 24));
 		lblNewLabel_5.setBounds(860, 151, 256, 59);
@@ -256,7 +242,31 @@ public class FinancialWindow extends JFrame {
 		//allIncoming =+ tempIncoming;
 		//incomingSum = Integer.toString(allIncoming);
 		//lblNewLabel_8.setText(Double.toString(incomingPass));
+		
+		
+		try 
+		{
+			conn1 = (Connection) Driver.getConnection();
+			Statement st = (Statement) conn1.createStatement();
+			String query = "SELECT SUM(`סכום`) FROM expenses";
+			ResultSet rset = st.executeQuery(query);
+			
+			rset.next();
+		    String sum = rset.getString(1);
+            
+            lblNewLabel_9.setText(sum);
+			
+		} catch (SQLException e) {
+			
+			   e.printStackTrace();
+	    }
 
+		ImageIcon pic1 = new ImageIcon(LogInWindow.class.getResource("conimgs/finance.jpg"));
+		Image tempImage1 = pic1.getImage();
+		Image Imagetemp1 = tempImage1.getScaledInstance(lblNewLabel_7.getWidth(),lblNewLabel_7.getHeight(),Image.SCALE_DEFAULT);
+		ImageIcon image1= new ImageIcon(Imagetemp1);
+		lblNewLabel_7.setIcon(image1);
+		
 		setclk();
 
 	}
