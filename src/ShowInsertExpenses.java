@@ -12,6 +12,8 @@ import javax.swing.table.JTableHeader;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
+import net.proteanit.sql.DbUtils;
+
 import java.awt.Toolkit;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,21 +39,24 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-public class ShowInsertExpenses extends JFrame {
+public class ShowInsertExpenses extends JFrame
+{
 
 	private JPanel contentPane;
-	
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
 	private JLabel lblNewLabel_5;
+	private JLabel lblNewLabel_6;
+
+
 	private JTextField textField;
 	private JTextField textField_1;
 	
 	private JButton btnNewButton;
-	
+	private JButton btnNewButton_1;
 	Connection conn1;
 	private JTable table;
 	
@@ -60,13 +65,19 @@ public class ShowInsertExpenses extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+	public static void main(String[] args)
+	{
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
+				try 
+				{
 					ShowInsertExpenses frame = new ShowInsertExpenses();
 					frame.setVisible(true);
-				} catch (Exception e) {
+				} 
+				catch (Exception e) 
+				{
 					e.printStackTrace();
 				}
 			}
@@ -76,7 +87,8 @@ public class ShowInsertExpenses extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ShowInsertExpenses() {
+	public ShowInsertExpenses() 
+	{
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ShowInsertExpenses.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05D4\u05D6\u05E0\u05D4 \u05D9\u05D3\u05E0\u05D9\u05EA");
@@ -98,7 +110,7 @@ public class ShowInsertExpenses extends JFrame {
 				}
 				else
 				{
-					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
 					conn1 = (Connection) Driver.getConnection();
 					String query = "INSERT INTO `expenses`(`תאריך ושעה`, `תיאור הוצאה`, `סכום`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "') ";
@@ -106,7 +118,12 @@ public class ShowInsertExpenses extends JFrame {
 					{
 						Statement stt = (Statement) conn1.createStatement();
 						stt.executeUpdate(query);
-						Driver.viewTable("expenses", table, conn1);
+						String groupQuery = "SELECT *  FROM expenses GROUP BY `תאריך ושעה` ";
+						Statement grstat = (Statement) conn1.createStatement();
+						ResultSet myRs = grstat.executeQuery(groupQuery);
+						table.setModel(DbUtils.resultSetToTableModel(myRs));
+
+						//Driver.viewTable("expenses", table, conn1);
 						
 						DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 						centerRenderr.setHorizontalAlignment(JLabel.CENTER);
@@ -115,14 +132,25 @@ public class ShowInsertExpenses extends JFrame {
 						table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
 						table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
 						
+						/*
+						Statement stt1 = (Statement) conn1.createStatement();
+						String expensesSumQuery = "SELECT SUM(`סכום`) FROM expenses";
+						ResultSet expSumSet = stt1.executeQuery(expensesSumQuery);
+						
+						expSumSet.next();
+					    String sum = expSumSet.getString(1);
+			            
+			            lblNewLabel_7.setText(sum);
+						*/
 
 						
-					}catch (SQLException e) 
-						{
-							e.printStackTrace();
-						}
-						textField.setText("");
-						textField_1.setText("");
+					}
+					catch (SQLException e) 
+					{
+						e.printStackTrace();
+					}
+					textField.setText("");
+					textField_1.setText("");
 				
 				
 				
@@ -131,23 +159,75 @@ public class ShowInsertExpenses extends JFrame {
 			}
 		});
 		
-		JLabel lblNewLabel_7 = new JLabel("New label");
-		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNewLabel_7.setForeground(Color.WHITE);
-		lblNewLabel_7.setBounds(33, 535, 100, 25);
-		contentPane.add(lblNewLabel_7);
-		
-		JLabel label = new JLabel("\u05E1\u05D4\"\u05DB :");
-		label.setForeground(Color.WHITE);
-		label.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label.setBounds(143, 535, 100, 25);
-		contentPane.add(label);
+		btnNewButton_1 = new JButton("\u05DE\u05D7\u05E7 \u05D4\u05D5\u05E6\u05D0\u05D4");
+		btnNewButton_1.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				int row = table.getSelectedRow();
+
+				
+				int response = 0;
+				try
+				{
+					if(row<0)
+					{
+						JOptionPane.showMessageDialog(null, "בחר הוצאה", "row selection", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					else
+					{
+						 response = JOptionPane.showConfirmDialog(null, "האם אתה בטוח שאתה רוצה להמשיך?", "Confirm",
+							        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					}
+				    if (response == JOptionPane.NO_OPTION) 
+				    {
+				    	return;
+				    }
+				    else if (response == JOptionPane.YES_OPTION) 
+				    {
+				    	String expID=(table.getModel().getValueAt(row, 0)).toString();
+						String epxenseId="מספר";
+						String query = "DELETE FROM `expenses` WHERE  `"+epxenseId+"`= '"+expID+"'";
+						Statement mStmt = (Statement) conn1.createStatement();
+						mStmt.executeUpdate(query);
+						
+						Driver.viewTable("expenses", table, conn1);
+
+						DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+						centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+						table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+						table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+						table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+						table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+						
+				    }
+				    
+				}
+				catch(Exception ex)
+				{
+					ex.printStackTrace();
+				}
+				
+			}
+		});
+		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnNewButton_1.setBounds(512, 303, 109, 23);
+		contentPane.add(btnNewButton_1);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 79, 463, 437);
 		contentPane.add(scrollPane);
 		
-		table = new JTable();
+		table = new JTable()
+		{
+			@Override
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;
+			};
+			
+		};
 		table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		scrollPane.setViewportView(table);
@@ -156,7 +236,7 @@ public class ShowInsertExpenses extends JFrame {
         Theader.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton.setBounds(515, 301, 89, 23);
+		btnNewButton.setBounds(667, 303, 89, 23);
 		contentPane.add(btnNewButton);
 		
 		textField_1 = new JTextField();
@@ -185,7 +265,7 @@ public class ShowInsertExpenses extends JFrame {
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
 		
-		JLabel lblNewLabel_6 = new JLabel("\u05E1\u05DB\u05D5\u05DD: ");
+		lblNewLabel_6 = new JLabel("\u05E1\u05DB\u05D5\u05DD: ");
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNewLabel_6.setForeground(Color.WHITE);
 		lblNewLabel_6.setBounds(691, 211, 93, 31);
@@ -227,13 +307,13 @@ public class ShowInsertExpenses extends JFrame {
 		lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setForeground(Color.WHITE);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_2.setBounds(678, 32, 140, 25);
+		lblNewLabel_2.setBounds(691, 29, 140, 25);
 		contentPane.add(lblNewLabel_2);
 		
 		lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setForeground(Color.WHITE);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel_1.setBounds(648, 11, 146, 25);
+		lblNewLabel_1.setBounds(659, 11, 146, 25);
 		contentPane.add(lblNewLabel_1);
 		
 		lblNewLabel = new JLabel("");
@@ -259,23 +339,6 @@ public class ShowInsertExpenses extends JFrame {
 		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
 		
 
-		
-		try 
-		{
-			conn1 = (Connection) Driver.getConnection();
-			Statement st = (Statement) conn1.createStatement();
-			String query = "SELECT SUM(`סכום`) FROM expenses";
-			ResultSet rset = st.executeQuery(query);
-			
-			rset.next();
-		    String sum = rset.getString(1);
-            
-            lblNewLabel_7.setText(sum);
-			
-		} catch (SQLException e) {
-			
-			   e.printStackTrace();
-	    }
 	
 		
 		setclk();

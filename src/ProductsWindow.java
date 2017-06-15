@@ -39,7 +39,8 @@ import java.awt.event.ActionEvent;
 
 
 
-public class ProductsWindow extends JFrame {
+public class ProductsWindow extends JFrame 
+{
 
 	private JPanel contentPane;
 	
@@ -49,6 +50,8 @@ public class ProductsWindow extends JFrame {
 	private JEditorPane editorPane;
 	private JTable table;
 
+	private JButton btnNewButton;
+	private JButton btnNewButton_1;
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
 	
@@ -58,13 +61,18 @@ public class ProductsWindow extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+	public static void main(String[] args)
+	{
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run() 
+			{
 				try {
 					ProductsWindow frame = new ProductsWindow();
 					frame.setVisible(true);
-				} catch (Exception e) {
+				}
+				catch (Exception e) 
+				{
 					e.printStackTrace();
 				}
 			}
@@ -74,7 +82,8 @@ public class ProductsWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ProductsWindow() {
+	public ProductsWindow() 
+	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ProductsWindow.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05DE\u05D5\u05E6\u05E8\u05D9\u05DD");
 		setResizable(false);
@@ -85,7 +94,7 @@ public class ProductsWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnNewButton_1 = new JButton("\u05DE\u05D7\u05E7 \u05DE\u05D5\u05E6\u05E8");
+		btnNewButton_1 = new JButton("\u05DE\u05D7\u05E7 \u05DE\u05D5\u05E6\u05E8");
 		btnNewButton_1.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
@@ -94,7 +103,8 @@ public class ProductsWindow extends JFrame {
 
 				
 				int response = 0;
-				try{
+				try
+				{
 					if(row<0)
 					{
 						JOptionPane.showMessageDialog(null, "בחר מוצר", "row selection", JOptionPane.ERROR_MESSAGE);
@@ -128,7 +138,7 @@ public class ProductsWindow extends JFrame {
 					    conn1.close();
 				    }
 				    
-				    }
+				}
 				
 				catch(Exception ex)
 				{
@@ -140,7 +150,7 @@ public class ProductsWindow extends JFrame {
 		btnNewButton_1.setBounds(850, 95, 100, 28);
 		contentPane.add(btnNewButton_1);
 		
-		JButton btnNewButton = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05DE\u05D5\u05E6\u05E8");
+		btnNewButton = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05DE\u05D5\u05E6\u05E8");
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButton.setBounds(969, 95, 100, 28);
 		contentPane.add(btnNewButton);
@@ -206,7 +216,7 @@ public class ProductsWindow extends JFrame {
 		lblNewLabel_4.setText(ConMainActivity.username);
 
 		
-		setclk();
+		
 		conn1 = Driver.getConnection();
 		Driver.viewTable("products", table, conn1);
 		
@@ -216,6 +226,7 @@ public class ProductsWindow extends JFrame {
 		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
 		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
 		
+		setclk();
 		
 	}
 	public void setclk()

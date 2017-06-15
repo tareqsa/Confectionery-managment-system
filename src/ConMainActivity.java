@@ -21,7 +21,8 @@ import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 
 
-public class ConMainActivity extends JFrame {
+public class ConMainActivity extends JFrame 
+{
 
 	public static String username = "";
 	private JPanel contentPane;
@@ -45,13 +46,19 @@ public class ConMainActivity extends JFrame {
 
 
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run() 
+			{
+				try 
+				{
 					ConMainActivity frame = new ConMainActivity();
 					frame.setVisible(true);
-				} catch (Exception e) {
+				} 
+				catch (Exception e)
+				{
 					e.printStackTrace();
 				}
 			}
@@ -61,7 +68,8 @@ public class ConMainActivity extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ConMainActivity() {
+	public ConMainActivity() 
+	{
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ConMainActivity.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05E8\u05D0\u05E9\u05D9");
@@ -76,8 +84,10 @@ public class ConMainActivity extends JFrame {
 		setVisible(true);
 
 		btnNewButton_1 = new JButton("\u05DE\u05D5\u05E6\u05E8\u05D9\u05DD");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnNewButton_1.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
 
 				ProductsWindow newFrame = new ProductsWindow();
 				newFrame.setVisible(true);
@@ -87,12 +97,13 @@ public class ConMainActivity extends JFrame {
 		btnNewButton_1.setLocation(1125, 150);
 
 		btnNewButton_2 = new JButton("\u05D4\u05D6\u05DE\u05E0\u05D5\u05EA");
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnNewButton_2.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 
-				new OrdersWindow();
-				  
-
+				OrdersWindow neww = new OrdersWindow();
+				neww.setVisible(true);
 			}
 		});
 		btnNewButton_2.setSize(226, 80);
@@ -100,8 +111,10 @@ public class ConMainActivity extends JFrame {
 
 
 		btnNewButton_3 = new JButton("\u05DC\u05E7\u05D5\u05D7\u05D5\u05EA");
-		btnNewButton_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnNewButton_3.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e)
+			{
 
 				ClientsWindow newFrame = new ClientsWindow();
 				newFrame.setVisible(true);
@@ -111,8 +124,10 @@ public class ConMainActivity extends JFrame {
 		btnNewButton_3.setLocation(1125, 336);
 
 		btnNewButton_4 = new JButton("\u05DE\u05DC\u05D0\u05D9");
-		btnNewButton_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnNewButton_4.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
 
 				InventoryWindow newFrame = new InventoryWindow();
 				newFrame.setVisible(true);
@@ -122,8 +137,10 @@ public class ConMainActivity extends JFrame {
 		btnNewButton_4.setLocation(1125, 428);
 
 		btnNewButton_5 = new JButton("\u05DB\u05E1\u05E4\u05D9\u05DD");
-		btnNewButton_5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnNewButton_5.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
 
 				FinancialWindow newFrame = new FinancialWindow();
 				newFrame.setVisible(true);
@@ -133,8 +150,10 @@ public class ConMainActivity extends JFrame {
 		btnNewButton_5.setLocation(1125, 519);
 
 		btnNewButton_6 = new JButton("\u05E1\u05D9\u05D3\u05D5\u05E8");
-		btnNewButton_6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnNewButton_6.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 
 				WorkScheduleWindow newFrame = new WorkScheduleWindow();
 				newFrame.setVisible(true);

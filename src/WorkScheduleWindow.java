@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -25,28 +26,39 @@ import javax.swing.JTextField;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.awt.Toolkit;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class WorkScheduleWindow extends JFrame {
+public class WorkScheduleWindow extends JFrame 
+{
 
 	private JPanel contentPane;
 	private JEditorPane editorPane;
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
-	private JTextField textField;
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
-
+	private JCalendar calendar;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
+				try 
+				{
 					WorkScheduleWindow frame = new WorkScheduleWindow();
 					frame.setVisible(true);
-				} catch (Exception e) {
+				} 
+				catch (Exception e) 
+				{
 					e.printStackTrace();
 				}
 			}
@@ -56,7 +68,8 @@ public class WorkScheduleWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public WorkScheduleWindow() {
+	public WorkScheduleWindow() 
+	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(WorkScheduleWindow.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05E1\u05D9\u05D3\u05D5\u05E8 \u05E2\u05D1\u05D5\u05D3\u05D4");
 		setResizable(false);
@@ -66,6 +79,24 @@ public class WorkScheduleWindow extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		JButton btnNewButton = new JButton("\u05E2\u05D3\u05DB\u05D5\u05DF");
+		btnNewButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+
+				Date date = calendar.getDate();
+				String sdate = String.format("%1$tY-%1$tm-%1$td",date);
+				System.out.println(sdate.toString());
+			}
+		});
+		btnNewButton.setBounds(125, 422, 89, 114);
+		contentPane.add(btnNewButton);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(231, 422, 693, 114);
+		contentPane.add(textArea);
 		
 		lblNewLabel_4 = new JLabel("");
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -79,12 +110,14 @@ public class WorkScheduleWindow extends JFrame {
 		lblNewLabel_3.setBounds(108, 0, 63, 21);
 		contentPane.add(lblNewLabel_3);
 		
-		textField = new JTextField();
-		textField.setBounds(135, 404, 786, 134);
-		contentPane.add(textField);
-		textField.setColumns(10);
-		
-		JCalendar calendar = new JCalendar();
+		calendar = new JCalendar();
+		calendar.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent arg0) {
+				Date date = calendar.getDate();
+				String sdate = String.format("%1$tY-%1$tm-%1$td",date);
+				System.out.println(sdate.toString());	
+			}
+		});
 		calendar.setBounds(125, 70, 799, 323);
 		contentPane.add(calendar);
 		
@@ -112,7 +145,7 @@ public class WorkScheduleWindow extends JFrame {
 		contentPane.add(lblNewLabel_1);
 		
 		lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(0, 0, 1094, 571);
+		lblNewLabel.setBounds(-30, 0, 1094, 571);
 		contentPane.add(lblNewLabel);
 		
 		

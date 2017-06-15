@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.ComponentOrientation;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JEditorPane;
@@ -48,7 +49,8 @@ import java.awt.event.MouseEvent;
 
 
 
-public class ClientsWindow extends JFrame {
+public class ClientsWindow extends JFrame 
+{
 
 	private JPanel contentPane;
 	
@@ -79,13 +81,19 @@ public class ClientsWindow extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run() 
+			{
+				try 
+				{
 					ClientsWindow frame = new ClientsWindow();
 					frame.setVisible(true);
-				} catch (Exception e) {
+				} 
+				catch (Exception e)
+				{
 					e.printStackTrace();
 				}
 			}
@@ -95,7 +103,8 @@ public class ClientsWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ClientsWindow() {
+	public ClientsWindow() 
+	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ClientsWindow.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05DC\u05E7\u05D5\u05D7\u05D5\u05EA");
 		setResizable(false);
@@ -118,12 +127,15 @@ public class ClientsWindow extends JFrame {
 			}
 		});
 		textField.setForeground(Color.LIGHT_GRAY);
-		textField.addFocusListener(new FocusListener() {
-		    public void focusGained(FocusEvent e) {
+		textField.addFocusListener(new FocusListener()
+		{
+		    public void focusGained(FocusEvent e) 
+		    {
 		    	textField.setText("");
 		    }
 
-		    public void focusLost(FocusEvent e) {
+		    public void focusLost(FocusEvent e)
+		    {
 		        // nothing
 		    }
 		});
@@ -133,7 +145,8 @@ public class ClientsWindow extends JFrame {
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				new OrdersWindow();
+				OrdersWindow Onew = new OrdersWindow();
+				Onew.setVisible(true);
 				dispose();
 			}
 		});
@@ -171,7 +184,9 @@ public class ClientsWindow extends JFrame {
 		        	eventTyp = table1.getModel().getValueAt(row, 4).toString();
 		        	phoneNum = table1.getModel().getValueAt(row, 8).toString();
 		        	
-		        	new OrdersWindow();
+		        	OrdersWindow Ornew = new OrdersWindow();
+					Ornew.setVisible(true);
+
 		        	
 		        	OrdersWindow.textField.setText(firstName);
 		        	OrdersWindow.textField_1.setText(lastName);
@@ -202,27 +217,42 @@ public class ClientsWindow extends JFrame {
 				{
 					conn1 = Driver.getConnection();
 					Statement st = (Statement) conn1.createStatement();
-				    String searchQuery="SELECT * FROM `orders` WHERE `שם פרטי` = '"+search+"' OR `שם משפחה` = '"+search+"' OR `מבצע ההזמנה` = '"+search+"' OR `טלפון` = '"+search+"'  ";
-
+				    String searchQuery="SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM `orders` WHERE `שם פרטי` = '"+search+"' OR `שם משפחה` = '"+search+"' OR `מבצע ההזמנה` = '"+search+"' OR `טלפון` = '"+search+"'  ";
+				    
+				    int rowsCounter=0;
 				    ResultSet res = st.executeQuery(searchQuery);
-				    table.setModel(DbUtils.resultSetToTableModel(res));
-					
-					DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
-					centerRenderr.setHorizontalAlignment(JLabel.CENTER);
-					table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
-					table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
-					table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
-					table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
-					table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
-					table.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
-					table.getColumnModel().getColumn(6).setCellRenderer(centerRenderr);
-					table.getColumnModel().getColumn(7).setCellRenderer(centerRenderr);
-					table.getColumnModel().getColumn(8).setCellRenderer(centerRenderr);
-					table.getColumnModel().getColumn(9).setCellRenderer(centerRenderr);
-
-				   
+				    while(res.next())
+				    {
+				    	rowsCounter++;
+				    }
+				    res.first();
+				    res.previous();
+				    if(rowsCounter>0)
+				    {
+				    	//System.out.println(rowsCounter);
+				    	table.setModel(DbUtils.resultSetToTableModel(res));
+				    	DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+				    	centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+				    	table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+				    	table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+				    	table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+				    	table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+				    	table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+				    	table.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
+				    	table.getColumnModel().getColumn(6).setCellRenderer(centerRenderr);
+				    	table.getColumnModel().getColumn(7).setCellRenderer(centerRenderr);
+				    	table.getColumnModel().getColumn(8).setCellRenderer(centerRenderr);
+				   		table.getColumnModel().getColumn(9).setCellRenderer(centerRenderr);
+				    }
+				    else 
+				    {
+				    	JOptionPane.showMessageDialog(null,"לא נמצאו נתונים !!" );
+				    }
+				    	
 				
-			   } catch (SQLException e) {
+			    } 
+				catch (SQLException e) 
+				{
 		 		   // TODO Auto-generated catch block
 				   e.printStackTrace();
 			   }

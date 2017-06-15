@@ -32,7 +32,8 @@ import java.awt.event.KeyEvent;
 import java.awt.Toolkit;
 
 
-public class LogInWindow extends JFrame {
+public class LogInWindow extends JFrame
+{
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -50,13 +51,19 @@ public class LogInWindow extends JFrame {
 	 * Launch the application.
 	*/
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				try 
+				{
 					LogInWindow frame = new LogInWindow();
 					frame.setVisible(true);
-				} catch (Exception e) {
+				} 
+				catch (Exception e)
+				{
 					e.printStackTrace();
 				}
 			}
@@ -66,7 +73,8 @@ public class LogInWindow extends JFrame {
 	/**
 	 * Create the frame
 	 */
-	public LogInWindow() {
+	public LogInWindow()
+	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(LogInWindow.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05DB\u05E0\u05D9\u05E1\u05D4 \u05DC\u05DE\u05E2\u05E8\u05DB\u05EA");
 		setResizable(false);
@@ -81,15 +89,18 @@ public class LogInWindow extends JFrame {
 		
 		btnNewButton = new JButton("\u05D0\u05D9\u05E9\u05D5\u05E8");
 		
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnNewButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
 				
 				String user = textField.getText();
 				String pass = passwordField.getText();
 				boolean ok=false;
 			
 				
-				try{
+				try
+				{
 					conn1 = Driver.getConnection(); 
 					Statement stat = (Statement) conn1.createStatement();
 				    String loginQuery="Select * FROM login ";
@@ -116,11 +127,12 @@ public class LogInWindow extends JFrame {
 				    stat.close();
 				    conn1.close();
 				    	
-				    }		  
-				catch(SQLException ex){
+				}		  
+				catch(SQLException ex)
+				{
 				   System.err.println(ex);
-				  }
 				}
+			}
 			
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -144,9 +156,11 @@ public class LogInWindow extends JFrame {
 	    contentPane.add(lblNewLabel_3);
 	    
 		passwordField = new JPasswordField();
-		passwordField.addKeyListener(new KeyAdapter() {
+		passwordField.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void keyPressed(KeyEvent arg0)
+			{
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton.doClick();
 			}
@@ -168,9 +182,11 @@ public class LogInWindow extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		textField = new JTextField();
-		textField.addKeyListener(new KeyAdapter() {
+		textField.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void keyPressed(KeyEvent arg0)
+			{
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton.doClick();
 			}

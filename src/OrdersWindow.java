@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Properties;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -15,6 +16,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
 import com.mysql.jdbc.Statement;
+
+import net.proteanit.sql.DbUtils;
 
 import java.awt.Color;
 import java.awt.ComponentOrientation;
@@ -26,6 +29,7 @@ import java.awt.Font;
 import javax.swing.JEditorPane;
 import java.awt.SystemColor;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.UIManager;
@@ -43,7 +47,8 @@ import javax.swing.JComboBox;
 
 
 
-public class OrdersWindow extends JFrame {
+public class OrdersWindow extends JFrame 
+{
 
 	private JPanel contentPane;
 	
@@ -59,6 +64,7 @@ public class OrdersWindow extends JFrame {
     private JLabel lblNewLabel_9;
     private JLabel lblNewLabel_10;
     private JLabel lblNewLabel_11;
+    private JLabel lblNewLabel_12; 
     
     private JButton btnNewButton;
     private JButton btnNewButton_1;
@@ -88,13 +94,19 @@ public class OrdersWindow extends JFrame {
 	 * Launch the application.
 	 */
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+	public static void main(String[] args)
+	{
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				try
+				{
 					OrdersWindow frame = new OrdersWindow();
 					frame.setVisible(true);
-				} catch (Exception e) {
+				} 
+				catch (Exception e)
+				{
 					e.printStackTrace();
 				}
 			}
@@ -104,8 +116,8 @@ public class OrdersWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public OrdersWindow() {
-		setVisible(true);
+	public OrdersWindow()
+	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(OrdersWindow.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05D4\u05D6\u05DE\u05E0\u05D5\u05EA");
 		setResizable(false);
@@ -125,7 +137,8 @@ public class OrdersWindow extends JFrame {
 
 				
 				int response = 0;
-				try{
+				try
+				{
 					if(row<0)
 					{
 						JOptionPane.showMessageDialog(null, "בחר הזמנה", "row selection", JOptionPane.ERROR_MESSAGE);
@@ -162,10 +175,9 @@ public class OrdersWindow extends JFrame {
 						table1.getColumnModel().getColumn(7).setCellRenderer(centerRenderr);
 						table1.getColumnModel().getColumn(8).setCellRenderer(centerRenderr);
 						table1.getColumnModel().getColumn(9).setCellRenderer(centerRenderr);
-					    conn1.close();
 				    }
 				    
-				    }
+				}
 				
 				catch(Exception ex)
 				{
@@ -206,7 +218,7 @@ public class OrdersWindow extends JFrame {
 		
 		
 		
-		JLabel lblNewLabel_12 = new JLabel("\u05DB\u05DE\u05D5\u05EA \u05D1\u05E7\u05D9\u05DC\u05D5\u05D2\u05E8\u05DD:");
+		lblNewLabel_12 = new JLabel("\u05DB\u05DE\u05D5\u05EA \u05D1\u05E7\u05D9\u05DC\u05D5\u05D2\u05E8\u05DD:");
 		lblNewLabel_12.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblNewLabel_12.setForeground(Color.WHITE);
 		lblNewLabel_12.setBounds(785, 137, 128, 22);
@@ -255,7 +267,8 @@ public class OrdersWindow extends JFrame {
 			
 			}
 			@Override
-			public void keyTyped(KeyEvent arg0) {
+			public void keyTyped(KeyEvent arg0) 
+			{
 				char c = arg0.getKeyChar();
 				if(!(Character.isDigit(c) || c==KeyEvent.VK_BACK_SPACE || c==KeyEvent.VK_DELETE || c==KeyEvent.VK_ENTER  ))
 				{
@@ -296,10 +309,17 @@ public class OrdersWindow extends JFrame {
 				}
 				else
 				{
-					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+					DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 					LocalDateTime now = LocalDateTime.now();
-					String query = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `מה הוזמן`, `כמות בקילוגרם`,`עלות`, `טלפון`, `מבצע ההזמנה`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_7.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "') ";
-					try {
+					LocalDateTime now1 = LocalDateTime.now();
+
+					String query = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `מה הוזמן`, `כמות בקילוגרם`,`עלות`, `טלפון`, `מבצע ההזמנה`,`תאריך`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_7.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "','" + dtf1.format(now1) + "') ";
+					//String query = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `מה הוזמן`, `כמות בקילוגרם`,`עלות`, `טלפון`, `מבצע ההזמנה`) VALUES ('" + now + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_7.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "') ";
+
+					try 
+					{
 							Statement stt = (Statement) conn1.createStatement();
 							stt.executeUpdate(query);
 							Driver.viewTable("orders", table1, conn1);
@@ -316,7 +336,9 @@ public class OrdersWindow extends JFrame {
 							table1.getColumnModel().getColumn(8).setCellRenderer(centerRenderr);
 							table1.getColumnModel().getColumn(9).setCellRenderer(centerRenderr);
 
-						} catch (SQLException e) {
+					} 
+					catch (SQLException e)
+						{
 							e.printStackTrace();
 						}
 				
@@ -336,6 +358,13 @@ public class OrdersWindow extends JFrame {
 		contentPane.add(btnNewButton_1);
 		
 		btnNewButton = new JButton("\u05E9\u05DC\u05D7 \u05D4\u05D5\u05D3\u05E2\u05D4");
+		btnNewButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				
+			}
+		});
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButton.setBounds(32, 179, 107, 23);
 		contentPane.add(btnNewButton);
@@ -344,7 +373,15 @@ public class OrdersWindow extends JFrame {
 		scrollPane.setBounds(10, 213, 1074, 347);
 		contentPane.add(scrollPane);
 		
-		table1 = new JTable();
+		table1 = new JTable()
+		{
+			@Override
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;
+			};
+			
+		};
 		table1.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		table1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		JTableHeader Theader = table1.getTableHeader();
@@ -557,20 +594,31 @@ public class OrdersWindow extends JFrame {
 		
 		setclk();
 		conn1 = Driver.getConnection();
-		Driver.viewTable("orders", table1, conn1);
-		
-		DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
-		centerRenderr.setHorizontalAlignment(JLabel.CENTER);
-		table1.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
-		table1.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
-		table1.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
-		table1.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
-		table1.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
-		table1.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
-		table1.getColumnModel().getColumn(6).setCellRenderer(centerRenderr);
-		table1.getColumnModel().getColumn(7).setCellRenderer(centerRenderr);
-		table1.getColumnModel().getColumn(8).setCellRenderer(centerRenderr);
-		table1.getColumnModel().getColumn(9).setCellRenderer(centerRenderr);
+		String orderQuery = "SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM orders";
+		try
+		{
+			Statement stt1 = (Statement) conn1.createStatement();
+			ResultSet rset2 = stt1.executeQuery(orderQuery);
+			table1.setModel(DbUtils.resultSetToTableModel(rset2));
+					
+			DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+			centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+			table1.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+			table1.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+			table1.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+			table1.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+			table1.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+			table1.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
+			table1.getColumnModel().getColumn(6).setCellRenderer(centerRenderr);
+			table1.getColumnModel().getColumn(7).setCellRenderer(centerRenderr);
+			table1.getColumnModel().getColumn(8).setCellRenderer(centerRenderr);
+			table1.getColumnModel().getColumn(9).setCellRenderer(centerRenderr);	
+		}
+		catch (Exception e)
+		{
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 	public void setclk()
 	{

@@ -30,7 +30,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 
-public class InventoryInsert extends JFrame {
+public class InventoryInsert extends JFrame 
+{
 
 	private JPanel contentPane;
 	
@@ -56,13 +57,19 @@ public class InventoryInsert extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
+				try 
+				{
 					InventoryInsert frame = new InventoryInsert();
 					frame.setVisible(true);
-				} catch (Exception e) {
+				} 
+				catch (Exception e) 
+				{
 					e.printStackTrace();
 				}
 			}
@@ -72,7 +79,8 @@ public class InventoryInsert extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public InventoryInsert() {
+	public InventoryInsert() 
+	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(InventoryInsert.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05D4\u05D5\u05E1\u05E3 \u05DE\u05E8\u05DB\u05D9\u05D1");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -97,7 +105,8 @@ public class InventoryInsert extends JFrame {
 				{
 					
 					String query = "INSERT INTO `inventory`(`שם מרכיב`, `כמות במלאי בקג`) VALUES ('" + textField.getText() + "','" + textField_1.getText() + "') ";
-					try {
+					try 
+					{
 							conn1 = (Connection) Driver.getConnection();
 							Statement stat = (Statement) conn1.createStatement();
 							stat.executeUpdate(query);
@@ -110,14 +119,17 @@ public class InventoryInsert extends JFrame {
 							
 							
 						
-						} catch (SQLException exp) {
-							exp.printStackTrace();
-						}
+					} 
+					catch (SQLException exp) 
+					{
+						exp.printStackTrace();
+					}
 				
 						textField.setText("");
 						textField_1.setText("");
 						
 				}
+				dispose();
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -216,7 +228,7 @@ public class InventoryInsert extends JFrame {
 		lblNewLabel.setBounds(0, 0, 484, 261);
 		contentPane.add(lblNewLabel);
 		
-		ImageIcon pic = new ImageIcon(ShowIncomePeriod.class.getResource("conimgs/background.jpg"));
+		ImageIcon pic = new ImageIcon(InventoryInsert.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
 		ImageIcon image= new ImageIcon(Imagetemp);

@@ -37,7 +37,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 
-public class InventoryWindow extends JFrame {
+public class InventoryWindow extends JFrame 
+{
 
 	private JPanel contentPane;
 	
@@ -54,19 +55,26 @@ public class InventoryWindow extends JFrame {
 	Connection conn1;
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
+	private JButton btnNewButton_2;
 	
 	
 	/**
 	 * Launch the application.
 	 */
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
+				try 
+				{
 					InventoryWindow frame = new InventoryWindow();
 					frame.setVisible(true);
-				} catch (Exception e) {
+				} 
+				catch (Exception e) 
+				{
 					e.printStackTrace();
 				}
 			}
@@ -76,7 +84,8 @@ public class InventoryWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public InventoryWindow() {
+	public InventoryWindow() 
+	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(InventoryWindow.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05DE\u05DC\u05D0\u05D9");
 		setResizable(false);
@@ -96,7 +105,8 @@ public class InventoryWindow extends JFrame {
 
 				
 				int response = 0;
-				try{
+				try
+				{
 					if(row<0)
 					{
 						JOptionPane.showMessageDialog(null, "בחר מרכיב", "row selection", JOptionPane.ERROR_MESSAGE);
@@ -129,8 +139,7 @@ public class InventoryWindow extends JFrame {
 						
 				    }
 				    
-				  }
-				
+				}
 				catch(Exception ex)
 				{
 					ex.printStackTrace();
@@ -138,7 +147,7 @@ public class InventoryWindow extends JFrame {
 			}
 		});
 		
-		JButton btnNewButton_2 = new JButton("\u05E2\u05D3\u05DB\u05DF \u05DE\u05E8\u05DB\u05D9\u05D1");
+		btnNewButton_2 = new JButton("\u05E2\u05D3\u05DB\u05DF \u05DE\u05E8\u05DB\u05D9\u05D1");
 		btnNewButton_2.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0)
@@ -148,7 +157,7 @@ public class InventoryWindow extends JFrame {
 				try
 				{
 					if (row<0)
-						JOptionPane.showMessageDialog(null, "בחר מרכיב", "row selection", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "לחץ על השורה ועדכן כמות ואז לחץ על עדכן מרכיב", "row selection", JOptionPane.ERROR_MESSAGE);
 					else
 					{
 						String ingrID = table.getModel().getValueAt(row, 0).toString();

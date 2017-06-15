@@ -36,7 +36,8 @@ public class Driver
 	}
 	public static void viewTable(String tableName , JTable protable , Connection Conn)
 	{
-		try{
+		try
+		{
 			Statement myStmt = Conn.createStatement();
 			ResultSet myRs = myStmt.executeQuery("select * from "+tableName+"");
 			protable.setModel(DbUtils.resultSetToTableModel(myRs));

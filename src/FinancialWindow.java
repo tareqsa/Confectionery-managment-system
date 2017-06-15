@@ -47,7 +47,8 @@ import java.awt.Toolkit;
 
 
 
-public class FinancialWindow extends JFrame {
+public class FinancialWindow extends JFrame 
+{
 	
 	//public static double incomingPass;
 	
@@ -60,27 +61,35 @@ public class FinancialWindow extends JFrame {
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
+	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
-	private JLabel lblNewLabel_8;
-	private JLabel lblNewLabel_9;
 	
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
 	private JButton btnNewButton_3;
+	private JButton btnNewButton_4;
 	private JButton btnNewButton_5;
 	
 	Connection conn1;
 	private JLabel lblNewLabel_7;
+	private JLabel lblNewLabel_8;
+	private JButton btnNewButton_2;
 	
 	
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
+				try 
+				{
 					FinancialWindow frame = new FinancialWindow();
 					frame.setVisible(true);
-				} catch (Exception e) {
+				} 
+				catch (Exception e)
+				{
 					e.printStackTrace();
 				}
 			}
@@ -90,7 +99,8 @@ public class FinancialWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FinancialWindow() {
+	public FinancialWindow()
+	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(FinancialWindow.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05DB\u05E1\u05E4\u05D9\u05DD");
 		setResizable(false);
@@ -106,16 +116,56 @@ public class FinancialWindow extends JFrame {
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-					ShowIncome Fnew = new ShowIncome();
+					ShowIncomes Fnew = new ShowIncomes();
 					Fnew.setVisible(true);
 			}
 		});
+		
+		btnNewButton_2 = new JButton("\u05D1\u05D7\u05D9\u05E8\u05EA \u05EA\u05E7\u05D5\u05E4\u05D4");
+		btnNewButton_2.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				ShowProfit Fnew = new ShowProfit();
+				Fnew.setVisible(true);
+			}
+		});
+		
+		btnNewButton_4 = new JButton("\u05D7\u05D5\u05D1\u05D5\u05EA \u05DC\u05E7\u05D5\u05D7\u05D5\u05EA");
+		btnNewButton_4.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				ClientsDebts cFnew = new ClientsDebts();
+				cFnew.setVisible(true);
+			}
+		});
+		btnNewButton_4.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnNewButton_4.setBounds(159, 507, 130, 23);
+		contentPane.add(btnNewButton_4);
+		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnNewButton_2.setBounds(491, 448, 168, 20);
+		contentPane.add(btnNewButton_2);
+		
+		lblNewLabel_8 = new JLabel("\u05E1\u05D4\"\u05DB \u05E8\u05D5\u05D5\u05D7 \u05DC\u05E4\u05D9 \u05EA\u05E7\u05D5\u05E4\u05D4: ");
+		lblNewLabel_8.setForeground(Color.WHITE);
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 24));
+		lblNewLabel_8.setBounds(787, 423, 273, 59);
+		contentPane.add(lblNewLabel_8);
 		
 		lblNewLabel_7 = new JLabel("New label");
 		lblNewLabel_7.setBounds(34, 151, 409, 333);
 		contentPane.add(lblNewLabel_7);
 		
 		btnNewButton_5 = new JButton("\u05D1\u05D7\u05D9\u05E8\u05EA \u05EA\u05E7\u05D5\u05E4\u05D4");
+		btnNewButton_5.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				ShowExpensesPeriod Fnew = new ShowExpensesPeriod();
+			    Fnew.setVisible(true);
+			}
+		});
 		btnNewButton_5.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnNewButton_5.setBounds(491, 331, 168, 20);
 		contentPane.add(btnNewButton_5);
@@ -133,41 +183,13 @@ public class FinancialWindow extends JFrame {
 		btnNewButton_3.setBounds(491, 300, 168, 20);
 		contentPane.add(btnNewButton_3);
 		
-		lblNewLabel_9 = new JLabel("New label");
-		lblNewLabel_9.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_9.setForeground(Color.WHITE);
-		lblNewLabel_9.setBounds(732, 378, 208, 35);
-		contentPane.add(lblNewLabel_9);
-		
-		lblNewLabel_8 = new JLabel("New label");
-		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel_8.setForeground(Color.WHITE);
-		lblNewLabel_8.setBounds(732, 228, 208, 35);
-		contentPane.add(lblNewLabel_8);
-		
-		try 
-		{
-			conn1 = (Connection) Driver.getConnection();
-			Statement st = (Statement) conn1.createStatement();
-			String query = "SELECT SUM(`עלות`) FROM orders";
-			ResultSet rset = st.executeQuery(query);
-			
-			rset.next();
-		    String sum = rset.getString(1);
-            
-            lblNewLabel_8.setText(sum);
-			
-		} catch (SQLException e) {
-			
-			   e.printStackTrace();
-	    }
 		
 		btnNewButton_1 = new JButton("\u05D1\u05D7\u05D9\u05E8\u05EA \u05EA\u05E7\u05D5\u05E4\u05D4");
 		btnNewButton_1.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				ShowIncomePeriod Fnew = new ShowIncomePeriod();
+				ShowIncomesPeriod Fnew = new ShowIncomesPeriod();
 			    Fnew.setVisible(true);	
 			}
 		});
@@ -185,7 +207,7 @@ public class FinancialWindow extends JFrame {
 		contentPane.add(lblNewLabel_6);
 		
 		
-		JLabel lblNewLabel_5 = new JLabel("\u05D4\u05DB\u05E0\u05E1\u05D5\u05EA \u05DB\u05DC\u05DC\u05D9\u05D5\u05EA: ");
+		lblNewLabel_5 = new JLabel("\u05D4\u05DB\u05E0\u05E1\u05D5\u05EA \u05DB\u05DC\u05DC\u05D9\u05D5\u05EA: ");
 		lblNewLabel_5.setForeground(Color.WHITE);
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 24));
 		lblNewLabel_5.setBounds(860, 151, 256, 59);
@@ -244,23 +266,6 @@ public class FinancialWindow extends JFrame {
 		//lblNewLabel_8.setText(Double.toString(incomingPass));
 		
 		
-		try 
-		{
-			conn1 = (Connection) Driver.getConnection();
-			Statement st = (Statement) conn1.createStatement();
-			String query = "SELECT SUM(`סכום`) FROM expenses";
-			ResultSet rset = st.executeQuery(query);
-			
-			rset.next();
-		    String sum = rset.getString(1);
-            
-            lblNewLabel_9.setText(sum);
-			
-		} catch (SQLException e) {
-			
-			   e.printStackTrace();
-	    }
-
 		ImageIcon pic1 = new ImageIcon(LogInWindow.class.getResource("conimgs/finance.jpg"));
 		Image tempImage1 = pic1.getImage();
 		Image Imagetemp1 = tempImage1.getScaledInstance(lblNewLabel_7.getWidth(),lblNewLabel_7.getHeight(),Image.SCALE_DEFAULT);
