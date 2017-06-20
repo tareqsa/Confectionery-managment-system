@@ -9,7 +9,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
-import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
 import net.proteanit.sql.DbUtils;
@@ -57,7 +56,6 @@ public class ShowInsertExpenses extends JFrame
 	
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
-	Connection conn1;
 	private JTable table;
 	
 	
@@ -112,18 +110,16 @@ public class ShowInsertExpenses extends JFrame
 				{
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
-					conn1 = (Connection) Driver.getConnection();
 					String query = "INSERT INTO `expenses`(`תאריך ושעה`, `תיאור הוצאה`, `סכום`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "') ";
 					try
 					{
-						Statement stt = (Statement) conn1.createStatement();
+						Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 						stt.executeUpdate(query);
 						String groupQuery = "SELECT *  FROM expenses GROUP BY `תאריך ושעה` ";
-						Statement grstat = (Statement) conn1.createStatement();
+						Statement grstat = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 						ResultSet myRs = grstat.executeQuery(groupQuery);
 						table.setModel(DbUtils.resultSetToTableModel(myRs));
 
-						//Driver.viewTable("expenses", table, conn1);
 						
 						DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 						centerRenderr.setHorizontalAlignment(JLabel.CENTER);
@@ -132,25 +128,16 @@ public class ShowInsertExpenses extends JFrame
 						table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
 						table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
 						
-						/*
-						Statement stt1 = (Statement) conn1.createStatement();
-						String expensesSumQuery = "SELECT SUM(`סכום`) FROM expenses";
-						ResultSet expSumSet = stt1.executeQuery(expensesSumQuery);
-						
-						expSumSet.next();
-					    String sum = expSumSet.getString(1);
-			            
-			            lblNewLabel_7.setText(sum);
-						*/
-
+						JOptionPane.showMessageDialog(null, "ההוצאה נרשמה");
+						textField.setText("");
+						textField_1.setText("");
 						
 					}
 					catch (SQLException e) 
 					{
 						e.printStackTrace();
 					}
-					textField.setText("");
-					textField_1.setText("");
+					
 				
 				
 				
@@ -189,10 +176,10 @@ public class ShowInsertExpenses extends JFrame
 				    	String expID=(table.getModel().getValueAt(row, 0)).toString();
 						String epxenseId="מספר";
 						String query = "DELETE FROM `expenses` WHERE  `"+epxenseId+"`= '"+expID+"'";
-						Statement mStmt = (Statement) conn1.createStatement();
+						Statement mStmt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 						mStmt.executeUpdate(query);
 						
-						Driver.viewTable("expenses", table, conn1);
+						Driver.viewTable("expenses", table, Driver.getDatabaseDriver().conn);
 
 						DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 						centerRenderr.setHorizontalAlignment(JLabel.CENTER);
@@ -201,6 +188,8 @@ public class ShowInsertExpenses extends JFrame
 						table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
 						table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
 						
+						JOptionPane.showMessageDialog(null, "ההוצאה נמחקה");
+
 				    }
 				    
 				}
@@ -208,6 +197,7 @@ public class ShowInsertExpenses extends JFrame
 				{
 					ex.printStackTrace();
 				}
+
 				
 			}
 		});
@@ -251,7 +241,7 @@ public class ShowInsertExpenses extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות או גרש, רק מספרים" );
 				}
 			}
 			@Override
@@ -279,6 +269,17 @@ public class ShowInsertExpenses extends JFrame
 			{
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton.doClick();
+			}
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{
+				char c = e.getKeyChar();
+				if( c == 39)
+				{
+					e.consume();
+					getToolkit().beep();
+				    JOptionPane.showMessageDialog(null,"אין להקליד גרש" );
+				}
 			}
 		});
 		textField.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -328,8 +329,7 @@ public class ShowInsertExpenses extends JFrame
 		
 		lblNewLabel_4.setText(ConMainActivity.username);
 		
-		conn1 = (Connection) Driver.getConnection();
-		Driver.viewTable("expenses", table, conn1);
+		Driver.viewTable("expenses", table, Driver.getDatabaseDriver().conn);
 		
 		DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 		centerRenderr.setHorizontalAlignment(JLabel.CENTER);

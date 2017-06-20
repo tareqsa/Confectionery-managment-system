@@ -1,6 +1,5 @@
 
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.text.DateFormat;
@@ -21,7 +20,6 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,7 +43,6 @@ public class LogInWindow extends JFrame
 	private JLabel lblNewLabel_5;
 	private JPasswordField passwordField;
 	private JButton btnNewButton;
-	Connection conn1;
 
 	/**
 	 * Launch the application.
@@ -96,24 +93,29 @@ public class LogInWindow extends JFrame
 				
 				String user = textField.getText();
 				String pass = passwordField.getText();
+				
+
+				
 				boolean ok=false;
 			
 				
 				try
 				{
-					conn1 = Driver.getConnection(); 
-					Statement stat = (Statement) conn1.createStatement();
+					//conn1 = Driver.getConnection(); 
+					Statement stat = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 				    String loginQuery="Select * FROM login ";
 				    ResultSet rs = stat.executeQuery(loginQuery);
 				    while(rs.next())
 				    {
-				    	if(user.equals(rs.getString("userName"))&& (pass.equals(rs.getString("Password"))))
+				    	if(user.equals(rs.getString("userName")) && pass.equals(rs.getString("Password")))
 				    	{
 				    			ok=true;
 				    			ConMainActivity.username = rs.getString("userName");
+				    			ConMainActivity.userType = rs.getString("permission");
+				    			WorkScheduleWindow.userType = rs.getString("permission");
 				    			break;    
 				    	}
-				    		
+				    	
 				    }
 				    if(ok)
 			    	{
@@ -125,7 +127,6 @@ public class LogInWindow extends JFrame
 					    JOptionPane.showMessageDialog(null,"שם משתמש או סיסמה שגויים!" ); 
 				    }
 				    stat.close();
-				    conn1.close();
 				    	
 				}		  
 				catch(SQLException ex)
@@ -164,6 +165,17 @@ public class LogInWindow extends JFrame
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton.doClick();
 			}
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{
+				char c = e.getKeyChar();
+				if( c == 39)
+				{
+					e.consume();
+					getToolkit().beep();
+				    JOptionPane.showMessageDialog(null,"אין להקליד גרש" );
+				}
+			}
 		});
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		passwordField.setBounds(118, 136, 137, 30);
@@ -189,6 +201,17 @@ public class LogInWindow extends JFrame
 			{
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton.doClick();
+			}
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{
+				char c = e.getKeyChar();
+				if( c == 39)
+				{
+					e.consume();
+					getToolkit().beep();
+				    JOptionPane.showMessageDialog(null,"אין להקליד גרש" );
+				}
 			}
 		});
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 13));

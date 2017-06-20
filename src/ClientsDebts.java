@@ -10,7 +10,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
-import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
 import java.awt.Toolkit;
@@ -62,7 +61,6 @@ public class ClientsDebts extends JFrame
 	
 	
 	
-	Connection conn1;
 	
 	
 
@@ -181,7 +179,7 @@ public class ClientsDebts extends JFrame
 				    }
 				    else if (response == JOptionPane.YES_OPTION) 
 				    {
-						Statement stt = (Statement) conn1.createStatement();
+						Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 
 				    	String deleteDQuery = "DELETE FROM `debtspayments` WHERE   `מספר חוב` = "+debtId+"";
 						stt.executeUpdate(deleteDQuery);
@@ -189,7 +187,7 @@ public class ClientsDebts extends JFrame
 				    	String deleteCQuery = "DELETE FROM `clientsdebts` WHERE   `מספר חוב` = "+debtId+"";
 						stt.executeUpdate(deleteCQuery);
 						
-						Driver.viewTable("clientsdebts", table, conn1);
+						Driver.viewTable("clientsdebts", table, Driver.getDatabaseDriver().conn);
 						DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 						centerRenderr.setHorizontalAlignment(JLabel.CENTER);
 						table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
@@ -198,6 +196,9 @@ public class ClientsDebts extends JFrame
 						table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
 						table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
 						table.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
+						
+						JOptionPane.showMessageDialog(null, "החוב נמחק");
+
 					
 						
 				    }
@@ -206,9 +207,10 @@ public class ClientsDebts extends JFrame
 				{
 					// TODO: handle exception
 				}
+
 				
 				
-				}
+			}
 			
 		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -233,9 +235,9 @@ public class ClientsDebts extends JFrame
 					
 					try 
 					{
-							Statement stt = (Statement) conn1.createStatement();
+							Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 							stt.executeUpdate(debtsQuery);
-							Driver.viewTable("clientsdebts", table, conn1);
+							Driver.viewTable("clientsdebts", table, Driver.getDatabaseDriver().conn);
 							DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 							centerRenderr.setHorizontalAlignment(JLabel.CENTER);
 							table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
@@ -244,6 +246,10 @@ public class ClientsDebts extends JFrame
 							table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
 							table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
 							table.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
+							
+							JOptionPane.showMessageDialog(null, "החוב נרשם");
+							textField.setText("");
+							textField_1.setText("");
 					
 						
 					} 
@@ -251,8 +257,7 @@ public class ClientsDebts extends JFrame
 					{
 						e.printStackTrace();
 					}
-					textField.setText("");
-					textField_1.setText("");
+					
 					
 					
 					
@@ -282,7 +287,7 @@ public class ClientsDebts extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" ); 
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות או גרש, רק מספרים" ); 
 
 					
 				}
@@ -307,11 +312,11 @@ public class ClientsDebts extends JFrame
 			public void keyTyped(KeyEvent e)
 			{
 				char c = e.getKeyChar();
-				if(Character.isDigit(c))
+				if(Character.isDigit(c) || c == 39)
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים  או גרש, רק אותיות" );
 				}
 			}
 		});
@@ -367,8 +372,7 @@ public class ClientsDebts extends JFrame
 		
 		lblNewLabel_4.setText(ConMainActivity.username);
 		
-		conn1 = (Connection) Driver.getConnection();
-		Driver.viewTable("clientsdebts", table, conn1);
+		Driver.viewTable("clientsdebts", table, Driver.getDatabaseDriver().conn);
 		DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 		centerRenderr.setHorizontalAlignment(JLabel.CENTER);
 		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);

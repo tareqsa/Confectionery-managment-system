@@ -20,7 +20,6 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.Color;
 
-import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
@@ -45,7 +44,6 @@ public class ShowProfit extends JFrame
 	
 	private JButton btnNewButton;
 	
-	Connection conn1;
 	private JLabel lblNewLabel_8;
 	private JLabel lblNewLabel_9;
 	private JLabel lblNewLabel_10;
@@ -183,10 +181,9 @@ public class ShowProfit extends JFrame
 						String expPeriodSumQuery = "SELECT SUM(`סכום`) FROM `expenses` WHERE  `תאריך ושעה` BETWEEN '"+incExpStDate+"' AND '"+incExpEnDate+"'";
 						String vatQuery = "SELECT ערך FROM `dynamic` WHERE `שם משתנה` = 'מעמ'  ";
 	
-						conn1 = (Connection) Driver.getConnection();
 						try
 						{
-							Statement stt = (Statement) conn1.createStatement();
+							Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 							ResultSet incSet = stt.executeQuery(incPeriodSumQuery);
 							incSet.next();
 							float incSum = incSet.getFloat(1);

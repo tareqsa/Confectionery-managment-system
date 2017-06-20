@@ -29,7 +29,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
-import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
 import net.proteanit.sql.DbUtils;
@@ -62,7 +61,6 @@ public class PayedDebts extends JFrame
 	public static float stillNotPayed;
 	public static int debtNum;
 	
-	Connection conn1;
 	
 
 	/**
@@ -154,12 +152,11 @@ public class PayedDebts extends JFrame
 						 
 							try
 							{
-								conn1 = (Connection) Driver.getConnection();
-								Statement stt = (Statement) conn1.createStatement();
+								Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 						 
 								String queryUp="UPDATE `clientsdebts` SET `שולם`="+pSum+",`לא שולם`="+stillNotPayed+" WHERE `מספר חוב` = "+debtNum+"";
 								stt.executeUpdate(queryUp);
-								Driver.viewTable("clientsdebts", ClientsDebts.table, conn1);
+								Driver.viewTable("clientsdebts", ClientsDebts.table, Driver.getDatabaseDriver().conn);
 								
 								DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 								centerRenderr.setHorizontalAlignment(JLabel.CENTER);
@@ -184,13 +181,14 @@ public class PayedDebts extends JFrame
 								table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
 								table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
 							
-							
-						
+								JOptionPane.showMessageDialog(null, "התשלום נמחק והחוב עודכן");
+
 							}
 							catch (Exception e)
 							{
 								// TODO: handle exception
 							}
+
 					}
 				}
 				catch (Exception e)
@@ -231,8 +229,7 @@ public class PayedDebts extends JFrame
 								
 								try 
 								{
-									conn1 = (Connection) Driver.getConnection();
-									Statement stt = (Statement) conn1.createStatement();
+									Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 									stt.executeUpdate(debtpayedQuery);
 									
 									String query = " SELECT * FROM `debtspayments` WHERE `מספר חוב` = "+debtNum+"";
@@ -248,16 +245,25 @@ public class PayedDebts extends JFrame
 									table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
 									
 									stt.executeUpdate(queryUp);
-									Driver.viewTable("clientsdebts", ClientsDebts.table, conn1);
+									Driver.viewTable("clientsdebts", ClientsDebts.table, Driver.getDatabaseDriver().conn);
 									
+									ClientsDebts.table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+									ClientsDebts.table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+									ClientsDebts.table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+									ClientsDebts.table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+									ClientsDebts.table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+									ClientsDebts.table.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
+									
+									JOptionPane.showMessageDialog(null, "התשלום נרשם והחוב עודכן");
+									textField.setText("");
+									textField_1.setText("");
 									
 								} 
 								catch (SQLException e) 
 								{
 									e.printStackTrace();
 								}
-								textField.setText("");
-								textField_1.setText("");
+								
 						}
 						else
 						{
@@ -291,7 +297,7 @@ public class PayedDebts extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" ); 
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות או גרש, רק מספרים" ); 
 
 					
 				}
@@ -316,11 +322,11 @@ public class PayedDebts extends JFrame
 			public void keyTyped(KeyEvent e)
 			{
 				char c = e.getKeyChar();
-				if(Character.isDigit(c))
+				if(Character.isDigit(c) || c == 39)
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים או גרש, רק אותיות" );
 				}
 			}
 		});
@@ -377,11 +383,10 @@ public class PayedDebts extends JFrame
 		lblNewLabel_4.setText(ConMainActivity.username);
 		
 		
-		conn1 = (Connection) Driver.getConnection();
 		try 
 		{
 			String query = " SELECT * FROM `debtspayments` WHERE `מספר חוב` = "+debtNum+"";
-			Statement stt = (Statement) conn1.createStatement();
+			Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 			ResultSet rs = stt.executeQuery(query);
 			table.setModel(DbUtils.resultSetToTableModel(rs));
 			DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();

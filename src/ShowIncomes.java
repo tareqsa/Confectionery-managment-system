@@ -12,7 +12,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
-import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
 import net.proteanit.sql.DbUtils;
@@ -45,7 +44,6 @@ public class ShowIncomes extends JFrame
 	private JLabel lblNewLabel_4;
 	
 	private JTable table;
-	Connection conn1;
 	private JTable table_1;
 	private JScrollPane scrollPane_1;
 	
@@ -110,12 +108,11 @@ public class ShowIncomes extends JFrame
 		        Point p = e.getPoint();
 		        int row = table1.rowAtPoint(p);
 		        String date = table1.getModel().getValueAt(row, 0).toString();
-		        System.out.println(date);
+		        
 		        String query = "  SELECT `שם פרטי`,`שם משפחה`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`  FROM orders WHERE `תאריך`= '"+date+"'";
-		        System.out.println(query);
 				try 
 				{
-					Statement stt2 = (Statement) conn1.createStatement();
+					Statement stt2 = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 					ResultSet rset2 = stt2.executeQuery(query);
 					table.setModel(DbUtils.resultSetToTableModel(rset2));
 					
@@ -188,21 +185,21 @@ public class ShowIncomes extends JFrame
 		lblNewLabel = new JLabel("");
 		lblNewLabel.setBounds(0, 0, 994, 571);
 		contentPane.add(lblNewLabel);
+		
 		ImageIcon pic = new ImageIcon(ShowIncomes.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
-		ImageIcon image= new ImageIcon(tempImage);
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
+		ImageIcon image= new ImageIcon(Imagetemp);
 		lblNewLabel.setIcon(image);
 		
 		
 		lblNewLabel_4.setText(ConMainActivity.username);
 		
-		conn1 = (Connection) Driver.getConnection();
 		
-		String query = "  SELECT `תאריך`  FROM orders GROUP BY `תאריך` ";
+		String query = "  SELECT `תאריך`  FROM orders GROUP BY `תאריך` DESC ";
 		try 
 		{
-			Statement stt1 = (Statement) conn1.createStatement();
+			Statement stt1 = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 			ResultSet rset = stt1.executeQuery(query);
 			table_1.setModel(DbUtils.resultSetToTableModel(rset));
 			

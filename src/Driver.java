@@ -1,12 +1,7 @@
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-
-import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.proteanit.sql.DbUtils;
@@ -14,10 +9,11 @@ import net.proteanit.sql.DbUtils;
 
 public class Driver 
 {
-
-	public static Connection getConnection()
+	public Connection conn = null;
+	public static Driver driver;
+	
+	private Driver()
 	{
-		Connection conn = null;
 		String url = "jdbc:mysql://localhost:3306/rachelconfectionery?useUnicode=yes&characterEncoding=UTF-8";
 		String user = "root";
 		String password = "";
@@ -25,15 +21,25 @@ public class Driver
 
 		try
 		{
-			conn = DriverManager.getConnection(url, user,password);
+			this.conn = DriverManager.getConnection(url, user,password);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();	
 		}
-		return conn;
 
+	
 	}
+	public static Driver getDatabaseDriver()
+	{
+		if(driver == null )
+		{
+			driver = new Driver();
+		}
+		return driver;
+	}
+	
+	
 	public static void viewTable(String tableName , JTable protable , Connection Conn)
 	{
 		try

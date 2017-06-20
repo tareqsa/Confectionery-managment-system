@@ -28,7 +28,6 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JEditorPane;
 import java.awt.SystemColor;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -58,7 +57,6 @@ public class OrdersWindow extends JFrame
 	private JLabel lblNewLabel_3;
     private JLabel lblNewLabel_4;
     private JLabel lblNewLabel_5;
-    private JLabel lblNewLabel_6;
     private JLabel lblNewLabel_7;
     private JLabel lblNewLabel_8;
     private JLabel lblNewLabel_9;
@@ -76,17 +74,16 @@ public class OrdersWindow extends JFrame
 	public static JTextField textField;
 	public static JTextField textField_1;
 	public static JTextField textField_2;
-	private JTextField textField_3;
+	public static JTextField textField_3;
 	private JTextField textField_4;
 	private JTextField textField_5;
 	public static JTextField textField_6;
 	private JTextField textField_7;
 	
 	private JTable table1;
-	Connection conn1;
-	//Connection conn2;
 	
 	private JButton btnNewButton_2;
+	private JButton btnNewButton_3;
 	
 
 
@@ -157,12 +154,16 @@ public class OrdersWindow extends JFrame
 				    {
 				    	String orderID=(table1.getModel().getValueAt(row, 0)).toString();
 						String orrderId="מספר הזמנה";
-						String query = "DELETE FROM `orders` WHERE  `"+orrderId+"`= '"+orderID+"'";
-						Statement myStmt = (Statement) conn1.createStatement();
-						myStmt.executeUpdate(query);
-						
-						Driver.viewTable("orders", table1, conn1);
+						String delQuery = "DELETE FROM `orders` WHERE  `"+orrderId+"`= '"+orderID+"'";
+						String orderQuery1 = "SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM orders";
 
+						Statement myStmt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
+						myStmt.executeUpdate(delQuery);
+						
+						Statement stt1 = (Statement) Driver.getDatabaseDriver().conn.createStatement();
+						ResultSet rset2 = stt1.executeQuery(orderQuery1);
+						table1.setModel(DbUtils.resultSetToTableModel(rset2));
+								
 						DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 						centerRenderr.setHorizontalAlignment(JLabel.CENTER);
 						table1.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
@@ -175,6 +176,10 @@ public class OrdersWindow extends JFrame
 						table1.getColumnModel().getColumn(7).setCellRenderer(centerRenderr);
 						table1.getColumnModel().getColumn(8).setCellRenderer(centerRenderr);
 						table1.getColumnModel().getColumn(9).setCellRenderer(centerRenderr);
+						
+						JOptionPane.showMessageDialog(null, "ההזמנה נמחקה");
+
+					
 				    }
 				    
 				}
@@ -183,6 +188,7 @@ public class OrdersWindow extends JFrame
 				{
 					ex.printStackTrace();
 				}
+
 			}
 		});
 		
@@ -200,14 +206,26 @@ public class OrdersWindow extends JFrame
 			public void keyTyped(KeyEvent e) 
 			{
 				char c = e.getKeyChar();
-				if(Character.isDigit(c))
+				if(Character.isDigit(c) || c == 39)
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים או גרש, רק אותיות" );
 				}
 			}
 		});
+		
+		btnNewButton_3 = new JButton("\u05DE\u05D5\u05E6\u05E8");
+		btnNewButton_3.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				ProductChooser pc = new ProductChooser();
+				pc.setVisible(true);
+			}
+		});
+		btnNewButton_3.setBounds(1006, 136, 78, 25);
+		contentPane.add(btnNewButton_3);
 		textField_1.setBounds(690, 105, 90, 22);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
@@ -241,7 +259,7 @@ public class OrdersWindow extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות או גרש, רק מספרים" );
 				}
 			}
 		});
@@ -274,7 +292,7 @@ public class OrdersWindow extends JFrame
 				{
 					arg0.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" ); 
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות או גרש, רק מספרים" ); 
 
 					
 				}
@@ -315,40 +333,48 @@ public class OrdersWindow extends JFrame
 					LocalDateTime now = LocalDateTime.now();
 					LocalDateTime now1 = LocalDateTime.now();
 
-					String query = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `מה הוזמן`, `כמות בקילוגרם`,`עלות`, `טלפון`, `מבצע ההזמנה`,`תאריך`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_7.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "','" + dtf1.format(now1) + "') ";
+					String insQuery = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `מה הוזמן`, `כמות בקילוגרם`,`עלות`, `טלפון`, `מבצע ההזמנה`,`תאריך`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_7.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "','" + dtf1.format(now1) + "') ";
 					//String query = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `מה הוזמן`, `כמות בקילוגרם`,`עלות`, `טלפון`, `מבצע ההזמנה`) VALUES ('" + now + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_7.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "') ";
+					String orderQuery = "SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM orders";
 
 					try 
 					{
-							Statement stt = (Statement) conn1.createStatement();
-							stt.executeUpdate(query);
-							Driver.viewTable("orders", table1, conn1);
-							DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
-							centerRenderr.setHorizontalAlignment(JLabel.CENTER);
-							table1.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
-							table1.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
-							table1.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
-							table1.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
-							table1.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
-							table1.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
-							table1.getColumnModel().getColumn(6).setCellRenderer(centerRenderr);
-							table1.getColumnModel().getColumn(7).setCellRenderer(centerRenderr);
-							table1.getColumnModel().getColumn(8).setCellRenderer(centerRenderr);
-							table1.getColumnModel().getColumn(9).setCellRenderer(centerRenderr);
+							Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
+							stt.executeUpdate(insQuery);
+							
+						
+								Statement stt2 = (Statement) Driver.getDatabaseDriver().conn.createStatement();
+								ResultSet rset2 = stt2.executeQuery(orderQuery);
+								table1.setModel(DbUtils.resultSetToTableModel(rset2));
+										
+								DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+								centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+								table1.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+								table1.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+								table1.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+								table1.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+								table1.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+								table1.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
+								table1.getColumnModel().getColumn(6).setCellRenderer(centerRenderr);
+								table1.getColumnModel().getColumn(7).setCellRenderer(centerRenderr);
+								table1.getColumnModel().getColumn(8).setCellRenderer(centerRenderr);
+								table1.getColumnModel().getColumn(9).setCellRenderer(centerRenderr);	
+							
+								JOptionPane.showMessageDialog(null, "ההזמנה נרשמה");
+								textField.setText("");
+								textField_1.setText("");
+								textField_2.setText("");
+								textField_3.setText("");
+								textField_4.setText("");
+								textField_6.setText("");
+								textField_7.setText("");
 
 					} 
 					catch (SQLException e)
 						{
 							e.printStackTrace();
 						}
-				
-						textField.setText("");
-						textField_1.setText("");
-						textField_2.setText("");
-						textField_3.setText("");
-						textField_4.setText("");
-						textField_6.setText("");
-						textField_7.setText("");
+
 
 				}
 			}
@@ -400,6 +426,17 @@ public class OrdersWindow extends JFrame
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton_1.doClick();
 			}
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{
+				char c = e.getKeyChar();
+				if( c == 39)
+				{
+					e.consume();
+					getToolkit().beep();
+				    JOptionPane.showMessageDialog(null,"אין להקליד גרש" );
+				}
+			}
 		});
 		textField_5.setFont(new Font("Tahoma", Font.BOLD, 13));
 		textField_5.setForeground(Color.BLACK);
@@ -430,7 +467,7 @@ public class OrdersWindow extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות או גרש, רק מספרים" );
 				}
 			}
 		});
@@ -446,6 +483,7 @@ public class OrdersWindow extends JFrame
 		contentPane.add(lblNewLabel_7);
 		
 		textField_3 = new JTextField();
+		textField_3.setEditable(false);
 		textField_3.addKeyListener(new KeyAdapter() 
 		{
 			@Override
@@ -458,24 +496,18 @@ public class OrdersWindow extends JFrame
 			public void keyTyped(KeyEvent e)
 			{
 				char c = e.getKeyChar();
-				if(Character.isDigit(c))
+				if(Character.isDigit(c) || c == 39)
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים או גרש, רק אותיות" );
 				}
 			}
 		});
 		textField_3.setFont(new Font("Tahoma", Font.BOLD, 13));
-		textField_3.setBounds(920, 138, 90, 22);
+		textField_3.setBounds(909, 138, 94, 22);
 		contentPane.add(textField_3);
 		textField_3.setColumns(10);
-		
-		lblNewLabel_6 = new JLabel("\u05DE\u05D4 \u05D4\u05D5\u05D6\u05DE\u05DF:");
-		lblNewLabel_6.setForeground(Color.WHITE);
-		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNewLabel_6.setBounds(1015, 137, 80, 22);
-		contentPane.add(lblNewLabel_6);
 		
 		textField_2 = new JTextField();
 		textField_2.addKeyListener(new KeyAdapter() 
@@ -490,11 +522,11 @@ public class OrdersWindow extends JFrame
 			public void keyTyped(KeyEvent e)
 			{
 				char c = e.getKeyChar();
-				if(Character.isDigit(c))
+				if(Character.isDigit(c) || c == 39)
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים או גרש, רק אותיות" );
 				}
 			}
 		});
@@ -530,11 +562,11 @@ public class OrdersWindow extends JFrame
 			public void keyTyped(KeyEvent e)
 			{
 				char c = e.getKeyChar();
-				if(Character.isDigit(c))
+				if(Character.isDigit(c) || c == 39)
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים או גרש, רק אותיות" );
 				}
 			}
 		});
@@ -593,11 +625,10 @@ public class OrdersWindow extends JFrame
 		
 		
 		setclk();
-		conn1 = Driver.getConnection();
 		String orderQuery = "SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM orders";
 		try
 		{
-			Statement stt1 = (Statement) conn1.createStatement();
+			Statement stt1 = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 			ResultSet rset2 = stt1.executeQuery(orderQuery);
 			table1.setModel(DbUtils.resultSetToTableModel(rset2));
 					

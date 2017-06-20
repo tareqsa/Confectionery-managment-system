@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import com.mysql.jdbc.Statement;
@@ -25,7 +26,6 @@ import javax.swing.JEditorPane;
 import java.awt.SystemColor;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.sql.Connection;
 
 import javax.swing.UIManager;
 import javax.swing.JTable;
@@ -52,9 +52,7 @@ public class InventoryWindow extends JFrame
 
 	public static JTable table;
 	
-	Connection conn1;
 	private JButton btnNewButton;
-	private JButton btnNewButton_1;
 	private JButton btnNewButton_2;
 	
 	
@@ -96,57 +94,6 @@ public class InventoryWindow extends JFrame
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		btnNewButton_1 = new JButton("\u05DE\u05D7\u05E7 \u05DE\u05E8\u05DB\u05D9\u05D1");
-		btnNewButton_1.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				int row = table.getSelectedRow();
-
-				
-				int response = 0;
-				try
-				{
-					if(row<0)
-					{
-						JOptionPane.showMessageDialog(null, "בחר מרכיב", "row selection", JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-					else
-					{
-						 response = JOptionPane.showConfirmDialog(null, "האם אתה בטוח שאתה רוצה להמשיך?", "Confirm",
-							        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-					}
-				    if (response == JOptionPane.NO_OPTION) 
-				    {
-				    	return;
-				    }
-				    else if (response == JOptionPane.YES_OPTION) 
-				    {
-				    	String invID=(table.getModel().getValueAt(row, 0)).toString();
-						String inventId="מספר מרכיב";
-						String query = "DELETE FROM `inventory` WHERE  `"+inventId+"`= '"+invID+"'";
-						Statement myStmt = (Statement) conn1.createStatement();
-						myStmt.executeUpdate(query);
-						
-						Driver.viewTable("inventory", table, conn1);
-
-						DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
-						centerRenderr.setHorizontalAlignment(JLabel.CENTER);
-						table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
-						table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
-						table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
-						
-				    }
-				    
-				}
-				catch(Exception ex)
-				{
-					ex.printStackTrace();
-				}
-			}
-		});
-		
 		btnNewButton_2 = new JButton("\u05E2\u05D3\u05DB\u05DF \u05DE\u05E8\u05DB\u05D9\u05D1");
 		btnNewButton_2.addActionListener(new ActionListener()
 		{
@@ -165,15 +112,17 @@ public class InventoryWindow extends JFrame
 						String ingrAmount = table.getModel().getValueAt(row, 2).toString();
 						String query = "UPDATE `inventory` SET `שם מרכיב`='"+ingrName+"',`כמות במלאי בקג`='"+ingrAmount+"' WHERE `מספר מרכיב`='"+ingrID+"'";
 						
-						Statement myStmt = (Statement) conn1.createStatement();
+						Statement myStmt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 						myStmt.executeUpdate(query);
-						Driver.viewTable("inventory", table, conn1);
-
+						Driver.viewTable("inventory", table, Driver.getDatabaseDriver().conn);
+			
 						DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 						centerRenderr.setHorizontalAlignment(JLabel.CENTER);
 						table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
 						table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
 						table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+						
+						JOptionPane.showMessageDialog(null, "המרכיב עודכן");
 					}
 						
 				}
@@ -186,11 +135,8 @@ public class InventoryWindow extends JFrame
 			}
 		});
 		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton_2.setBounds(731, 115, 111, 28);
+		btnNewButton_2.setBounds(832, 115, 111, 28);
 		contentPane.add(btnNewButton_2);
-		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton_1.setBounds(852, 115, 111, 28);
-		contentPane.add(btnNewButton_1);
 		
 		btnNewButton = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05DE\u05E8\u05DB\u05D9\u05D1");
 		btnNewButton.addActionListener(new ActionListener() 
@@ -222,7 +168,13 @@ public class InventoryWindow extends JFrame
 		contentPane.add(scrollPane);
 		
 
-		table = new JTable();
+		table = new JTable()
+		{
+			public boolean isCellEditable(int row, int column) 
+			{
+				return column==2;
+			}
+		};
 		table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		scrollPane.setViewportView(table);
@@ -266,9 +218,8 @@ public class InventoryWindow extends JFrame
 		
 		
 		lblNewLabel_4.setText(ConMainActivity.username);
-
-		conn1 = Driver.getConnection();
-		Driver.viewTable("inventory", table, conn1);
+		Driver.viewTable("inventory", table, Driver.getDatabaseDriver().conn);
+		
 		
 		DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 		centerRenderr.setHorizontalAlignment(JLabel.CENTER);

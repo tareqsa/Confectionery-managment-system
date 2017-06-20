@@ -28,7 +28,6 @@ import javax.swing.JEditorPane;
 import java.awt.SystemColor;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -71,7 +70,6 @@ public class ClientsWindow extends JFrame
 	private JTable table;
 	private JScrollPane scrollPane;
 	
-	Connection conn1 ;
 	
 	public static String firstName;
 	public static String lastName;
@@ -124,6 +122,17 @@ public class ClientsWindow extends JFrame
 			{
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton.doClick();
+			}
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{
+				char c = e.getKeyChar();
+				if( c == 39)
+				{
+					e.consume();
+					getToolkit().beep();
+				    JOptionPane.showMessageDialog(null,"אין להקליד גרש" );
+				}
 			}
 		});
 		textField.setForeground(Color.LIGHT_GRAY);
@@ -215,8 +224,7 @@ public class ClientsWindow extends JFrame
 				String search = textField.getText();
 				try
 				{
-					conn1 = Driver.getConnection();
-					Statement st = (Statement) conn1.createStatement();
+					Statement st = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 				    String searchQuery="SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM `orders` WHERE `שם פרטי` = '"+search+"' OR `שם משפחה` = '"+search+"' OR `מבצע ההזמנה` = '"+search+"' OR `טלפון` = '"+search+"'  ";
 				    
 				    int rowsCounter=0;

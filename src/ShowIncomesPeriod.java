@@ -34,7 +34,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
@@ -57,7 +56,6 @@ public class ShowIncomesPeriod extends JFrame
 	private JButton btnNewButton;
 	
 	
-	Connection conn1;
 	private JLabel lblNewLabel_9;
 	private JLabel lblNewLabel_10;
 	private JLabel lblNewLabel_11;
@@ -263,11 +261,10 @@ public class ShowIncomesPeriod extends JFrame
 						String incPeriodQuery = "SELECT  `תאריך ושעה`, `שם פרטי`, `שם משפחה`, `מבצע ההזמנה`, `עלות` FROM `orders` WHERE  `תאריך ושעה` BETWEEN '"+sdate+"' AND '"+edate+"'"; 
 						String incPeriodSumQuery = "SELECT SUM(`עלות`) FROM `orders` WHERE  `תאריך ושעה` BETWEEN '"+sdate+"' AND '"+edate+"'";
 						String vatQuery = "SELECT ערך FROM `dynamic` WHERE `שם משתנה` = 'מעמ'  ";
-						conn1 = (Connection) Driver.getConnection();
 						try 
 						{
 						
-							Statement stt = (Statement) conn1.createStatement();
+							Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 							ResultSet rset = stt.executeQuery(incPeriodQuery);
 							int rowsCounter=0;
 		
@@ -310,6 +307,7 @@ public class ShowIncomesPeriod extends JFrame
 								table.setModel(DbUtils.resultSetToTableModel(rset));
 								lblNewLabel_8.setText("0");
 								lblNewLabel_11.setText("0");
+								lblNewLabel_15.setText("0");
 								JOptionPane.showMessageDialog(null,"לא נמצאו נתונים !!" );
 							}
 							

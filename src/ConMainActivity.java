@@ -8,7 +8,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-
+import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -19,12 +19,16 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
+import javax.swing.JEditorPane;
+import java.awt.SystemColor;
 
 
 public class ConMainActivity extends JFrame 
 {
 
 	public static String username = "";
+	public static String userType = "";
+
 	private JPanel contentPane;
 
 	private JLabel lblNewLabel;
@@ -35,12 +39,13 @@ public class ConMainActivity extends JFrame
 	private JLabel lblNewLabel_5;
 
 
+	private JButton btnNewButton;
 	private JButton btnNewButton_1;
 	private JButton btnNewButton_2;
 	private JButton btnNewButton_3;
 	private JButton btnNewButton_4;
-	private JButton btnNewButton_5;
 	private JButton btnNewButton_6;
+	
 
 
 
@@ -74,7 +79,7 @@ public class ConMainActivity extends JFrame
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ConMainActivity.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05E8\u05D0\u05E9\u05D9");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 50, 638, 374);
+		//setBounds(100, 50, 638, 374);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -82,8 +87,11 @@ public class ConMainActivity extends JFrame
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setVisible(true);
+		
 
 		btnNewButton_1 = new JButton("\u05DE\u05D5\u05E6\u05E8\u05D9\u05DD");
+		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnNewButton_1.setIcon(null);
 		btnNewButton_1.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0) 
@@ -97,6 +105,7 @@ public class ConMainActivity extends JFrame
 		btnNewButton_1.setLocation(1125, 150);
 
 		btnNewButton_2 = new JButton("\u05D4\u05D6\u05DE\u05E0\u05D5\u05EA");
+		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnNewButton_2.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
@@ -111,6 +120,7 @@ public class ConMainActivity extends JFrame
 
 
 		btnNewButton_3 = new JButton("\u05DC\u05E7\u05D5\u05D7\u05D5\u05EA");
+		btnNewButton_3.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnNewButton_3.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e)
@@ -124,6 +134,7 @@ public class ConMainActivity extends JFrame
 		btnNewButton_3.setLocation(1125, 336);
 
 		btnNewButton_4 = new JButton("\u05DE\u05DC\u05D0\u05D9");
+		btnNewButton_4.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnNewButton_4.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0)
@@ -136,20 +147,8 @@ public class ConMainActivity extends JFrame
 		btnNewButton_4.setSize(226, 80);
 		btnNewButton_4.setLocation(1125, 428);
 
-		btnNewButton_5 = new JButton("\u05DB\u05E1\u05E4\u05D9\u05DD");
-		btnNewButton_5.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{
-
-				FinancialWindow newFrame = new FinancialWindow();
-				newFrame.setVisible(true);
-			}
-		});
-		btnNewButton_5.setSize(226, 80);
-		btnNewButton_5.setLocation(1125, 519);
-
-		btnNewButton_6 = new JButton("\u05E1\u05D9\u05D3\u05D5\u05E8");
+		btnNewButton_6 = new JButton("\u05E1\u05D9\u05D3\u05D5\u05E8 \u05E2\u05D1\u05D5\u05D3\u05D4");
+		btnNewButton_6.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnNewButton_6.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
@@ -160,7 +159,40 @@ public class ConMainActivity extends JFrame
 			}
 		});
 		btnNewButton_6.setSize(226, 80);
-		btnNewButton_6.setLocation(1125, 610);
+		btnNewButton_6.setLocation(1125, 520);
+		
+		btnNewButton = new JButton("\u05D7\u05DC\u05D5\u05DF \u05DE\u05E0\u05D4\u05DC");
+		btnNewButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				AdminPanel newFrame = new AdminPanel();
+				newFrame.setVisible(true);
+			}
+		});
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnNewButton.setBounds(1125, 611, 226, 80);
+		contentPane.add(btnNewButton);
+		if(userType.equals("ордм"))
+		{
+			btnNewButton.setVisible(true);
+		}
+		
+		else
+		{
+			btnNewButton.setVisible(false);
+
+		}	
+			
+			
+		
+		JEditorPane dtrpnRachelConfectionery = new JEditorPane();
+		dtrpnRachelConfectionery.setEditable(false);
+		dtrpnRachelConfectionery.setForeground(SystemColor.activeCaption);
+		dtrpnRachelConfectionery.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 70));
+		dtrpnRachelConfectionery.setText("Rachel confectionery");
+		dtrpnRachelConfectionery.setBounds(204, 53, 764, 80);
+		contentPane.add(dtrpnRachelConfectionery);
 
 		lblNewLabel_3 = new JLabel("");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -192,7 +224,6 @@ public class ConMainActivity extends JFrame
 		contentPane.add(btnNewButton_2);
 		contentPane.add(btnNewButton_3);
 		contentPane.add(btnNewButton_4);
-		contentPane.add(btnNewButton_5);
 		contentPane.add(btnNewButton_6);
 
 		lblNewLabel_1 = new JLabel("");
@@ -206,13 +237,14 @@ public class ConMainActivity extends JFrame
 		lblNewLabel_1.setIcon(image);
 
 		lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(0, 0, 1368, 705);
+		lblNewLabel.setBounds(0, 0, 1366, 715);
 
 		contentPane.add(lblNewLabel);
+		
 		ImageIcon pic1 = new ImageIcon(ConMainActivity.class.getResource("conimgs/background.jpg"));
 		Image tempImage1 = pic1.getImage();
-		ImageIcon image1= new ImageIcon(tempImage1);
 		Image Imagetemp1 = tempImage1.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
+		ImageIcon image1= new ImageIcon(Imagetemp1);
 		lblNewLabel.setIcon(image1);
 
 		lblNewLabel_5.setText(username);

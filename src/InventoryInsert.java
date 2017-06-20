@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
 import javax.swing.JLabel;
@@ -48,7 +47,6 @@ public class InventoryInsert extends JFrame
 	private JButton btnNewButton;
 	
 	
-	Connection conn1;
 	
 	
 	
@@ -107,26 +105,25 @@ public class InventoryInsert extends JFrame
 					String query = "INSERT INTO `inventory`(`שם מרכיב`, `כמות במלאי בקג`) VALUES ('" + textField.getText() + "','" + textField_1.getText() + "') ";
 					try 
 					{
-							conn1 = (Connection) Driver.getConnection();
-							Statement stat = (Statement) conn1.createStatement();
+							Statement stat = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 							stat.executeUpdate(query);
-							Driver.viewTable("inventory", InventoryWindow.table, conn1);
+							Driver.viewTable("inventory", InventoryWindow.table, Driver.getDatabaseDriver().conn);
 							DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 							centerRenderr.setHorizontalAlignment(JLabel.CENTER);
 							InventoryWindow.table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
 							InventoryWindow.table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
 							InventoryWindow.table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
 							
-							
+							JOptionPane.showMessageDialog(null, "המרכיב הוסף");
+							textField.setText("");
+							textField_1.setText("");
 						
 					} 
 					catch (SQLException exp) 
 					{
 						exp.printStackTrace();
 					}
-				
-						textField.setText("");
-						textField_1.setText("");
+					
 						
 				}
 				dispose();
@@ -153,7 +150,7 @@ public class InventoryInsert extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות או גרש, רק מספרים" );
 				}
 			}
 		});
@@ -175,11 +172,11 @@ public class InventoryInsert extends JFrame
 			public void keyTyped(KeyEvent e) 
 			{
 				char c = e.getKeyChar();
-				if(Character.isDigit(c))
+				if(Character.isDigit(c) || c == 39)
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים או גרש, רק אותיות" );
 				}
 			}
 		});
