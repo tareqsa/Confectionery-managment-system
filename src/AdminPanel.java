@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.EventQueue;
@@ -20,8 +19,6 @@ import java.awt.Toolkit;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.locks.AbstractQueuedLongSynchronizer;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 

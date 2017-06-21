@@ -186,7 +186,15 @@ public class ProductsWindow extends JFrame
 		scrollPane.setBounds(44, 129, 1025, 420);
 		contentPane.add(scrollPane);
 		
-		table = new JTable();
+		table = new JTable()
+		{
+			@Override
+			public boolean isCellEditable(int row, int column)
+			{
+				return false;
+			};
+			
+		};
 		table.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		JTableHeader Theader = table.getTableHeader();

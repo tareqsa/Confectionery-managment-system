@@ -35,6 +35,7 @@ import net.proteanit.sql.DbUtils;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class PayedDebts extends JFrame
 {
@@ -48,9 +49,9 @@ public class PayedDebts extends JFrame
 	private JLabel lblNewLabel_4;
 	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
-	
-	private JTextField textField;
 	private JTextField textField_1;
+	
+	private JComboBox comboBox;
 	
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
@@ -99,6 +100,15 @@ public class PayedDebts extends JFrame
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		comboBox = new JComboBox();
+		comboBox.setBounds(518, 171, 116, 20);
+		contentPane.add(comboBox);
+		comboBox.addItem("מזומן");
+		comboBox.addItem("אשראי");
+		comboBox.addItem("ציק");
+
+
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 112, 499, 448);
@@ -207,7 +217,7 @@ public class PayedDebts extends JFrame
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				if(textField.getText().equals("") || textField_1.getText().equals("") )
+				if( textField_1.getText().equals("") )
 				{
 				    JOptionPane.showMessageDialog(null,"עליך למלא את כל השדות!" ); 
 				    
@@ -216,59 +226,62 @@ public class PayedDebts extends JFrame
 				{
 				
 
-						if((stillNotPayed-(Float.parseFloat(textField_1.getText()))) > 0)
+						if((stillNotPayed-(Float.parseFloat(textField_1.getText()))) >= 0)
 						{
-						    	pSum = pSum + (Float.parseFloat(textField_1.getText()));
-						    	stillNotPayed = stillNotPayed - (Float.parseFloat(textField_1.getText()));
+							if((stillNotPayed-(Float.parseFloat(textField_1.getText()))) == 0)
+							{
+								JOptionPane.showMessageDialog(null, "החוב שולם במלואו");
+
+							}
+						    pSum = pSum + (Float.parseFloat(textField_1.getText()));
+						   	stillNotPayed = stillNotPayed - (Float.parseFloat(textField_1.getText()));
 						
-								DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-								LocalDateTime now = LocalDateTime.now();
-								String debtpayedQuery = "INSERT INTO `debtspayments`(`מספר חוב`, `תאריך ושעה`, `סוג תשלום`, `סכום ששולם`) VALUES ('" + debtNum  + "','" + dtf.format(now) + "','" + textField.getText() +"','" + textField_1.getText() + "')";
+							DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+							LocalDateTime now = LocalDateTime.now();
+							String debtpayedQuery = "INSERT INTO `debtspayments`(`מספר חוב`, `תאריך ושעה`, `סוג תשלום`, `סכום ששולם`) VALUES ('" + debtNum  + "','" + dtf.format(now) + "','" + comboBox.getSelectedItem().toString() +"','" + textField_1.getText() + "')";
+							
+							String queryUp="UPDATE `clientsdebts` SET `שולם`="+pSum+",`לא שולם`="+stillNotPayed+" WHERE `מספר חוב` = "+debtNum+"";
 								
-								String queryUp="UPDATE `clientsdebts` SET `שולם`="+pSum+",`לא שולם`="+stillNotPayed+" WHERE `מספר חוב` = "+debtNum+"";
-								
-								try 
-								{
-									Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
-									stt.executeUpdate(debtpayedQuery);
+							try 
+							{
+								Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
+								stt.executeUpdate(debtpayedQuery);
 									
-									String query = " SELECT * FROM `debtspayments` WHERE `מספר חוב` = "+debtNum+"";
-									ResultSet rs = stt.executeQuery(query);
-									table.setModel(DbUtils.resultSetToTableModel(rs));
-				
-									DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
-									centerRenderr.setHorizontalAlignment(JLabel.CENTER);
-									table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
-									table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
-									table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
-									table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
-									table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+								String query = " SELECT * FROM `debtspayments` WHERE `מספר חוב` = "+debtNum+"";
+								ResultSet rs = stt.executeQuery(query);
+								table.setModel(DbUtils.resultSetToTableModel(rs));
+			
+								DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+								centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+								table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+								table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+								table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+								table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+								table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
 									
-									stt.executeUpdate(queryUp);
-									Driver.viewTable("clientsdebts", ClientsDebts.table, Driver.getDatabaseDriver().conn);
+								stt.executeUpdate(queryUp);
+								Driver.viewTable("clientsdebts", ClientsDebts.table, Driver.getDatabaseDriver().conn);
 									
-									ClientsDebts.table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
-									ClientsDebts.table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
-									ClientsDebts.table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
-									ClientsDebts.table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
-									ClientsDebts.table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
-									ClientsDebts.table.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
+								ClientsDebts.table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+								ClientsDebts.table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+								ClientsDebts.table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+								ClientsDebts.table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+								ClientsDebts.table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+								ClientsDebts.table.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
 									
-									JOptionPane.showMessageDialog(null, "התשלום נרשם והחוב עודכן");
-									textField.setText("");
-									textField_1.setText("");
+								JOptionPane.showMessageDialog(null, "התשלום נרשם והחוב עודכן");
+								textField_1.setText("");
 									
-								} 
-								catch (SQLException e) 
-								{
-									e.printStackTrace();
-								}
+							} 
+							catch (SQLException e) 
+							{
+								e.printStackTrace();
+							}
 								
 						}
 						else
 						{
 							JOptionPane.showMessageDialog(null,"או שהחוב שולם במלואו או שאתה מנסה להכניס תשלום גדול מהחוב !!" );
-							textField.setText("");
 							textField_1.setText("");
 						}
 				}
@@ -307,32 +320,6 @@ public class PayedDebts extends JFrame
 		textField_1.setBounds(518, 213, 116, 20);
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
-		
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.BOLD, 13));
-		textField.addKeyListener(new KeyAdapter() 
-		{
-			@Override
-			public void keyPressed(KeyEvent arg0) 
-			{
-				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
-					btnNewButton.doClick();
-			}
-			@Override
-			public void keyTyped(KeyEvent e)
-			{
-				char c = e.getKeyChar();
-				if(Character.isDigit(c) || c == 39)
-				{
-					e.consume();
-					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים או גרש, רק אותיות" );
-				}
-			}
-		});
-		textField.setBounds(518, 170, 116, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
 		
 		lblNewLabel_6 = new JLabel("\u05E1\u05DB\u05D5\u05DD \u05E9\u05E9\u05D5\u05DC\u05DD:");
 		lblNewLabel_6.setForeground(Color.WHITE);
@@ -437,6 +424,4 @@ public class PayedDebts extends JFrame
 
 
 	}
-	
-
 }

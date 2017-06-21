@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Toolkit;
 
 public class ProductChooser extends JFrame {
 
@@ -43,7 +44,9 @@ public class ProductChooser extends JFrame {
 	 */
 	public ProductChooser() 
 	{
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ProductChooser.class.getResource("/conimgs/title_icon.png")));
+		setTitle("\u05DE\u05D5\u05E6\u05E8");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(600, 150, 225, 376);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

@@ -109,8 +109,9 @@ public class InventoryWindow extends JFrame
 					{
 						String ingrID = table.getModel().getValueAt(row, 0).toString();
 						String ingrName = table.getModel().getValueAt(row, 1).toString();
-						String ingrAmount = table.getModel().getValueAt(row, 2).toString();
-						String query = "UPDATE `inventory` SET `שם מרכיב`='"+ingrName+"',`כמות במלאי בקג`='"+ingrAmount+"' WHERE `מספר מרכיב`='"+ingrID+"'";
+						String ingrAmount1 = table.getModel().getValueAt(row, 2).toString();
+						float ingrAmount = Float.parseFloat(ingrAmount1);	
+						String query = "UPDATE `inventory` SET `כמות במלאי בקג`='"+ingrAmount+"' WHERE `מספר מרכיב`='"+ingrID+"'";
 						
 						Statement myStmt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 						myStmt.executeUpdate(query);

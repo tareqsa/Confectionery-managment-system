@@ -327,6 +327,8 @@ public class OrdersWindow extends JFrame
 				}
 				else
 				{
+					float quantityNeeded = Float.parseFloat(textField_7.getText());
+					
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -336,9 +338,42 @@ public class OrdersWindow extends JFrame
 					String insQuery = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `מה הוזמן`, `כמות בקילוגרם`,`עלות`, `טלפון`, `מבצע ההזמנה`,`תאריך`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_7.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "','" + dtf1.format(now1) + "') ";
 					//String query = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `מה הוזמן`, `כמות בקילוגרם`,`עלות`, `טלפון`, `מבצע ההזמנה`) VALUES ('" + now + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_7.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "') ";
 					String orderQuery = "SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM orders";
+					
+					String 	checkQuantityQuery = "SELECT ingredients.`שם מרכיב` , ingredients.`כמות` * "+ quantityNeeded +", inventory.`כמות במלאי בקג` FROM `ingredients` ,`inventory` WHERE `שם מוצר`='"+textField_3.getText()+"' AND ingredients.`שם מרכיב` = inventory.`שם מרכיב` ";
+					String 	minusQuantityQuery = "SELECT ingredients.`שם מרכיב` , ingredients.`כמות` * "+ quantityNeeded +", inventory.`כמות במלאי בקג` FROM `ingredients` ,`inventory` WHERE `שם מוצר`='"+textField_3.getText()+"' AND ingredients.`שם מרכיב` = inventory.`שם מרכיב` ";
 
+					Boolean can = true;
 					try 
 					{
+						Statement stt3 = (Statement) Driver.getDatabaseDriver().conn.createStatement();
+						ResultSet rsCheck = stt3.executeQuery(checkQuantityQuery);
+
+						String minus = "חסרים המרכיהים : \n";
+						int counter = 0;
+						while(rsCheck.next())
+						{
+							counter++;
+							System.out.println((rsCheck.getString(1)));
+							if(rsCheck.getFloat(2)>rsCheck.getFloat(3))
+							{
+								minus+=rsCheck.getString(1)+"\n";
+								can=false;
+							}
+						}
+						if((can) && counter>0 )
+						{
+							
+							Statement stt4 = (Statement) Driver.getDatabaseDriver().conn.createStatement();
+							ResultSet rsMinus = stt4.executeQuery(minusQuantityQuery);
+							
+							while(rsMinus.next())
+							{
+								String ingredientName = rsMinus.getString(1);
+								float quantityToMinus = rsMinus.getFloat(3)-rsMinus.getFloat(2);
+								String UpdateQuantityQuery = "UPDATE `inventory` SET `כמות במלאי בקג`='"+quantityToMinus+"' WHERE `שם מרכיב`='"+ingredientName+"'";
+								Statement stt5 = (Statement) Driver.getDatabaseDriver().conn.createStatement();
+								stt5.executeUpdate(UpdateQuantityQuery);
+							}
 							Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 							stt.executeUpdate(insQuery);
 							
@@ -368,6 +403,12 @@ public class OrdersWindow extends JFrame
 								textField_4.setText("");
 								textField_6.setText("");
 								textField_7.setText("");
+						}
+						else
+						{
+							JOptionPane.showMessageDialog(null,minus);
+							minus = "חסרים המרכיהים : \n";
+						}
 
 					} 
 					catch (SQLException e)

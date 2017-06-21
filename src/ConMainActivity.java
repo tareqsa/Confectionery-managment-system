@@ -3,6 +3,7 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -61,6 +62,7 @@ public class ConMainActivity extends JFrame
 				{
 					ConMainActivity frame = new ConMainActivity();
 					frame.setVisible(true);
+					
 				} 
 				catch (Exception e)
 				{
@@ -78,16 +80,19 @@ public class ConMainActivity extends JFrame
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ConMainActivity.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05E8\u05D0\u05E9\u05D9");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		//setBounds(100, 50, 638, 374);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	    setBounds(0,0,screenSize.width, screenSize.height);
+		setExtendedState(MAXIMIZED_BOTH);
+
+		
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setVisible(true);
-		
+
 
 		btnNewButton_1 = new JButton("\u05DE\u05D5\u05E6\u05E8\u05D9\u05DD");
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 11));
