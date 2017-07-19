@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.Point;
@@ -11,6 +10,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
 import com.mysql.jdbc.Statement;
+
+import net.proteanit.sql.DbUtils;
 
 import java.awt.Toolkit;
 import java.text.DateFormat;
@@ -32,6 +33,7 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -89,6 +91,8 @@ public class ClientsDebts extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor
 	public ClientsDebts() 
 	{
 		setResizable(false);
@@ -107,6 +111,7 @@ public class ClientsDebts extends JFrame
 		
 		table = new JTable()
 		{
+			//Make all sells not editable
 			@Override
 			public boolean isCellEditable(int row, int column)
 			{
@@ -116,6 +121,7 @@ public class ClientsDebts extends JFrame
 		};
 		table.addMouseListener(new MouseAdapter() 
 		{
+			//Take pressed cell and open the debts history
 			@Override
 			public void mousePressed(MouseEvent e) 
 			{
@@ -156,16 +162,17 @@ public class ClientsDebts extends JFrame
 		btnNewButton_1 = new JButton("\u05DE\u05D7\u05E7 \u05D7\u05D5\u05D1");
 		btnNewButton_1.addActionListener(new ActionListener()
 		{
+			//Delete chosen debt, delete all the payments and update the table
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				int row = table.getSelectedRow();
-				int debtId = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
+				
 		        int response = 0;
 				try
 				{
 					if(row<0)
 					{
-						JOptionPane.showMessageDialog(null, "בחר תשלום למחיקה", "row selection", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "בחר חוב למחיקה", "row selection", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					else
@@ -179,6 +186,7 @@ public class ClientsDebts extends JFrame
 				    }
 				    else if (response == JOptionPane.YES_OPTION) 
 				    {
+				    	int debtId = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
 						Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 
 				    	String deleteDQuery = "DELETE FROM `debtspayments` WHERE   `מספר חוב` = "+debtId+"";
@@ -187,7 +195,10 @@ public class ClientsDebts extends JFrame
 				    	String deleteCQuery = "DELETE FROM `clientsdebts` WHERE   `מספר חוב` = "+debtId+"";
 						stt.executeUpdate(deleteCQuery);
 						
-						Driver.viewTable("clientsdebts", table, Driver.getDatabaseDriver().conn);
+						String selQuery = "SELECT * FROM `clientsdebts` ORDER BY `תאריך ושעה` DESC";
+						ResultSet rset1 = stt.executeQuery(selQuery);
+						table.setModel(DbUtils.resultSetToTableModel(rset1));
+						
 						DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 						centerRenderr.setHorizontalAlignment(JLabel.CENTER);
 						table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
@@ -220,6 +231,7 @@ public class ClientsDebts extends JFrame
 		btnNewButton = new JButton("\u05D0\u05D9\u05E9\u05D5\u05E8");
 		btnNewButton.addActionListener(new ActionListener()
 		{
+			//Insert new debt
 			public void actionPerformed(ActionEvent arg0)
 			{
 				if(textField.getText().equals("") || textField_1.getText().equals("") )
@@ -232,12 +244,15 @@ public class ClientsDebts extends JFrame
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
 					String debtsQuery = "INSERT INTO `clientsdebts`(`תאריך ושעה`, `שם מלא`, `חוב`, `שולם`, `לא שולם`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "','0','" + textField_1.getText() + "')";
-					
+					String selQuery = "SELECT * FROM `clientsdebts` ORDER BY `תאריך ושעה` DESC";
 					try 
 					{
 							Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 							stt.executeUpdate(debtsQuery);
-							Driver.viewTable("clientsdebts", table, Driver.getDatabaseDriver().conn);
+							
+							ResultSet rset2 = stt.executeQuery(selQuery);
+							table.setModel(DbUtils.resultSetToTableModel(rset2));
+							
 							DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 							centerRenderr.setHorizontalAlignment(JLabel.CENTER);
 							table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
@@ -273,12 +288,14 @@ public class ClientsDebts extends JFrame
 		textField_1 = new JTextField();
 		textField_1.addKeyListener(new KeyAdapter()
 		{
+			//If pressed key is enter
 			@Override
 			public void keyPressed(KeyEvent e) 
 			{
 				if(e.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton.doClick();
 			}
+			//If key typed is numbers
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{
@@ -287,7 +304,7 @@ public class ClientsDebts extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות או גרש, רק מספרים" ); 
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" ); 
 
 					
 				}
@@ -316,7 +333,7 @@ public class ClientsDebts extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים  או גרש, רק אותיות" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים , רק אותיות" );
 				}
 			}
 		});
@@ -364,6 +381,7 @@ public class ClientsDebts extends JFrame
 		lblNewLabel.setBounds(0, 0, 814, 571);
 		contentPane.add(lblNewLabel);
 		
+		//Background image 
 		ImageIcon pic = new ImageIcon(ClientsDebts.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -372,16 +390,28 @@ public class ClientsDebts extends JFrame
 		
 		lblNewLabel_4.setText(ConMainActivity.username);
 		
-		Driver.viewTable("clientsdebts", table, Driver.getDatabaseDriver().conn);
-		DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
-		centerRenderr.setHorizontalAlignment(JLabel.CENTER);
-		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
-		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
-		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
-		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
-		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
-		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
-	
+		//Present the table always
+		String selQuery = "SELECT * FROM `clientsdebts` ORDER BY `תאריך ושעה` DESC";
+		try
+		{
+			Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
+			ResultSet rset2 = stt.executeQuery(selQuery);
+			table.setModel(DbUtils.resultSetToTableModel(rset2));
+			
+			DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+			centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+			table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+			table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+			table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+			table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+			table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+			table.getColumnModel().getColumn(5).setCellRenderer(centerRenderr);
+		}
+		catch (Exception e)
+		{
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		
 		
 		setclk();
@@ -389,6 +419,7 @@ public class ClientsDebts extends JFrame
 		
 		
 	}
+	//Clock display always
 	public void setclk()
 	{
 		Thread clkthread = new Thread()

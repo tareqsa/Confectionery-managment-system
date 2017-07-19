@@ -1,10 +1,5 @@
-
-
-
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,13 +8,10 @@ import java.awt.Toolkit;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import java.awt.Color;
-
 import com.mysql.jdbc.Statement;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
@@ -80,6 +72,7 @@ public class ShowProfit extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	//Constructor 
 	public ShowProfit() 
 	{
 		setResizable(false);
@@ -161,6 +154,7 @@ public class ShowProfit extends JFrame
 		btnNewButton = new JButton("\u05D4\u05E6\u05D2 \u05E8\u05D5\u05D5\u05D7");
 		btnNewButton.addActionListener(new ActionListener() 
 		{
+			//Calculate and show profit from date to date before and after vat  
 			public void actionPerformed(ActionEvent e) 
 			{
 				
@@ -174,8 +168,6 @@ public class ShowProfit extends JFrame
 						String incExpStDate = String.format("%1$tY-%1$tm-%1$td",dateFromChooser1);
 						String incExpEnDate = String.format("%1$tY-%1$tm-%1$td",dateFromChooser2);
 						
-						//String expStDate = String.format("%1$tY-%1$tm-%1$td",dateFromChooser1);
-						//String expEnDate = String.format("%1$tY-%1$tm-%1$td",dateFromChooser2);
 						
 						String incPeriodSumQuery = "SELECT SUM(`עלות`) FROM `orders` WHERE  `תאריך ושעה` BETWEEN '"+incExpStDate+"' AND '"+incExpEnDate+"'";
 						String expPeriodSumQuery = "SELECT SUM(`סכום`) FROM `expenses` WHERE  `תאריך ושעה` BETWEEN '"+incExpStDate+"' AND '"+incExpEnDate+"'";
@@ -193,17 +185,17 @@ public class ShowProfit extends JFrame
 							float expSum = expSet.getFloat(1);
 							
 							float profWthVat = incSum-expSum;
-							lblNewLabel_15.setText(String.valueOf(profWthVat));
+							lblNewLabel_15.setText(String.valueOf(Math.round(profWthVat*100.0)/100.0));
 							
 							ResultSet vatValSet = stt.executeQuery(vatQuery);
 							vatValSet.next();
 							float vatVal = vatValSet.getFloat(1);
 							
 							float profVatVal = (profWthVat/(1+vatVal))*vatVal;
-							lblNewLabel_12.setText(String.valueOf(profVatVal));
+							lblNewLabel_12.setText(String.valueOf(Math.round(profVatVal*100.0)/100.0));
 							
 							float profWithoutVat = (profWthVat/(1+vatVal));
-							lblNewLabel_9.setText(String.valueOf(profWithoutVat));
+							lblNewLabel_9.setText(String.valueOf(Math.round(profWithoutVat*100.0)/100.0));
 								
 						}
 						catch(Exception exx)
@@ -279,6 +271,7 @@ public class ShowProfit extends JFrame
 		lblNewLabel.setBounds(0, 0, 804, 571);
 		contentPane.add(lblNewLabel);
 		
+		//Background image 
 		ImageIcon pic = new ImageIcon(ShowProfit.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -292,6 +285,7 @@ public class ShowProfit extends JFrame
 
 		
 	}
+	//Display clock always 
 	public void setclk()
 	{
 		Thread clkthread = new Thread()

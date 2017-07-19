@@ -1,36 +1,23 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-
 import com.mysql.jdbc.Statement;
-
 import java.awt.Color;
 import java.awt.ComponentOrientation;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JEditorPane;
-import java.awt.SystemColor;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-
-import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
-import java.awt.Component;
 import javax.swing.JButton;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
@@ -82,6 +69,8 @@ public class InventoryWindow extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor
 	public InventoryWindow() 
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(InventoryWindow.class.getResource("/conimgs/title_icon.png")));
@@ -97,6 +86,7 @@ public class InventoryWindow extends JFrame
 		btnNewButton_2 = new JButton("\u05E2\u05D3\u05DB\u05DF \u05DE\u05E8\u05DB\u05D9\u05D1");
 		btnNewButton_2.addActionListener(new ActionListener()
 		{
+			//Update ingredients amount 
 			public void actionPerformed(ActionEvent arg0)
 			{
 				int row = table.getSelectedRow();
@@ -142,6 +132,7 @@ public class InventoryWindow extends JFrame
 		btnNewButton = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05DE\u05E8\u05DB\u05D9\u05D1");
 		btnNewButton.addActionListener(new ActionListener() 
 		{
+			//If the button is pressed, open the insert new ingredient insert
 			public void actionPerformed(ActionEvent e) 
 			{
 				new InventoryInsert();
@@ -171,6 +162,7 @@ public class InventoryWindow extends JFrame
 
 		table = new JTable()
 		{
+			//Make just the amount cell editable  
 			public boolean isCellEditable(int row, int column) 
 			{
 				return column==2;
@@ -208,6 +200,7 @@ public class InventoryWindow extends JFrame
 		lblNewLabel.setBounds(0, 0, 1094, 571);
 		contentPane.add(lblNewLabel);
 		
+		//Background image 
 		ImageIcon pic = new ImageIcon(InventoryWindow.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -232,6 +225,7 @@ public class InventoryWindow extends JFrame
 		setclk();
 
 	}
+	//Display clock always 
 	public void setclk()
 	{
 		Thread clkthread = new Thread()

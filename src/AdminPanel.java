@@ -96,6 +96,7 @@ public class AdminPanel extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	//Constructor
 	public AdminPanel() {
 		setTitle("\u05D7\u05DC\u05D5\u05DF \u05DE\u05E0\u05D4\u05DC");
 		setResizable(false);
@@ -111,6 +112,7 @@ public class AdminPanel extends JFrame
 		btnNewButton_1 = new JButton("\u05E2\u05D3\u05DB\u05DF \u05E2\u05E8\u05DA");
 		btnNewButton_1.addActionListener(new ActionListener() 
 		{
+			//Changing vat value
 			public void actionPerformed(ActionEvent e) 
 			{
 				int row = table.getSelectedRow();
@@ -154,6 +156,7 @@ public class AdminPanel extends JFrame
 		btnNewButton_4 = new JButton("\u05DE\u05D7\u05E7 \u05DE\u05E9\u05EA\u05DE\u05E9");
 		btnNewButton_4.addActionListener(new ActionListener() 
 		{
+			//Delete existing user
 			public void actionPerformed(ActionEvent e)
 			{
 				int row = table_1.getSelectedRow();
@@ -218,6 +221,7 @@ public class AdminPanel extends JFrame
 		btnNewButton_2 = new JButton("\u05D0\u05D9\u05E9\u05D5\u05E8");
 		btnNewButton_2.addActionListener(new ActionListener()
 		{
+			//Insert new users
 			public void actionPerformed(ActionEvent e) 
 			{
 				if(textField.getText().equals("") || textField_1.getText().equals("") )
@@ -280,6 +284,7 @@ public class AdminPanel extends JFrame
 		
 		table_1 = new JTable()
 		{
+			//Make all cells not editable
 			@Override
 			public boolean isCellEditable(int row, int column)
 			{
@@ -297,6 +302,7 @@ public class AdminPanel extends JFrame
 		rdbtnNewRadioButton_1 = new JRadioButton("\u05E2\u05D5\u05D1\u05D3");
 		rdbtnNewRadioButton_1.addKeyListener(new KeyAdapter() 
 		{
+			//If enter is pressed
 			@Override
 			public void keyPressed(KeyEvent e) 
 			{
@@ -313,6 +319,7 @@ public class AdminPanel extends JFrame
 		rdbtnNewRadioButton = new JRadioButton("\u05DE\u05E0\u05D4\u05DC");
 		rdbtnNewRadioButton.addKeyListener(new KeyAdapter() 
 		{
+			//If enter is pressed
 			@Override
 			public void keyPressed(KeyEvent e)
 			{
@@ -339,12 +346,14 @@ public class AdminPanel extends JFrame
 		textField_1 = new JTextField();
 		textField_1.addKeyListener(new KeyAdapter() 
 		{
+			//If enter is pressed
 			@Override
 			public void keyPressed(KeyEvent e)
 			{
 				if(e.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton_2.doClick();
 			}
+			//If char (') is typed
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{
@@ -353,7 +362,6 @@ public class AdminPanel extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד  גרש" );
 				}
 			}
 		});
@@ -379,7 +387,6 @@ public class AdminPanel extends JFrame
 				{
 					arg0.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד  גרש" );
 				}
 			}
 		});
@@ -502,7 +509,7 @@ public class AdminPanel extends JFrame
 		lblNewLabel.setBounds(0, 0, 1094, 571);
 		contentPane.add(lblNewLabel);
 		
-		
+		//Background image
 		ImageIcon pic1 = new ImageIcon(AdminPanel.class.getResource("conimgs/background.jpg"));
 		Image tempImage1 = pic1.getImage();
 		Image Imagetemp1 = tempImage1.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -516,7 +523,7 @@ public class AdminPanel extends JFrame
 		
 		setclk();
 
-		
+		//Present table always
 		String dyQuery = "SELECT * FROM dynamic";
 		try
 		{
@@ -537,7 +544,7 @@ public class AdminPanel extends JFrame
 			e.printStackTrace();
 		}
 		
-		
+		//Present table always
 		String logQuery = "SELECT userName as 'שם משתמש' , Password as 'סיסמה' , permission as 'הרשאה'  FROM login";
 		try
 		{
@@ -561,6 +568,7 @@ public class AdminPanel extends JFrame
 		
 		
 	}
+	//Clock always
 	public void setclk()
 	{
 		Thread clkthread = new Thread()

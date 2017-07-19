@@ -5,14 +5,11 @@ import java.awt.Image;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import com.mysql.jdbc.Statement;
-
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,7 +17,6 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionListener;
@@ -70,6 +66,8 @@ public class LogInWindow extends JFrame
 	/**
 	 * Create the frame
 	 */
+	
+	//Constructor
 	public LogInWindow()
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(LogInWindow.class.getResource("/conimgs/title_icon.png")));
@@ -88,6 +86,7 @@ public class LogInWindow extends JFrame
 		
 		btnNewButton.addActionListener(new ActionListener() 
 		{
+			//Check if the inserted user and password are existed in the database
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				
@@ -101,7 +100,6 @@ public class LogInWindow extends JFrame
 				
 				try
 				{
-					//conn1 = Driver.getConnection(); 
 					Statement stat = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 				    String loginQuery="Select * FROM login ";
 				    ResultSet rs = stat.executeQuery(loginQuery);
@@ -159,12 +157,14 @@ public class LogInWindow extends JFrame
 		passwordField = new JPasswordField();
 		passwordField.addKeyListener(new KeyAdapter() 
 		{
+			//If the pressed key is enter, click the button
 			@Override
 			public void keyPressed(KeyEvent arg0)
 			{
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton.doClick();
 			}
+			//If the key typed is ('), show message
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{
@@ -173,7 +173,6 @@ public class LogInWindow extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד גרש" );
 				}
 			}
 		});
@@ -210,7 +209,6 @@ public class LogInWindow extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד גרש" );
 				}
 			}
 		});
@@ -225,13 +223,14 @@ public class LogInWindow extends JFrame
 		lblNewLabel_1.setBounds(0, 0, 444, 240);
 		contentPane.add(lblNewLabel_1);
 		
+		//Background image 
 		ImageIcon pic = new ImageIcon(LogInWindow.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel_1.getWidth(),lblNewLabel_1.getHeight(),Image.SCALE_DEFAULT);
 		ImageIcon image= new ImageIcon(Imagetemp);
 		lblNewLabel_1.setIcon(image);
 		
-
+		//Window image
 		ImageIcon pic1 = new ImageIcon(LogInWindow.class.getResource("conimgs/loginimg.jpg"));
 		Image tempImage1 = pic1.getImage();
 		Image Imagetemp1 = tempImage1.getScaledInstance(lblNewLabel_3.getWidth(),lblNewLabel_3.getHeight(),Image.SCALE_DEFAULT);
@@ -245,6 +244,7 @@ public class LogInWindow extends JFrame
 		setclk();
 		
 	}
+	//Display the clock always
 	public void setclk()
 	{
 		Thread clkthread = new Thread()

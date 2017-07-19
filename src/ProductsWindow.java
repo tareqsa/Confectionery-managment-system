@@ -80,6 +80,8 @@ public class ProductsWindow extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor 
 	public ProductsWindow() 
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ProductsWindow.class.getResource("/conimgs/title_icon.png")));
@@ -95,6 +97,7 @@ public class ProductsWindow extends JFrame
 		btnNewButton_1 = new JButton("\u05DE\u05D7\u05E7 \u05DE\u05D5\u05E6\u05E8");
 		btnNewButton_1.addActionListener(new ActionListener()
 		{
+			//Delete product 
 			public void actionPerformed(ActionEvent e) 
 			{
 				int row = table.getSelectedRow();
@@ -153,6 +156,36 @@ public class ProductsWindow extends JFrame
 
 			}
 		});
+		
+		JButton button = new JButton("\u05E6\u05E4\u05D9\u05D9\u05D4 \u05D1\u05DE\u05E8\u05DB\u05D9\u05D1\u05D9 \u05DE\u05D5\u05E6\u05E8");
+		button.addActionListener(new ActionListener() 
+		{
+			//Showing product ingredient 
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				int row = table.getSelectedRow();
+				try
+				{
+					if(row<0)
+					{
+						JOptionPane.showMessageDialog(null, "בחר מוצר", "row selection", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					else 
+				    {
+				    	String proName=(table.getModel().getValueAt(row, 1)).toString();
+				    	new ProductIngredients(proName);
+				    }
+				    }
+				    catch (Exception e)
+				    {
+				    	e.printStackTrace();
+				    }
+				}
+		});
+		button.setFont(new Font("Tahoma", Font.BOLD, 13));
+		button.setBounds(655, 95, 177, 28);
+		contentPane.add(button);
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButton_1.setBounds(850, 95, 100, 28);
 		contentPane.add(btnNewButton_1);
@@ -160,6 +193,7 @@ public class ProductsWindow extends JFrame
 		btnNewButton = new JButton("\u05D4\u05D5\u05E1\u05E3 \u05DE\u05D5\u05E6\u05E8");
 		btnNewButton.addActionListener(new ActionListener() 
 		{
+			//If button is pressed, open new product window 
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				newProduct np = new newProduct();
@@ -188,6 +222,7 @@ public class ProductsWindow extends JFrame
 		
 		table = new JTable()
 		{
+			//All cells is not editable 
 			@Override
 			public boolean isCellEditable(int row, int column)
 			{
@@ -229,6 +264,7 @@ public class ProductsWindow extends JFrame
 		lblNewLabel.setBounds(0, 0, 1094, 571);
 		contentPane.add(lblNewLabel);
 		
+		//Background image 
 		ImageIcon pic = new ImageIcon(ProductsWindow.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -239,7 +275,7 @@ public class ProductsWindow extends JFrame
 		lblNewLabel_4.setText(ConMainActivity.username);
 
 		
-		
+		//Show the table always 
 		Driver.viewTable("products", table, Driver.getDatabaseDriver().conn);
 		
 		DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
@@ -250,6 +286,7 @@ public class ProductsWindow extends JFrame
 		setclk();
 		
 	}
+	//Display the clock always 
 	public void setclk()
 	{
 		Thread clkthread = new Thread()

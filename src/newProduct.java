@@ -1,14 +1,10 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
 import com.mysql.jdbc.Statement;
-
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -49,6 +45,8 @@ public class newProduct extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor
 	public newProduct() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(newProduct.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05D4\u05D5\u05E1\u05E4\u05EA \u05DE\u05D5\u05E6\u05E8");
@@ -81,6 +79,7 @@ public class newProduct extends JFrame {
 		JButton button = new JButton("\u05D4\u05D5\u05E1\u05E4\u05D4");
 		button.addActionListener(new ActionListener() 
 		{
+			//Create new product and with its ingredients and insert it to the database 
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				
@@ -127,10 +126,12 @@ public class newProduct extends JFrame {
 							Statement	stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 							stt.executeUpdate(insertQueryToProducts);
 							JOptionPane.showMessageDialog(null, "המוצר נרשם");
+							dispose();
 						}
 						else
 						{
 							JOptionPane.showMessageDialog(null, "אין להכניס מוצר בלי מרכיבים");
+							
 						}
 						Driver.viewTable("products", ProductsWindow.table, Driver.getDatabaseDriver().conn);
 						DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
@@ -138,7 +139,7 @@ public class newProduct extends JFrame {
 						ProductsWindow.table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
 						ProductsWindow.table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
 
-						dispose();
+						
 					}
 					catch (SQLIntegrityConstraintViolationException ex1) 
 					{
@@ -146,7 +147,6 @@ public class newProduct extends JFrame {
 					}
 					catch (SQLException e)
 					{						
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
@@ -187,6 +187,7 @@ public class newProduct extends JFrame {
 		model.addColumn("כמות");
 		model.addColumn("נבחר");
 
+		//Show the products table always
 		try
 		{
 				String query = "SELECT * FROM inventory";

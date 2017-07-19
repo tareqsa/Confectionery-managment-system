@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.text.DateFormat;
@@ -31,6 +30,7 @@ import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class ShowExpensesPeriod extends JFrame 
 {
@@ -57,8 +57,12 @@ public class ShowExpensesPeriod extends JFrame
 	private JLabel lblNewLabel_13;
 	private JLabel lblNewLabel_14;
 	private JLabel lblNewLabel_15;
-	
-	
+	private JLabel lblNewLabel_16;
+	private JComboBox comboBox;
+	private JButton button;
+	private JDateChooser dateChooser;
+	private JDateChooser dateChooser_1;
+	String all = "הכל";
 	
 	
 
@@ -87,6 +91,8 @@ public class ShowExpensesPeriod extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor 
 	public ShowExpensesPeriod() 
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ShowExpensesPeriod.class.getResource("/conimgs/title_icon.png")));
@@ -98,6 +104,71 @@ public class ShowExpensesPeriod extends JFrame
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		button = new JButton("\u05D4\u05E4\u05E7\u05EA \u05D3\u05D5\u05D7");
+		button.addActionListener(new ActionListener() 
+		{
+			//Choosing expenses from date to date for the pdf report 
+			public void actionPerformed(ActionEvent arg0) 
+			{
+
+				Date dateFromChooser1 = dateChooser.getDate();
+				Date dateFromChooser2 = dateChooser_1.getDate();
+				if(!(dateChooser.getDate() == null)  && (!(dateChooser_1.getDate() == null)))
+				{
+					if (!(dateFromChooser2.before(dateFromChooser1)))
+					{
+
+						String sdate = String.format("%1$tY-%1$tm-%1$td",dateFromChooser1);
+						String edate = String.format("%1$tY-%1$tm-%1$td",dateFromChooser2);
+
+						String expPeriodQuery = "SELECT  `תאריך ושעה`, `תיאור הוצאה`, `סוג הוצאה`, `סכום` FROM `expenses` WHERE  `תאריך ושעה` BETWEEN '"+sdate+"' AND '"+edate+"' ORDER BY `תאריך ושעה` DESC "; 						
+						String exp1PeriodQuery = "SELECT  `תאריך ושעה`, `תיאור הוצאה`, `סוג הוצאה`, `סכום` FROM `expenses` WHERE  `תאריך ושעה` BETWEEN '"+sdate+"' AND '"+edate+"' AND `סוג הוצאה` = '" + comboBox.getSelectedItem().toString() + "' ORDER BY `תאריך ושעה` DESC"; 
+
+						try 
+						{
+							ResultSet rs;
+							Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
+							if(comboBox.getSelectedItem().toString().equals(all))
+							{	
+							rs = stt.executeQuery(expPeriodQuery);
+							}
+							else
+							{
+							rs = stt.executeQuery(exp1PeriodQuery);
+							}
+							new expPeriodReport(rs);
+							JOptionPane.showMessageDialog(null, "הדוח הופק בהצלחה");
+						}
+						catch (Exception e) 
+						{
+							JOptionPane.showMessageDialog(null, "שגיאה בתהליך ההפקה");
+						}
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "יש לבחור תקופה");
+				}
+			}
+		});
+		button.setBounds(678, 504, 89, 23);
+		contentPane.add(button);
+		
+		comboBox = new JComboBox();
+		comboBox.setBounds(132, 109, 106, 33);
+		contentPane.add(comboBox);
+		comboBox.addItem("הכל");
+		comboBox.addItem("הוצאות ספקים");
+		comboBox.addItem("הוצאות קבועות");
+		comboBox.addItem("שכר עובדים");
+		comboBox.addItem("הוצאות אחרות");
+		
+		lblNewLabel_16 = new JLabel("\u05E1\u05D5\u05D2 \u05D4\u05D5\u05E6\u05D0\u05D4:");
+		lblNewLabel_16.setForeground(Color.WHITE);
+		lblNewLabel_16.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblNewLabel_16.setBounds(244, 109, 70, 30);
+		contentPane.add(lblNewLabel_16);
 		
 		lblNewLabel_15 = new JLabel("");
 		lblNewLabel_15.setForeground(Color.WHITE);
@@ -159,6 +230,7 @@ public class ShowExpensesPeriod extends JFrame
 		
 		table = new JTable()
 		{
+			//All cells is not editable 
 			@Override
 			public boolean isCellEditable(int row, int column)
 			{
@@ -175,16 +247,16 @@ public class ShowExpensesPeriod extends JFrame
 		
 		btnNewButton = new JButton("\u05D4\u05E6\u05D2");
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton.setBounds(129, 119, 89, 23);
+		btnNewButton.setBounds(24, 119, 89, 23);
 		contentPane.add(btnNewButton);
 		
-		JDateChooser dateChooser_1 = new JDateChooser();
+		dateChooser_1 = new JDateChooser();
 		JTextFieldDateEditor editor = (JTextFieldDateEditor) dateChooser_1.getDateEditor();
 		editor.setEditable(false);
 		dateChooser_1.setBounds(325, 109, 105, 33);
 		contentPane.add(dateChooser_1);
 		
-		JDateChooser dateChooser = new JDateChooser();
+		dateChooser = new JDateChooser();
 		JTextFieldDateEditor editor2 = (JTextFieldDateEditor) dateChooser.getDateEditor();
 		editor2.setEditable(false);
 		dateChooser.setBounds(597, 109, 105, 33);
@@ -230,6 +302,7 @@ public class ShowExpensesPeriod extends JFrame
 		lblNewLabel.setBounds(0, 0, 794, 571);
 		contentPane.add(lblNewLabel);
 		
+		//Background image 
 		ImageIcon pic = new ImageIcon(ShowExpensesPeriod.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -240,6 +313,7 @@ public class ShowExpensesPeriod extends JFrame
 		
 		btnNewButton.addActionListener(new ActionListener() 
 		{
+			//Showing expenses from date to date and calculate the sum before and after vat 
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				Date dateFromChooser1 = dateChooser.getDate();
@@ -248,64 +322,127 @@ public class ShowExpensesPeriod extends JFrame
 				{
 					if (!(dateFromChooser2.before(dateFromChooser1)))
 					{
-					
+						
+						String providers = "הוצאות ספקים";
+						String stat = "הוצאות קבועות";
+						String sallaries = "שכר עובדים";
+						String other = "הוצאות אחרות";
+
+						
 						String sdate = String.format("%1$tY-%1$tm-%1$td",dateFromChooser1);
 						String edate = String.format("%1$tY-%1$tm-%1$td",dateFromChooser2);
 						  
-						String expPeriodQuery = "SELECT  `תאריך ושעה`, `תיאור הוצאה`, `סכום` FROM `expenses` WHERE  `תאריך ושעה` BETWEEN '"+sdate+"' AND '"+edate+"'"; 
-						String expPeriodSumQuery = "SELECT SUM(`סכום`) FROM `expenses` WHERE  `תאריך ושעה` BETWEEN '"+sdate+"' AND '"+edate+"'";
+						String expPeriodQuery = "SELECT  `תאריך ושעה`, `תיאור הוצאה`, `סוג הוצאה`, `סכום` FROM `expenses` WHERE  `תאריך ושעה` BETWEEN '"+sdate+"' AND '"+edate+"' ORDER BY `תאריך ושעה` DESC "; 						
+						String exp1PeriodQuery = "SELECT  `תאריך ושעה`, `תיאור הוצאה`, `סוג הוצאה`, `סכום` FROM `expenses` WHERE  `תאריך ושעה` BETWEEN '"+sdate+"' AND '"+edate+"' AND `סוג הוצאה` = '" + comboBox.getSelectedItem().toString() + "' ORDER BY `תאריך ושעה` DESC"; 
+						
+						
+						String expPeriodSumQuery = "SELECT SUM(`סכום`) FROM `expenses` WHERE  `תאריך ושעה` BETWEEN '"+sdate+"' AND '"+edate+"' ";
+						String expPeriodSumQuery1 = "SELECT SUM(`סכום`) FROM `expenses` WHERE  `תאריך ושעה` BETWEEN '"+sdate+"' AND '"+edate+"' AND `סוג הוצאה` = '" + comboBox.getSelectedItem().toString() + "' ";
+						
+						
 						String vatQuery = "SELECT ערך FROM `dynamic` WHERE `שם משתנה` = 'מעמ'  ";
 
 						try 
 						{
-						
-							Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
-							ResultSet rset = stt.executeQuery(expPeriodQuery);
-							int rowsCounter=0;
+							if(comboBox.getSelectedItem().toString().equals(all))
+							{
+								Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
+								ResultSet rset = stt.executeQuery(expPeriodQuery);
+								int rowsCounter=0;
 		
-							while(rset.next())
-							{
-								rowsCounter++;
-							}
-							rset.first();
-							rset.previous();
+								while(rset.next())
+								{
+									rowsCounter++;
+								}
+								rset.first();
+								rset.previous();
 					    
-							if(rowsCounter>0)
-							{
-								table.setModel(DbUtils.resultSetToTableModel(rset));
-								DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
-								centerRenderr.setHorizontalAlignment(JLabel.CENTER);
-								table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
-								table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
-								table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+								if(rowsCounter>0)
+								{
+									table.setModel(DbUtils.resultSetToTableModel(rset));
+									DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+									centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+									table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+									table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+									table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+									table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
 							
-								ResultSet perSumSet = stt.executeQuery(expPeriodSumQuery);
-								perSumSet.next();
-								String perSum = perSumSet.getString(1);
-								lblNewLabel_12.setText(perSum);
-								float expAfterVat = Float.parseFloat(perSum);
-								//System.out.println(beforeTax);
+									ResultSet perSumSet = stt.executeQuery(expPeriodSumQuery);
+									perSumSet.next();
+									String perSum = perSumSet.getString(1);
+									lblNewLabel_12.setText(perSum);
+									float expAfterVat = Float.parseFloat(perSum);
+									//System.out.println(beforeTax);
 								
-								ResultSet vatValSet = stt.executeQuery(vatQuery);
-								vatValSet.next();
-								float VatVal = Float.parseFloat(vatValSet.getString(1));
-								float expBeforeVal = expAfterVat/(1+VatVal);
-								lblNewLabel_8.setText(String.valueOf(expBeforeVal));
-								lblNewLabel_15.setText(String.valueOf((expAfterVat/(1+VatVal))*VatVal));
+									ResultSet vatValSet = stt.executeQuery(vatQuery);
+									vatValSet.next();
+									float VatVal = Float.parseFloat(vatValSet.getString(1));
+									float expBeforeVal = expAfterVat/(1+VatVal);
+									lblNewLabel_8.setText(String.valueOf(Math.round(expBeforeVal*100.0)/100.0));
+									lblNewLabel_15.setText(String.valueOf(Math.round(((expAfterVat/(1+VatVal))*VatVal)*100.0)/100.0));
 								
-							}
+								}
 					    
+								else 
+								{
+									table.setModel(DbUtils.resultSetToTableModel(rset));
+									lblNewLabel_8.setText("0");
+									lblNewLabel_12.setText("0");
+									lblNewLabel_15.setText("0");
+									JOptionPane.showMessageDialog(null,"לא נמצאו נתונים !!" );
+								}
+							}
 							else 
 							{
-								table.setModel(DbUtils.resultSetToTableModel(rset));
-								lblNewLabel_8.setText("0");
-								lblNewLabel_12.setText("0");
-								lblNewLabel_15.setText("0");
-								JOptionPane.showMessageDialog(null,"לא נמצאו נתונים !!" );
+								Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
+								ResultSet rset = stt.executeQuery(exp1PeriodQuery);
+								int rowsCounter=0;
+		
+								while(rset.next())
+								{
+									rowsCounter++;
+								}
+								rset.first();
+								rset.previous();
+					    
+								if(rowsCounter>0)
+								{
+									table.setModel(DbUtils.resultSetToTableModel(rset));
+									DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
+									centerRenderr.setHorizontalAlignment(JLabel.CENTER);
+									table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
+									table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
+									table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
+									table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+							
+									ResultSet perSumSet = stt.executeQuery(expPeriodSumQuery1);
+									perSumSet.next();
+									String perSum = perSumSet.getString(1);
+									lblNewLabel_12.setText(perSum);
+									float expAfterVat = Float.parseFloat(perSum);
+									//System.out.println(beforeTax);
+								
+									ResultSet vatValSet = stt.executeQuery(vatQuery);
+									vatValSet.next();
+									float VatVal = Float.parseFloat(vatValSet.getString(1));
+									float expBeforeVal = expAfterVat/(1+VatVal);
+									lblNewLabel_8.setText(String.valueOf(expBeforeVal));
+									lblNewLabel_15.setText(String.valueOf((expAfterVat/(1+VatVal))*VatVal));
+								
+								}
+					    
+								else 
+								{
+									table.setModel(DbUtils.resultSetToTableModel(rset));
+									lblNewLabel_8.setText("0");
+									lblNewLabel_12.setText("0");
+									lblNewLabel_15.setText("0");
+									JOptionPane.showMessageDialog(null,"לא נמצאו נתונים !!" );
+								}
 							}
 							
-				    	
 						}
+						
 						catch(Exception e1)
 						{
 							e1.printStackTrace();
@@ -314,6 +451,7 @@ public class ShowExpensesPeriod extends JFrame
 					}
 					else
 					{
+
 						JOptionPane.showMessageDialog(null,"תאריך הכניסה לא יכול להיות גדול מתאריך היציאה !!" );
 	
 					}
@@ -331,6 +469,7 @@ public class ShowExpensesPeriod extends JFrame
 		setclk();
 		
 	}
+	//Display the clock always 
 	public void setclk()
 	{
 		Thread clkthread = new Thread()

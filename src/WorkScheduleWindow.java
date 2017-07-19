@@ -1,14 +1,10 @@
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.Date;
-
 import javax.swing.ImageIcon;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -16,20 +12,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import com.mysql.jdbc.Statement;
 import com.toedter.calendar.JCalendar;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import com.toedter.calendar.JDayChooser;
-import com.toedter.calendar.JDateChooser;
-import javax.swing.JTextField;
 import java.beans.PropertyChangeListener;
 import java.sql.ResultSet;
 import java.beans.PropertyChangeEvent;
 import java.awt.Toolkit;
 import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -81,6 +70,8 @@ public class WorkScheduleWindow extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor 
 	public WorkScheduleWindow() 
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(WorkScheduleWindow.class.getResource("/conimgs/title_icon.png")));
@@ -96,12 +87,12 @@ public class WorkScheduleWindow extends JFrame
 		btnNewButton = new JButton("\u05E2\u05D3\u05DB\u05D5\u05DF");
 		btnNewButton.addActionListener(new ActionListener() 
 		{
+			//Insert shifts to database 
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				Date datetime = calendar.getDate();
 				String date = String.format("%1$tY-%1$tm-%1$td",datetime);
 				
-				System.out.println(date);
 				
 				String text = textArea.getText();
 				
@@ -130,6 +121,7 @@ public class WorkScheduleWindow extends JFrame
 		});
 		btnNewButton.setBounds(298, 424, 89, 114);
 		contentPane.add(btnNewButton);
+		//manager permissions 
 		if(userType.equals("מנהל"))
 		{
 			btnNewButton.setVisible(true);
@@ -141,6 +133,7 @@ public class WorkScheduleWindow extends JFrame
 		textArea = new JTextArea();
 		textArea.addKeyListener(new KeyAdapter() 
 		{
+			//If typed key is ('), show message 
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{
@@ -149,7 +142,6 @@ public class WorkScheduleWindow extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד גרש" );
 				}
 			}
 		});
@@ -175,6 +167,7 @@ public class WorkScheduleWindow extends JFrame
 		calendar = new JCalendar();
 		calendar.addPropertyChangeListener(new PropertyChangeListener() 
 		{
+			//Showing day shifts 
 			public void propertyChange(PropertyChangeEvent arg0) 
 			{
 				Date datetime = calendar.getDate();
@@ -201,7 +194,7 @@ public class WorkScheduleWindow extends JFrame
 				}
 			}
 		});
-		calendar.setBounds(125, 70, 799, 323);
+		calendar.setBounds(50, 70, 1000, 350);
 		contentPane.add(calendar);
 
 
@@ -231,7 +224,7 @@ public class WorkScheduleWindow extends JFrame
 		lblNewLabel.setBounds(-30, 0, 1134, 571);
 		contentPane.add(lblNewLabel);
 
-
+		//Background image 
 		ImageIcon pic = new ImageIcon(WorkScheduleWindow.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -243,6 +236,7 @@ public class WorkScheduleWindow extends JFrame
 		setclk();
 
 		}
+	//Display clock always 
 		public void setclk()
 		{
 			Thread clkthread = new Thread()

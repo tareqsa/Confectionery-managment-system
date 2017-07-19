@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.Point;
@@ -25,16 +24,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JEditorPane;
-import java.awt.SystemColor;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
-import java.awt.Component;
 import javax.swing.JButton;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -101,6 +97,8 @@ public class ClientsWindow extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor
 	public ClientsWindow() 
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ClientsWindow.class.getResource("/conimgs/title_icon.png")));
@@ -117,12 +115,14 @@ public class ClientsWindow extends JFrame
 		textField = new JTextField("\u05D7\u05E4\u05E9 \u05DC\u05E4\u05D9 \u05E9\u05DD \u05E4\u05E8\u05D8\u05D9 \u05D0\u05D5 \u05E9\u05DD \u05DE\u05E9\u05E4\u05D7\u05D4 \u05D0\u05D5 \u05DE\u05E1' \u05D8\u05DC\u05E4\u05D5\u05DF \u05D0\u05D5 \u05DE\u05D1\u05E6\u05E2 \u05D4\u05D4\u05D6\u05DE\u05E0\u05D4...");
 		textField.addKeyListener(new KeyAdapter() 
 		{
+			//If enter is pressed click the button
 			@Override
 			public void keyPressed(KeyEvent arg0) 
 			{
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton.doClick();
 			}
+			//If the typed char is (') don't take it 
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{
@@ -131,7 +131,6 @@ public class ClientsWindow extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד גרש" );
 				}
 			}
 		});
@@ -152,6 +151,7 @@ public class ClientsWindow extends JFrame
 		btnNewButton_1 = new JButton("\u05D4\u05D6\u05DE\u05E0\u05D4 \u05D7\u05D3\u05E9\u05D4");
 		btnNewButton_1.addActionListener(new ActionListener() 
 		{
+			//If this button is clicked open the orders window
 			public void actionPerformed(ActionEvent arg0)
 			{
 				OrdersWindow Onew = new OrdersWindow();
@@ -170,6 +170,7 @@ public class ClientsWindow extends JFrame
 		
 		table = new JTable()
 		{
+			//make all the table cells not editable
 			@Override
 			public boolean isCellEditable(int row, int column)
 			{
@@ -180,6 +181,7 @@ public class ClientsWindow extends JFrame
 				
 		table.addMouseListener(new MouseAdapter()
 		{
+			//If one of the cells is pressed on, fill the strings in orders window and open the window
 			@Override
 			public void mousePressed(MouseEvent e) 
 			{
@@ -218,6 +220,7 @@ public class ClientsWindow extends JFrame
 		btnNewButton = new JButton("\u05D7\u05E4\u05E9");
 		btnNewButton.addActionListener(new ActionListener() 
 		{
+			//searching for the clients orders history
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				
@@ -225,7 +228,7 @@ public class ClientsWindow extends JFrame
 				try
 				{
 					Statement st = (Statement) Driver.getDatabaseDriver().conn.createStatement();
-				    String searchQuery="SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM `orders` WHERE `שם פרטי` = '"+search+"' OR `שם משפחה` = '"+search+"' OR `מבצע ההזמנה` = '"+search+"' OR `טלפון` = '"+search+"'  ";
+				    String searchQuery="SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM `orders` WHERE `שם פרטי` = '"+search+"' OR `שם משפחה` = '"+search+"' OR `מבצע ההזמנה` = '"+search+"' OR `טלפון` = '"+search+"' ORDER BY `תאריך ושעה` DESC  ";
 				    
 				    int rowsCounter=0;
 				    ResultSet res = st.executeQuery(searchQuery);
@@ -261,7 +264,6 @@ public class ClientsWindow extends JFrame
 			    } 
 				catch (SQLException e) 
 				{
-		 		   // TODO Auto-generated catch block
 				   e.printStackTrace();
 			   }
 				
@@ -320,6 +322,7 @@ public class ClientsWindow extends JFrame
 		lblNewLabel.setBounds(0, 0, 1094, 571);
 		contentPane.add(lblNewLabel);
 		
+		//Background image
 		ImageIcon pic = new ImageIcon(ClientsWindow.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -334,6 +337,7 @@ public class ClientsWindow extends JFrame
 		setclk();
 
 	}
+	//Display the clock always
 	public void setclk()
 	{
 		Thread clkthread = new Thread()

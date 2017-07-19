@@ -1,6 +1,5 @@
 
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,7 +8,6 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -22,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import javax.swing.JEditorPane;
 import java.awt.SystemColor;
+import java.awt.Frame;
 
 
 public class ConMainActivity extends JFrame 
@@ -63,6 +62,8 @@ public class ConMainActivity extends JFrame
 					ConMainActivity frame = new ConMainActivity();
 					frame.setVisible(true);
 					
+					
+					
 				} 
 				catch (Exception e)
 				{
@@ -75,16 +76,16 @@ public class ConMainActivity extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor
 	public ConMainActivity() 
 	{
-		
+		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ConMainActivity.class.getResource("/conimgs/title_icon.png")));
 		setTitle("\u05E8\u05D0\u05E9\u05D9");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	    setBounds(0,0,screenSize.width, screenSize.height);
-		setExtendedState(MAXIMIZED_BOTH);
-
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		setSize(screenSize);
 		
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -99,6 +100,7 @@ public class ConMainActivity extends JFrame
 		btnNewButton_1.setIcon(null);
 		btnNewButton_1.addActionListener(new ActionListener()
 		{
+			//If the button is pressed open the products window
 			public void actionPerformed(ActionEvent arg0) 
 			{
 
@@ -113,6 +115,7 @@ public class ConMainActivity extends JFrame
 		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnNewButton_2.addActionListener(new ActionListener()
 		{
+			//If the button is pressed open the orders window
 			public void actionPerformed(ActionEvent e) 
 			{
 
@@ -128,6 +131,7 @@ public class ConMainActivity extends JFrame
 		btnNewButton_3.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnNewButton_3.addActionListener(new ActionListener() 
 		{
+			//If the button is pressed open the clients window
 			public void actionPerformed(ActionEvent e)
 			{
 
@@ -142,6 +146,7 @@ public class ConMainActivity extends JFrame
 		btnNewButton_4.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnNewButton_4.addActionListener(new ActionListener()
 		{
+			//If the button is pressed open the inventory window
 			public void actionPerformed(ActionEvent arg0)
 			{
 
@@ -156,6 +161,7 @@ public class ConMainActivity extends JFrame
 		btnNewButton_6.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnNewButton_6.addActionListener(new ActionListener()
 		{
+			//If the button is pressed open the workschedule window
 			public void actionPerformed(ActionEvent e) 
 			{
 
@@ -169,6 +175,7 @@ public class ConMainActivity extends JFrame
 		btnNewButton = new JButton("\u05D7\u05DC\u05D5\u05DF \u05DE\u05E0\u05D4\u05DC");
 		btnNewButton.addActionListener(new ActionListener() 
 		{
+			//If the button is pressed open the adminpanel window
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				AdminPanel newFrame = new AdminPanel();
@@ -234,7 +241,8 @@ public class ConMainActivity extends JFrame
 		lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setBounds(16, 151, 1098, 540);
 		contentPane.add(lblNewLabel_1);
-
+		
+		//Window image
 		ImageIcon pic = new ImageIcon(ConMainActivity.class.getResource("conimgs/mainactivityimg.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel_1.getWidth(),lblNewLabel_1.getHeight(),Image.SCALE_DEFAULT);
@@ -246,6 +254,7 @@ public class ConMainActivity extends JFrame
 
 		contentPane.add(lblNewLabel);
 		
+		//Background image
 		ImageIcon pic1 = new ImageIcon(ConMainActivity.class.getResource("conimgs/background.jpg"));
 		Image tempImage1 = pic1.getImage();
 		Image Imagetemp1 = tempImage1.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -257,6 +266,7 @@ public class ConMainActivity extends JFrame
 
 		setclk();
 	}
+	//Display clock always
 	public void setclk()
 	{
 		Thread clkthread = new Thread()

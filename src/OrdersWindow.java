@@ -1,47 +1,38 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.Point;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Properties;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
-
 import com.mysql.jdbc.Statement;
-
 import net.proteanit.sql.DbUtils;
-
 import java.awt.Color;
 import java.awt.ComponentOrientation;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JEditorPane;
-import java.awt.SystemColor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
-import java.awt.Component;
 import javax.swing.JButton;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
-import javax.swing.JComboBox;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 
@@ -113,6 +104,8 @@ public class OrdersWindow extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor
 	public OrdersWindow()
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(OrdersWindow.class.getResource("/conimgs/title_icon.png")));
@@ -128,6 +121,7 @@ public class OrdersWindow extends JFrame
 		btnNewButton_2 = new JButton("\u05DE\u05D7\u05E7 \u05D4\u05D6\u05DE\u05E0\u05D4");
 		btnNewButton_2.addActionListener(new ActionListener() 
 		{
+			//Delete order
 			public void actionPerformed(ActionEvent e) 
 			{
 				int row = table1.getSelectedRow();
@@ -155,7 +149,7 @@ public class OrdersWindow extends JFrame
 				    	String orderID=(table1.getModel().getValueAt(row, 0)).toString();
 						String orrderId="מספר הזמנה";
 						String delQuery = "DELETE FROM `orders` WHERE  `"+orrderId+"`= '"+orderID+"'";
-						String orderQuery1 = "SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM orders";
+						String orderQuery1 = "SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM orders ORDER BY `תאריך ושעה` DESC";
 
 						Statement myStmt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 						myStmt.executeUpdate(delQuery);
@@ -196,12 +190,14 @@ public class OrdersWindow extends JFrame
 		textField_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		textField_1.addKeyListener(new KeyAdapter()
 		{
+			//If the pressed button is enter, click the button
 			@Override
 			public void keyPressed(KeyEvent e)
 			{
 				if(e.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton_1.doClick();
 			}
+			//If the typed key is not char, show message 
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{
@@ -210,7 +206,7 @@ public class OrdersWindow extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים או גרש, רק אותיות" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
 				}
 			}
 		});
@@ -218,6 +214,7 @@ public class OrdersWindow extends JFrame
 		btnNewButton_3 = new JButton("\u05DE\u05D5\u05E6\u05E8");
 		btnNewButton_3.addActionListener(new ActionListener() 
 		{
+			//If the button is clicked, show productchooser window 
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				ProductChooser pc = new ProductChooser();
@@ -230,7 +227,7 @@ public class OrdersWindow extends JFrame
 		contentPane.add(textField_1);
 		textField_1.setColumns(10);
 		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton_2.setBounds(149, 179, 107, 23);
+		btnNewButton_2.setBounds(323, 179, 107, 23);
 		contentPane.add(btnNewButton_2);
 		
 		
@@ -259,7 +256,7 @@ public class OrdersWindow extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות או גרש, רק מספרים" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" );
 				}
 			}
 		});
@@ -292,7 +289,7 @@ public class OrdersWindow extends JFrame
 				{
 					arg0.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות או גרש, רק מספרים" ); 
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" ); 
 
 					
 				}
@@ -318,6 +315,7 @@ public class OrdersWindow extends JFrame
 		btnNewButton_1 = new JButton("\u05D0\u05D9\u05E9\u05D5\u05E8");
 		btnNewButton_1.addActionListener(new ActionListener() 
 		{
+			//Insert new order to the database and deduct the ingredients from the inventory
 			public void actionPerformed(ActionEvent arg0)
 			{
 				if(textField.getText().equals("") || textField_1.getText().equals("") || textField_2.getText().equals("") || textField_3.getText().equals("") || textField_4.getText().equals("") || textField_6.getText().equals("") || textField_7.getText().equals(""))
@@ -335,9 +333,9 @@ public class OrdersWindow extends JFrame
 					LocalDateTime now = LocalDateTime.now();
 					LocalDateTime now1 = LocalDateTime.now();
 
-					String insQuery = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `מה הוזמן`, `כמות בקילוגרם`,`עלות`, `טלפון`, `מבצע ההזמנה`,`תאריך`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_7.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "','" + dtf1.format(now1) + "') ";
+					String insQuery = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `מה הוזמן`, `כמות בקילוגרם`,`עלות`, `טלפון`, `מבצע ההזמנה`,`תאריך`,`דואר אלקטרוני`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_7.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "','" + dtf1.format(now1) + "','" + textField_5.getText() + "') ";
 					//String query = "INSERT INTO `orders`(`תאריך ושעה`, `שם פרטי`, `שם משפחה`, `סוג אירוע`, `מה הוזמן`, `כמות בקילוגרם`,`עלות`, `טלפון`, `מבצע ההזמנה`) VALUES ('" + now + "','" + textField.getText() + "','" + textField_1.getText() + "','" + textField_2.getText() + "','" + textField_3.getText() + "','" + textField_7.getText() + "','" + textField_4.getText() + "','" + textField_6.getText() + "','" + lblNewLabel_10.getText() + "') ";
-					String orderQuery = "SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM orders";
+					String orderQuery = "SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM orders ORDER BY `תאריך ושעה` DESC";
 					
 					String 	checkQuantityQuery = "SELECT ingredients.`שם מרכיב` , ingredients.`כמות` * "+ quantityNeeded +", inventory.`כמות במלאי בקג` FROM `ingredients` ,`inventory` WHERE `שם מוצר`='"+textField_3.getText()+"' AND ingredients.`שם מרכיב` = inventory.`שם מרכיב` ";
 					String 	minusQuantityQuery = "SELECT ingredients.`שם מרכיב` , ingredients.`כמות` * "+ quantityNeeded +", inventory.`כמות במלאי בקג` FROM `ingredients` ,`inventory` WHERE `שם מוצר`='"+textField_3.getText()+"' AND ingredients.`שם מרכיב` = inventory.`שם מרכיב` ";
@@ -421,15 +419,31 @@ public class OrdersWindow extends JFrame
 			}
 		});
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnNewButton_1.setBounds(263, 179, 107, 23);
+		btnNewButton_1.setBounds(440, 179, 107, 23);
 		contentPane.add(btnNewButton_1);
 		
 		btnNewButton = new JButton("\u05E9\u05DC\u05D7 \u05D4\u05D5\u05D3\u05E2\u05D4");
 		btnNewButton.addActionListener(new ActionListener()
 		{
+			//send mail the the client 
 			public void actionPerformed(ActionEvent arg0)
 			{
-				
+				if(!textField_5.getText().equals(""))
+				{
+					try
+					{
+					new sendMail(textField_5.getText());
+					}
+					catch (Exception e) 
+					{
+						JOptionPane.showMessageDialog(null, "שגיאה בשליחת הודעה");
+					}
+					
+					}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "יש להכניס דואר אלקטרוני");
+				}
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -442,6 +456,7 @@ public class OrdersWindow extends JFrame
 		
 		table1 = new JTable()
 		{
+			//All the cells is not editable
 			@Override
 			public boolean isCellEditable(int row, int column)
 			{
@@ -449,6 +464,38 @@ public class OrdersWindow extends JFrame
 			};
 			
 		};
+		table1.addMouseListener(new MouseAdapter() 
+		{
+			//Tow mouse clicks on the cell fill the client mail in order to send him mail
+			@Override
+			public void mousePressed(MouseEvent arg0) 
+			{
+
+				JTable table1 =(JTable) arg0.getSource();
+		        Point p = arg0.getPoint();
+		        int row = table1.rowAtPoint(p);
+	        	String email="";
+		        if (arg0.getClickCount() == 2) 
+		        {
+
+		        	String orderTempId = table1.getModel().getValueAt(row, 0).toString();
+		        	String getEmailQuery = "SELECT `דואר אלקטרוני` FROM orders WHERE `מספר הזמנה`='"+orderTempId+"'" ;
+					
+		        	try
+		        	{
+		        		Statement stt3 = (Statement) Driver.getDatabaseDriver().conn.createStatement();
+		        		ResultSet rsEmail = stt3.executeQuery(getEmailQuery);
+		        		rsEmail.next();
+		        		email=rsEmail.getString(1);
+		        	}
+		        	catch (Exception e)
+		        	{
+						// TODO: handle exception
+					}
+		        	textField_5.setText(email);		
+		        }
+			}
+		});
 		table1.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		table1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		JTableHeader Theader = table1.getTableHeader();
@@ -475,7 +522,7 @@ public class OrdersWindow extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד גרש" );
+				//    JOptionPane.showMessageDialog(null,"אין להקליד גרש" );
 				}
 			}
 		});
@@ -508,7 +555,7 @@ public class OrdersWindow extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות או גרש, רק מספרים" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" );
 				}
 			}
 		});
@@ -541,7 +588,7 @@ public class OrdersWindow extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים או גרש, רק אותיות" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
 				}
 			}
 		});
@@ -567,7 +614,7 @@ public class OrdersWindow extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים או גרש, רק אותיות" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
 				}
 			}
 		});
@@ -607,7 +654,7 @@ public class OrdersWindow extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים או גרש, רק אותיות" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
 				}
 			}
 		});
@@ -651,6 +698,7 @@ public class OrdersWindow extends JFrame
 		lblNewLabel.setBounds(0, 0, 1094, 571);
 		contentPane.add(lblNewLabel);
 		
+		//Background image
 		ImageIcon pic = new ImageIcon(OrdersWindow.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -666,7 +714,9 @@ public class OrdersWindow extends JFrame
 		
 		
 		setclk();
-		String orderQuery = "SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM orders";
+		
+		//Show the orders table always
+		String orderQuery = "SELECT `מספר הזמנה`,`תאריך ושעה`,`שם פרטי`,`שם משפחה`,`סוג אירוע`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`,`טלפון`,`מבצע ההזמנה` FROM orders ORDER BY `תאריך ושעה` DESC";
 		try
 		{
 			Statement stt1 = (Statement) Driver.getDatabaseDriver().conn.createStatement();
@@ -688,10 +738,11 @@ public class OrdersWindow extends JFrame
 		}
 		catch (Exception e)
 		{
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 	}
+	
+	//Display the clock always 
 	public void setclk()
 	{
 		Thread clkthread = new Thread()

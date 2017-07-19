@@ -7,5 +7,7 @@
 	<classpathentry kind="lib" path="jcalendar-1.4.jar"/>
 	<classpathentry kind="lib" path="jgoodies-common-1.8.0.jar" sourcepath="jgoodies-common-1.8.0-sources.jar"/>
 	<classpathentry kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
+	<classpathentry kind="lib" path="lib/javamail1_4_5/mail.jar"/>
+	<classpathentry kind="lib" path="lib/itext5-itextpdf-5.5.11.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

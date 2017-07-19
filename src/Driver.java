@@ -12,6 +12,7 @@ public class Driver
 	public Connection conn = null;
 	public static Driver driver;
 	
+	//Connect between the software and the database
 	private Driver()
 	{
 		String url = "jdbc:mysql://localhost:3306/rachelconfectionery?useUnicode=yes&characterEncoding=UTF-8";
@@ -30,6 +31,7 @@ public class Driver
 
 	
 	}
+	//If the connection is exist, use it, if not, create it
 	public static Driver getDatabaseDriver()
 	{
 		if(driver == null )
@@ -39,7 +41,7 @@ public class Driver
 		return driver;
 	}
 	
-	
+	//View table in the window
 	public static void viewTable(String tableName , JTable protable , Connection Conn)
 	{
 		try

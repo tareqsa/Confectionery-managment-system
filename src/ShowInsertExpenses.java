@@ -1,32 +1,24 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
-
 import com.mysql.jdbc.Statement;
-
 import net.proteanit.sql.DbUtils;
-
 import java.awt.Toolkit;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
-
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.KeyAdapter;
@@ -37,6 +29,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JComboBox;
 
 public class ShowInsertExpenses extends JFrame
 {
@@ -49,6 +42,7 @@ public class ShowInsertExpenses extends JFrame
 	private JLabel lblNewLabel_4;
 	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
+	private JLabel lblNewLabel_7; 
 
 
 	private JTextField textField;
@@ -56,6 +50,7 @@ public class ShowInsertExpenses extends JFrame
 	
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
+	private JComboBox comboBox;
 	private JTable table;
 	
 	
@@ -85,6 +80,8 @@ public class ShowInsertExpenses extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor 
 	public ShowInsertExpenses() 
 	{
 		setResizable(false);
@@ -100,6 +97,7 @@ public class ShowInsertExpenses extends JFrame
 		btnNewButton = new JButton("\u05D0\u05D9\u05E9\u05D5\u05E8");
 		btnNewButton.addActionListener(new ActionListener() 
 		{
+			//Insert new expense and show the expenses table always 
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				if(textField.getText().equals("") || textField_1.getText().equals(""))
@@ -110,8 +108,7 @@ public class ShowInsertExpenses extends JFrame
 				{
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					LocalDateTime now = LocalDateTime.now();
-					String query = "INSERT INTO `expenses`(`תאריך ושעה`, `תיאור הוצאה`, `סכום`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + textField_1.getText() + "') ";
-					try
+					String query = "INSERT INTO `expenses`(`תאריך ושעה`, `תיאור הוצאה`, `סוג הוצאה`, `סכום`) VALUES ('" + dtf.format(now) + "','" + textField.getText() + "','" + comboBox.getSelectedItem().toString() + "','" + textField_1.getText() + "') ";					try
 					{
 						Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 						stt.executeUpdate(query);
@@ -127,6 +124,8 @@ public class ShowInsertExpenses extends JFrame
 						table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
 						table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
 						table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+						table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+
 						
 						JOptionPane.showMessageDialog(null, "ההוצאה נרשמה");
 						textField.setText("");
@@ -149,6 +148,7 @@ public class ShowInsertExpenses extends JFrame
 		btnNewButton_1 = new JButton("\u05DE\u05D7\u05E7 \u05D4\u05D5\u05E6\u05D0\u05D4");
 		btnNewButton_1.addActionListener(new ActionListener() 
 		{
+			//Delete expenses 
 			public void actionPerformed(ActionEvent arg0)
 			{
 				int row = table.getSelectedRow();
@@ -187,6 +187,8 @@ public class ShowInsertExpenses extends JFrame
 						table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
 						table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
 						table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+						table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+
 						
 						JOptionPane.showMessageDialog(null, "ההוצאה נמחקה");
 
@@ -201,6 +203,21 @@ public class ShowInsertExpenses extends JFrame
 				
 			}
 		});
+		
+		comboBox = new JComboBox();
+		comboBox.setBounds(497, 100, 152, 20);
+		contentPane.add(comboBox);
+		comboBox.addItem("הוצאות ספקים");
+		comboBox.addItem("הוצאות קבועות");
+		comboBox.addItem("שכר עובדים");
+		comboBox.addItem("הוצאות אחרות");
+
+		
+		lblNewLabel_7 = new JLabel("\u05E1\u05D5\u05D2 \u05D4\u05D5\u05E6\u05D0\u05D4:");
+		lblNewLabel_7.setForeground(Color.WHITE);
+		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNewLabel_7.setBounds(655, 100, 139, 31);
+		contentPane.add(lblNewLabel_7);
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		btnNewButton_1.setBounds(512, 303, 109, 23);
 		contentPane.add(btnNewButton_1);
@@ -211,6 +228,7 @@ public class ShowInsertExpenses extends JFrame
 		
 		table = new JTable()
 		{
+			//All cells is not editable 
 			@Override
 			public boolean isCellEditable(int row, int column)
 			{
@@ -233,6 +251,7 @@ public class ShowInsertExpenses extends JFrame
 		textField_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		textField_1.addKeyListener(new KeyAdapter()
 		{
+			//If typed key is not numbers, show message 
 			@Override
 			public void keyTyped(KeyEvent e)
 			{
@@ -241,9 +260,10 @@ public class ShowInsertExpenses extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות או גרש, רק מספרים" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" );
 				}
 			}
+			//If pressed key enter, click the button 
 			@Override
 			public void keyPressed(KeyEvent e) 
 			{
@@ -270,6 +290,7 @@ public class ShowInsertExpenses extends JFrame
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton.doClick();
 			}
+			//If typed key is ('), show message 
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{
@@ -278,19 +299,18 @@ public class ShowInsertExpenses extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד גרש" );
 				}
 			}
 		});
 		textField.setFont(new Font("Tahoma", Font.BOLD, 12));
-		textField.setBounds(490, 123, 155, 21);
+		textField.setBounds(497, 155, 155, 21);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
-		lblNewLabel_5 = new JLabel("\u05D4\u05D5\u05E6\u05D0\u05D4 \u05E2\u05D1\u05D5\u05E8: ");
+		lblNewLabel_5 = new JLabel("\u05EA\u05D9\u05D0\u05D5\u05E8 \u05D4\u05D5\u05E6\u05D0\u05D4:");
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNewLabel_5.setForeground(Color.WHITE);
-		lblNewLabel_5.setBounds(655, 111, 139, 41);
+		lblNewLabel_5.setBounds(655, 143, 139, 41);
 		contentPane.add(lblNewLabel_5);
 		
 		lblNewLabel_4 = new JLabel("");
@@ -321,6 +341,7 @@ public class ShowInsertExpenses extends JFrame
 		lblNewLabel.setBounds(0, 0, 794, 571);
 		contentPane.add(lblNewLabel);
 		
+		//Background image 
 		ImageIcon pic = new ImageIcon(ShowInsertExpenses.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -329,6 +350,7 @@ public class ShowInsertExpenses extends JFrame
 		
 		lblNewLabel_4.setText(ConMainActivity.username);
 		
+		//Show table always 
 		Driver.viewTable("expenses", table, Driver.getDatabaseDriver().conn);
 		
 		DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
@@ -337,6 +359,8 @@ public class ShowInsertExpenses extends JFrame
 		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
 		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderr);
 		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderr);
+		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
+
 		
 
 	
@@ -344,6 +368,7 @@ public class ShowInsertExpenses extends JFrame
 		setclk();
 		
 	}
+	//Display clock always 
 	public void setclk()
 	{
 		Thread clkthread = new Thread()

@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Point;
 import java.sql.ResultSet;
@@ -42,6 +41,8 @@ public class ProductChooser extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor 
 	public ProductChooser() 
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ProductChooser.class.getResource("/conimgs/title_icon.png")));
@@ -59,6 +60,7 @@ public class ProductChooser extends JFrame {
 		
 		table = new JTable()
 		{
+			//All the cells is not editable 
 			public boolean isCellEditable(int row, int column) 
 		{
 				return false;
@@ -66,6 +68,7 @@ public class ProductChooser extends JFrame {
 		};
 		table.addMouseListener(new MouseAdapter() 
 		{
+			//Choose product from the table and insert its name in the textfield 
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
@@ -81,6 +84,7 @@ public class ProductChooser extends JFrame {
 		});
 		scrollPane.setViewportView(table);
 		
+		//Show the table always 
 		String query = "SELECT `שם מוצר` FROM products";
 		try{
 		Statement stt = Driver.getDatabaseDriver().conn.createStatement();

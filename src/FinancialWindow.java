@@ -1,43 +1,17 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.JTableHeader;
-
 import java.awt.Color;
-import java.awt.ComponentOrientation;
-
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JEditorPane;
-import java.awt.SystemColor;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import javax.swing.UIManager;
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
-import java.awt.Component;
 import javax.swing.JButton;
-
-import com.mysql.jdbc.Statement;
-import com.toedter.calendar.JMonthChooser;
-
-import net.proteanit.sql.DbUtils;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
@@ -49,7 +23,6 @@ import java.awt.Toolkit;
 public class FinancialWindow extends JFrame 
 {
 	
-	//public static double incomingPass;
 	
 	private JPanel contentPane;
 	
@@ -97,6 +70,8 @@ public class FinancialWindow extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor
 	public FinancialWindow()
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(FinancialWindow.class.getResource("/conimgs/title_icon.png")));
@@ -112,6 +87,7 @@ public class FinancialWindow extends JFrame
 		btnNewButton = new JButton("\u05DC\u05E6\u05E4\u05D9\u05D9\u05D4 \u05D1\u05D4\u05DB\u05E0\u05E1\u05D5\u05EA");
 		btnNewButton.addActionListener(new ActionListener() 
 		{
+			//If the button is pressed, open and show the incomes table
 			public void actionPerformed(ActionEvent arg0) 
 			{
 					ShowIncomes Fnew = new ShowIncomes();
@@ -122,6 +98,7 @@ public class FinancialWindow extends JFrame
 		btnNewButton_2 = new JButton("\u05D1\u05D7\u05D9\u05E8\u05EA \u05EA\u05E7\u05D5\u05E4\u05D4");
 		btnNewButton_2.addActionListener(new ActionListener() 
 		{
+			//If the button is pressed, open the profit window  
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				ShowProfit Fnew = new ShowProfit();
@@ -132,6 +109,7 @@ public class FinancialWindow extends JFrame
 		btnNewButton_4 = new JButton("\u05D7\u05D5\u05D1\u05D5\u05EA \u05DC\u05E7\u05D5\u05D7\u05D5\u05EA");
 		btnNewButton_4.addActionListener(new ActionListener()
 		{
+			//If the button is pressed, open and show the clientsdebts table
 			public void actionPerformed(ActionEvent arg0)
 			{
 				ClientsDebts cFnew = new ClientsDebts();
@@ -158,6 +136,7 @@ public class FinancialWindow extends JFrame
 		btnNewButton_5 = new JButton("\u05D1\u05D7\u05D9\u05E8\u05EA \u05EA\u05E7\u05D5\u05E4\u05D4");
 		btnNewButton_5.addActionListener(new ActionListener()
 		{
+			//If the button is pressed, open the expenses period search
 			public void actionPerformed(ActionEvent e) 
 			{
 				ShowExpensesPeriod Fnew = new ShowExpensesPeriod();
@@ -171,6 +150,7 @@ public class FinancialWindow extends JFrame
 		btnNewButton_3 = new JButton("\u05E6\u05E4\u05D9\u05D9\u05D4 \u05D5\u05D4\u05D6\u05E0\u05EA \u05D4\u05D5\u05E6\u05D0\u05D5\u05EA");
 		btnNewButton_3.addActionListener(new ActionListener() 
 		{
+			//If the button is pressed, open and show the expenses 
 			public void actionPerformed(ActionEvent e) 
 			{
 				ShowInsertExpenses Fnew = new ShowInsertExpenses();
@@ -185,6 +165,7 @@ public class FinancialWindow extends JFrame
 		btnNewButton_1 = new JButton("\u05D1\u05D7\u05D9\u05E8\u05EA \u05EA\u05E7\u05D5\u05E4\u05D4");
 		btnNewButton_1.addActionListener(new ActionListener()
 		{
+			//If the button is pressed, open the incomes period search
 			public void actionPerformed(ActionEvent arg0)
 			{
 				ShowIncomesPeriod Fnew = new ShowIncomesPeriod();
@@ -249,6 +230,7 @@ public class FinancialWindow extends JFrame
 		lblNewLabel.setBounds(0, 0, 1094, 571);
 		contentPane.add(lblNewLabel);
 		
+		//Background image 
 		ImageIcon pic = new ImageIcon(FinancialWindow.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -257,13 +239,8 @@ public class FinancialWindow extends JFrame
 		
 		
 		lblNewLabel_4.setText(ConMainActivity.username);
-		
-		//tempIncoming = Integer.parseInt(incomingPass);
-		//allIncoming =+ tempIncoming;
-		//incomingSum = Integer.toString(allIncoming);
-		//lblNewLabel_8.setText(Double.toString(incomingPass));
-		
-		
+	
+		//Window image 
 		ImageIcon pic1 = new ImageIcon(LogInWindow.class.getResource("conimgs/finance.jpg"));
 		Image tempImage1 = pic1.getImage();
 		Image Imagetemp1 = tempImage1.getScaledInstance(lblNewLabel_7.getWidth(),lblNewLabel_7.getHeight(),Image.SCALE_DEFAULT);
@@ -273,6 +250,7 @@ public class FinancialWindow extends JFrame
 		setclk();
 
 	}
+	//Dispaly the clock always
 	public void setclk()
 	{
 		Thread clkthread = new Thread()

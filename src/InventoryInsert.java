@@ -1,4 +1,3 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
 
@@ -16,8 +15,6 @@ import javax.swing.JOptionPane;
 import java.awt.Toolkit;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.awt.Color;
 import java.awt.Font;
@@ -77,6 +74,8 @@ public class InventoryInsert extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor
 	public InventoryInsert() 
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(InventoryInsert.class.getResource("/conimgs/title_icon.png")));
@@ -92,6 +91,7 @@ public class InventoryInsert extends JFrame
 		btnNewButton = new JButton("\u05D0\u05D9\u05E9\u05D5\u05E8");
 		btnNewButton.addActionListener(new ActionListener()
 		{
+			//Insert new ingredient
 			public void actionPerformed(ActionEvent e)
 			{
 				if(textField.getText().equals("") || textField_1.getText().equals(""))
@@ -136,12 +136,14 @@ public class InventoryInsert extends JFrame
 		textField_1 = new JTextField();
 		textField_1.addKeyListener(new KeyAdapter()
 		{
+			//If enter key is pressed, click the button
 			@Override
 			public void keyPressed(KeyEvent e)
 			{
 				if(e.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton.doClick();
 			}
+			//If the typed key is not numbers show message 
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{
@@ -150,7 +152,7 @@ public class InventoryInsert extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות או גרש, רק מספרים" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" );
 				}
 			}
 		});
@@ -176,7 +178,7 @@ public class InventoryInsert extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים או גרש, רק אותיות" );
+				    JOptionPane.showMessageDialog(null,"אין להקליד מספרים, רק אותיות" );
 				}
 			}
 		});
@@ -225,6 +227,7 @@ public class InventoryInsert extends JFrame
 		lblNewLabel.setBounds(0, 0, 484, 261);
 		contentPane.add(lblNewLabel);
 		
+		//Background image
 		ImageIcon pic = new ImageIcon(InventoryInsert.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -239,6 +242,7 @@ public class InventoryInsert extends JFrame
 		setclk();
 
 	}
+	//Display the clock always
 	public void setclk()
 	{
 		Thread clkthread = new Thread()

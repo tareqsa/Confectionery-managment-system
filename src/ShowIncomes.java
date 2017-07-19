@@ -1,6 +1,3 @@
-
-
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.Point;
@@ -73,6 +70,8 @@ public class ShowIncomes extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor 
 	public ShowIncomes()
 	{
 		setResizable(false);
@@ -92,6 +91,7 @@ public class ShowIncomes extends JFrame
 		
 		table_1 = new JTable()
 		{
+			//All cells is not editable 
 			@Override
 			public boolean isCellEditable(int row, int column)
 			{
@@ -101,6 +101,7 @@ public class ShowIncomes extends JFrame
 		};
 		table_1.addMouseListener(new MouseAdapter()
 		{
+			//Choosing day date showing all orders for the day 
 			@Override
 			public void mousePressed(MouseEvent e) 
 			{
@@ -109,7 +110,7 @@ public class ShowIncomes extends JFrame
 		        int row = table1.rowAtPoint(p);
 		        String date = table1.getModel().getValueAt(row, 0).toString();
 		        
-		        String query = "  SELECT `שם פרטי`,`שם משפחה`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`  FROM orders WHERE `תאריך`= '"+date+"'";
+		        String query = "  SELECT `שם פרטי`,`שם משפחה`,`מה הוזמן`,`כמות בקילוגרם`,`עלות`  FROM orders WHERE `תאריך`= '"+date+"' ORDER BY `תאריך ושעה` DESC";
 				try 
 				{
 					Statement stt2 = (Statement) Driver.getDatabaseDriver().conn.createStatement();
@@ -153,7 +154,6 @@ public class ShowIncomes extends JFrame
 		JTableHeader Theader = table.getTableHeader();
 		Theader.setBackground(Color.pink);
         Theader.setFont(new Font("Tahoma", Font.BOLD, 12));
-		//scrollPane.setColumnHeaderView(table);
 		
 		
 		lblNewLabel_4 = new JLabel("");
@@ -186,6 +186,7 @@ public class ShowIncomes extends JFrame
 		lblNewLabel.setBounds(0, 0, 994, 571);
 		contentPane.add(lblNewLabel);
 		
+		//Background image 
 		ImageIcon pic = new ImageIcon(ShowIncomes.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -195,7 +196,7 @@ public class ShowIncomes extends JFrame
 		
 		lblNewLabel_4.setText(ConMainActivity.username);
 		
-		
+		//Show the table always 
 		String query = "  SELECT `תאריך`  FROM orders GROUP BY `תאריך` DESC ";
 		try 
 		{
@@ -219,6 +220,7 @@ public class ShowIncomes extends JFrame
 		
 		
 	}
+	//Display the clock alwys 
 	public void setclk()
 	{
 		Thread clkthread = new Thread()

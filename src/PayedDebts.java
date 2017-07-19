@@ -1,10 +1,8 @@
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -15,7 +13,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -89,6 +86,8 @@ public class PayedDebts extends JFrame
 	/**
 	 * Create the frame.
 	 */
+	
+	//Constructor
 	public PayedDebts() 
 	{
 		setResizable(false);
@@ -116,6 +115,7 @@ public class PayedDebts extends JFrame
 		
 		table = new JTable()
 		{
+			//All the cells is not editable 
 			@Override
 			public boolean isCellEditable(int row, int column)
 			{
@@ -133,11 +133,13 @@ public class PayedDebts extends JFrame
 		btnNewButton_1 = new JButton("\u05DE\u05D7\u05E7 \u05EA\u05E9\u05DC\u05D5\u05DD");
 		btnNewButton_1.addActionListener(new ActionListener()
 		{
+			//Delete payment from the client payments and update the debt in the clientsdebts window 
 			public void actionPerformed(ActionEvent arg0)
 			{
 
 		        int row = table.getSelectedRow();
 		        int response = 0;
+		        
 				try
 				{
 					if(row<0)
@@ -166,7 +168,12 @@ public class PayedDebts extends JFrame
 						 
 								String queryUp="UPDATE `clientsdebts` SET `שולם`="+pSum+",`לא שולם`="+stillNotPayed+" WHERE `מספר חוב` = "+debtNum+"";
 								stt.executeUpdate(queryUp);
-								Driver.viewTable("clientsdebts", ClientsDebts.table, Driver.getDatabaseDriver().conn);
+								
+								String selecQuery = "SELECT * FROM `clientsdebts` ORDER BY `תאריך ושעה` DESC";
+								ResultSet rs2 = stt.executeQuery(selecQuery);
+								ClientsDebts.table.setModel(DbUtils.resultSetToTableModel(rs2));
+								
+								//Driver.viewTable("clientsdebts", ClientsDebts.table, Driver.getDatabaseDriver().conn);
 								
 								DefaultTableCellRenderer centerRenderr = new DefaultTableCellRenderer();
 								centerRenderr.setHorizontalAlignment(JLabel.CENTER);
@@ -180,7 +187,7 @@ public class PayedDebts extends JFrame
 								String dQuery = "DELETE FROM `debtspayments` WHERE   `מספר תשלום` = "+id+"";
 								stt.executeUpdate(dQuery);
 								
-								String pQuery = " SELECT * FROM `debtspayments` WHERE `מספר חוב` = "+debtNum+"";
+								String pQuery = " SELECT * FROM `debtspayments` WHERE `מספר חוב` = "+debtNum+" ORDER BY `תאריך ושעה` DESC";
 								ResultSet rs = stt.executeQuery(pQuery);
 								table.setModel(DbUtils.resultSetToTableModel(rs));
 
@@ -215,6 +222,7 @@ public class PayedDebts extends JFrame
 		btnNewButton = new JButton("\u05D0\u05D9\u05E9\u05D5\u05E8");
 		btnNewButton.addActionListener(new ActionListener() 
 		{
+			//If the whole debt payed, show message, if not deduct the payment from the debts and update the debt in clientsdebts window
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				if( textField_1.getText().equals("") )
@@ -241,13 +249,14 @@ public class PayedDebts extends JFrame
 							String debtpayedQuery = "INSERT INTO `debtspayments`(`מספר חוב`, `תאריך ושעה`, `סוג תשלום`, `סכום ששולם`) VALUES ('" + debtNum  + "','" + dtf.format(now) + "','" + comboBox.getSelectedItem().toString() +"','" + textField_1.getText() + "')";
 							
 							String queryUp="UPDATE `clientsdebts` SET `שולם`="+pSum+",`לא שולם`="+stillNotPayed+" WHERE `מספר חוב` = "+debtNum+"";
-								
+	
+							
 							try 
 							{
 								Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 								stt.executeUpdate(debtpayedQuery);
 									
-								String query = " SELECT * FROM `debtspayments` WHERE `מספר חוב` = "+debtNum+"";
+								String query = " SELECT * FROM `debtspayments` WHERE `מספר חוב` = "+debtNum+" ORDER BY `תאריך ושעה` DESC";
 								ResultSet rs = stt.executeQuery(query);
 								table.setModel(DbUtils.resultSetToTableModel(rs));
 			
@@ -260,7 +269,11 @@ public class PayedDebts extends JFrame
 								table.getColumnModel().getColumn(4).setCellRenderer(centerRenderr);
 									
 								stt.executeUpdate(queryUp);
-								Driver.viewTable("clientsdebts", ClientsDebts.table, Driver.getDatabaseDriver().conn);
+								
+								String seleQuery = "SELECT * FROM `clientsdebts` ORDER BY `תאריך ושעה` DESC";
+								ResultSet rs1 = stt.executeQuery(seleQuery);
+								ClientsDebts.table.setModel(DbUtils.resultSetToTableModel(rs1));
+								//Driver.viewTable("clientsdebts", ClientsDebts.table, Driver.getDatabaseDriver().conn);
 									
 								ClientsDebts.table.getColumnModel().getColumn(0).setCellRenderer(centerRenderr);
 								ClientsDebts.table.getColumnModel().getColumn(1).setCellRenderer(centerRenderr);
@@ -296,12 +309,14 @@ public class PayedDebts extends JFrame
 		textField_1 = new JTextField();
 		textField_1.addKeyListener(new KeyAdapter()
 		{
+			//If the pressed key is enter, click the button
 			@Override
 			public void keyPressed(KeyEvent e) 
 			{
 				if(e.getKeyCode() == KeyEvent.VK_ENTER)
 					btnNewButton.doClick();
 			}
+			//If the typed key is not number, show message 
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{
@@ -310,7 +325,7 @@ public class PayedDebts extends JFrame
 				{
 					e.consume();
 					getToolkit().beep();
-				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות או גרש, רק מספרים" ); 
+				    JOptionPane.showMessageDialog(null,"אין להקליד אותיות, רק מספרים" ); 
 
 					
 				}
@@ -361,6 +376,7 @@ public class PayedDebts extends JFrame
 		lblNewLabel.setBounds(0, 0, 814, 571);
 		contentPane.add(lblNewLabel);
 		
+		//Background image  
 		ImageIcon pic = new ImageIcon(PayedDebts.class.getResource("conimgs/background.jpg"));
 		Image tempImage = pic.getImage();
 		Image Imagetemp = tempImage.getScaledInstance(lblNewLabel.getWidth(),lblNewLabel.getHeight(),Image.SCALE_DEFAULT);
@@ -369,10 +385,10 @@ public class PayedDebts extends JFrame
 		
 		lblNewLabel_4.setText(ConMainActivity.username);
 		
-		
+		//Show the table always 
 		try 
 		{
-			String query = " SELECT * FROM `debtspayments` WHERE `מספר חוב` = "+debtNum+"";
+			String query = " SELECT * FROM `debtspayments` WHERE `מספר חוב` = "+debtNum+" ORDER BY `תאריך ושעה` DESC";
 			Statement stt = (Statement) Driver.getDatabaseDriver().conn.createStatement();
 			ResultSet rs = stt.executeQuery(query);
 			table.setModel(DbUtils.resultSetToTableModel(rs));
@@ -386,7 +402,6 @@ public class PayedDebts extends JFrame
 		}
 		catch (SQLException e1) 
 		{
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -394,6 +409,7 @@ public class PayedDebts extends JFrame
 
 		
 	}
+	//Display the clock always 
 	public void setclk()
 	{
 		Thread clkthread = new Thread()
